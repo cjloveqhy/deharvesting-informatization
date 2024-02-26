@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: template
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        file-extension: yaml
+        namespace: f79aadf1-be9f-4515-8834-d43af9ffb378
+        ext-config:
+#          - data-id: backstage-components-template.yml
+#            refresh: true
+          - data-id: microservice-components-public-sa-token.yml
+          - data-id: microservice-components-public-mybatis-plus.yml
+          - data-id: microservice-components-public-sa-token-redis.yml
+          - data-id: backstage-components-public-discovery.yml
+          - data-id: microservice-components-zipkin.yml
