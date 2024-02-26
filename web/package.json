@@ -1,10 +1,10 @@
 {
-  "name": "naive-ui-admin",
-  "version": "1.9.0",
+  "name": "deharvesting-informatization",
+  "version": "0.0.1",
   "author": {
-    "name": "Ahjung",
-    "email": "735878602@qq.com",
-    "url": "https://github.com/jekip/naive-ui-admin"
+    "name": "cby",
+    "email": "",
+    "url": ""
   },
   "private": true,
   "scripts": {
