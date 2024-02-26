@@ -1,8 +1,5 @@
-package com.freedom.cloud.config;
+package com.cby.tcs.config;
 
-import cn.dev33.satoken.filter.SaServletFilter;
-import cn.dev33.satoken.same.SaSameUtil;
-import cn.dev33.satoken.util.SaResult;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
@@ -15,7 +12,6 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,10 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Configuration
-@RequiredArgsConstructor
 public class BeanConfig {
-
-    private final AppConfigProperties appConfigProperties;
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
@@ -115,18 +108,6 @@ public class BeanConfig {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
-    }
-
-    // 注册 Sa-Token 全局过滤器
-    @Bean
-    public SaServletFilter getSaServletFilter() {
-        SaServletFilter filter = new SaServletFilter().addInclude(appConfigProperties.getIncludePath().toArray(String[]::new))
-                .setAuth(obj -> SaSameUtil.checkCurrentRequestToken())
-                .setError(e -> SaResult.error(e.getMessage()));
-        if (Objects.nonNull(appConfigProperties.getExcludePath()) && !appConfigProperties.getExcludePath().isEmpty()) {
-            filter.addExclude(appConfigProperties.getExcludePath().toArray(String[]::new));
-        }
-        return filter;
     }
 
 }

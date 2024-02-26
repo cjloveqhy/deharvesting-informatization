@@ -24,22 +24,6 @@
             <artifactId>app-config</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.freedom.cloud</groupId>
-            <artifactId>auth-login-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.freedom.cloud</groupId>
-            <artifactId>entitlement-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.freedom.cloud</groupId>
-            <artifactId>nacos-discovery</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
@@ -76,18 +60,6 @@
             <artifactId>mybatis-spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-        </dependency>
-        <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot3-starter</artifactId>
         </dependency>
@@ -98,31 +70,6 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-brave</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-observation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.zipkin.reporter2</groupId>
-            <artifactId>zipkin-reporter-brave</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-micrometer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>${spring-boot-version}</version>
         </dependency>
     </dependencies>
 
@@ -145,7 +92,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.freedom.cloud.TemplateApplication</mainClass>
+                            <mainClass>com.freedom.cloud.CoreApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

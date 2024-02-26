@@ -1,4 +1,4 @@
-package com.freedom.cloud.config;
+package com.cby.tcs.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
