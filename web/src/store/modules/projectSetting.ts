@@ -14,6 +14,7 @@ const {
   permissionMode,
   isPageAnimate,
   pageAnimateType,
+  isLogin
 } = projectSetting;
 
 export const useProjectSettingStore = defineStore({
@@ -30,6 +31,7 @@ export const useProjectSettingStore = defineStore({
     permissionMode,
     isPageAnimate,
     pageAnimateType,
+    isLogin
   }),
   getters: {
     getNavMode(): string {

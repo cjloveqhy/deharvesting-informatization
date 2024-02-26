@@ -26,6 +26,8 @@ export interface ProjectSettingState {
   pageAnimateType: string;
   // 是否处于移动端模式
   isMobile: boolean;
+  // 是否需要登录
+  isLogin: boolean
 }
 
 export interface IBodySetting {

@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/dashboard',
     name: routeName,
-    redirect: '/dashboard/console',
+    redirect: '/dashboard/workplace',
     component: Layout,
     meta: {
       title: '仪表盘',
@@ -28,13 +28,13 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
-        path: 'console',
-        name: `${routeName}_console`,
+        path: 'workplace',
+        name: `${routeName}_workplace`,
         meta: {
-          title: '主控台',
-          affix: true,
+          title: '工作台',
+          keepAlive: true,
         },
-        component: () => import('@/views/dashboard/console/console.vue'),
+        component: () => import('@/views/dashboard/workplace/workplace.vue'),
       },
       {
         path: 'monitor',
@@ -43,15 +43,6 @@ const routes: Array<RouteRecordRaw> = [
           title: '监控页',
         },
         component: () => import('@/views/dashboard/monitor/monitor.vue')
-      },
-      {
-        path: 'workplace',
-        name: `${routeName}_workplace`,
-        meta: {
-          title: '工作台',
-          keepAlive: true,
-        },
-        component: () => import('@/views/dashboard/workplace/workplace.vue'),
       },
     ],
   },

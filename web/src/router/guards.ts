@@ -6,6 +6,7 @@ import { ACCESS_TOKEN } from '@/store/mutation-types';
 import { storage } from '@/utils/Storage';
 import { PageEnum } from '@/enums/pageEnum';
 import { ErrorPageRoute } from '@/router/base';
+import {useProjectSettingStore} from "@/store/modules/projectSetting";
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
@@ -36,18 +37,23 @@ export function createRouterGuards(router: Router) {
         next();
         return;
       }
-      // redirect login page
-      const redirectData: { path: string; replace: boolean; query?: Recordable<string> } = {
-        path: LOGIN_PATH,
-        replace: true,
-      };
-      if (to.path) {
-        redirectData.query = {
-          ...redirectData.query,
-          redirect: to.path,
+
+      const projectSetting = useProjectSettingStore()
+
+      if (projectSetting.isLogin) {
+        // redirect login page
+        const redirectData: { path: string; replace: boolean; query?: Recordable<string> } = {
+          path: LOGIN_PATH,
+          replace: true,
         };
+        if (to.path) {
+          redirectData.query = {
+            ...redirectData.query,
+            redirect: to.path,
+          };
+        }
+        next(redirectData);
       }
-      next(redirectData);
       return;
     }
 
@@ -56,7 +62,8 @@ export function createRouterGuards(router: Router) {
       return;
     }
 
-    const permissions = await userStore.getUserPermissions()
+    // const permissions = await userStore.getUserPermissions()
+    const permissions = []
 
     const routes = await asyncRouteStore.generateRoutes(permissions);
     // 动态添加可访问路由表

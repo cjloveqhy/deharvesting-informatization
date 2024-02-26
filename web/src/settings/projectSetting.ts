@@ -62,5 +62,7 @@ const setting:ProjectSettingState = {
   isPageAnimate: true,
   //路由动画类型
   pageAnimateType: 'zoom-fade',
+  // 是否需要登录
+  isLogin: false
 };
 export default setting;
