@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/homePage',
     name: routeName,
-    redirect: '/homePage/workplace',
+    redirect: '/homePage/index',
     component: Layout,
     meta: {
       title: '平台首页',

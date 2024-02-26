@@ -54,7 +54,6 @@ export function createRouterGuards(router: Router) {
         }
         next(redirectData);
       }
-      return;
     }
 
     if (asyncRouteStore.getIsDynamicRouteAdded) {
