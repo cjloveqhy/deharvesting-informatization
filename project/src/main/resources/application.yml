@@ -6,13 +6,13 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-      url: jdbc:mysql://47.100.250.1:3306/nacos?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://47.100.250.1:3306/deharvesting-informatization?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
       username: root
       password: bJF@010822
       driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis-plus:
-  mapper-locations: classpath:com/freedom/cloud/**/mapper/*.xml
-  type-aliases-package: com.freedom.**.entity
+  mapper-locations: classpath:com/cby/tcs/**/mapper/*.xml
+  type-aliases-package: com.cby.**.entity
   global-config:
     banner: false
     db-config:
@@ -39,7 +39,3 @@ sa-token:
   is-share: false
   # 是否输出操作日志
   is-log: true
-app:
-  config:
-    exclude-path: # 排除无需访问权限的接口路径
-      - /login/**
