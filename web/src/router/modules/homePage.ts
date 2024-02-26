@@ -1,9 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
 import { DashboardOutlined } from '@vicons/antd';
-import { renderIcon } from '@/utils/index';
+import { renderIcon } from '@/utils';
 
-const routeName = 'dashboard';
+const routeName = 'homePage';
 
 /**
  * @param name 路由名称, 必须设置,且不能重名
@@ -17,32 +17,23 @@ const routeName = 'dashboard';
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/dashboard',
+    path: '/homePage',
     name: routeName,
-    redirect: '/dashboard/workplace',
+    redirect: '/homePage/workplace',
     component: Layout,
     meta: {
-      title: '仪表盘',
+      title: '平台首页',
       icon: renderIcon(DashboardOutlined),
       sort: 0,
     },
     children: [
       {
-        path: 'workplace',
-        name: `${routeName}_workplace`,
+        path: 'index',
+        name: `${routeName}_index`,
         meta: {
-          title: '工作台',
-          keepAlive: true,
+          title: '平台首页',
         },
-        component: () => import('@/views/dashboard/workplace/workplace.vue'),
-      },
-      {
-        path: 'monitor',
-        name: `${ routeName }_monitor`,
-        meta: {
-          title: '监控页',
-        },
-        component: () => import('@/views/dashboard/monitor/monitor.vue')
+        component: () => import('@/views/homePage/index.vue'),
       },
     ],
   },
