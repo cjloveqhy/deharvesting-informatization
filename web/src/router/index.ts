@@ -5,10 +5,17 @@ import { PageEnum } from '@/enums/pageEnum';
 import { createRouterGuards } from './guards';
 import type { IModuleType } from './types';
 
+const details = import.meta.glob<IModuleType>('./details/**/*.ts', { eager: true });
 const modules = import.meta.glob<IModuleType>('./modules/**/*.ts', { eager: true });
 
 const routeModuleList: RouteRecordRaw[] = Object.keys(modules).reduce((list, key) => {
   const mod = modules[key].default ?? {};
+  const modList = Array.isArray(mod) ? [...mod] : [mod];
+  return [...list, ...modList];
+}, []);
+
+const routeDetailsList: RouteRecordRaw[] = Object.keys(details).reduce((list, key) => {
+  const mod = details[key].default ?? {};
   const modList = Array.isArray(mod) ? [...mod] : [mod];
   return [...list, ...modList];
 }, []);
@@ -32,7 +39,7 @@ export const RootRoute: RouteRecordRaw = {
 export const asyncRoutes = [...routeModuleList];
 
 //普通路由 无需验证权限
-export const constantRouter: RouteRecordRaw[] = [LoginRoute, RegisterRoute, ForgetPasswordRoute, RootRoute, RedirectRoute];
+export const constantRouter: RouteRecordRaw[] = [LoginRoute, RegisterRoute, ForgetPasswordRoute, RootRoute, RedirectRoute, ...routeDetailsList];
 
 const router = createRouter({
   history: createWebHistory(),
