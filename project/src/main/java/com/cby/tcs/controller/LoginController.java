@@ -1,0 +1,56 @@
+package com.cby.tcs.controller;
+
+import com.cby.tcs.user.entity.fo.LoginFo;
+import com.cby.tcs.user.entity.fo.RegisterUserFo;
+import com.cby.tcs.user.entity.vo.UserAutoInfo;
+import com.cby.tcs.user.entity.vo.ValidAccountVo;
+import com.cby.tcs.user.service.UserService;
+import com.freedom.cloud.result.ResultEntity;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/user")
+@RequiredArgsConstructor
+public class LoginController {
+
+  private final UserService userService;
+
+  /**
+   * 登录
+   */
+  @PostMapping("/login")
+  public ResultEntity login(@Validated @RequestBody LoginFo entity) {
+    UserAutoInfo info = userService.login(entity);
+    return ResultEntity.success(info);
+  }
+
+  /**
+   * 注册
+   */
+  @PostMapping("/register")
+  public ResultEntity register(@Validated @RequestBody RegisterUserFo entity) {
+    userService.register(entity);
+    return ResultEntity.success(String.format("账户%s注册成功", entity.getAccount()));
+  }
+
+  /**
+   * 验证账户名是否存在
+   */
+  @GetMapping("validAccount")
+  public ResultEntity validAccount(@RequestParam String account) {
+    ValidAccountVo vo = userService.validAccount(account);
+    return ResultEntity.success(vo);
+  }
+
+  /**
+   * 获取登录验证图片
+   */
+  @GetMapping("/getLoginVerifyImg")
+  public void getLoginVerifyImg(HttpServletResponse response) {
+    userService.getLoginVerifyImg(response);
+  }
+
+}

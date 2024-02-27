@@ -1,6 +1,6 @@
 import { App } from 'vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import { RedirectRoute } from '@/router/base';
+import { RedirectRoute, LoginRoute, RegisterRoute, ForgetPasswordRoute } from '@/router/base';
 import { PageEnum } from '@/enums/pageEnum';
 import { createRouterGuards } from './guards';
 import type { IModuleType } from './types';
@@ -28,20 +28,11 @@ export const RootRoute: RouteRecordRaw = {
   },
 };
 
-export const LoginRoute: RouteRecordRaw = {
-  path: '/login',
-  name: 'Login',
-  component: () => import('@/views/login/index.vue'),
-  meta: {
-    title: '登录',
-  },
-};
-
 //需要验证权限
 export const asyncRoutes = [...routeModuleList];
 
 //普通路由 无需验证权限
-export const constantRouter: RouteRecordRaw[] = [LoginRoute, RootRoute, RedirectRoute];
+export const constantRouter: RouteRecordRaw[] = [LoginRoute, RegisterRoute, ForgetPasswordRoute, RootRoute, RedirectRoute];
 
 const router = createRouter({
   history: createWebHistory(),

@@ -32,19 +32,19 @@ public class Role extends Model<Role> {
      * 角色优先级
      */
     @TableField("level")
-    private Boolean level;
+    private Integer level;
 
     /**
      * 备注
      */
-    @TableField("remark")
+    @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
 
     /**
-     * 逻辑删除
+     *逻辑删除
      */
-    @TableField("deleted")
-    private Boolean deleted;
+    @TableLogic("deleted")
+    private Integer deleted;
 
     /**
      * 更新时间

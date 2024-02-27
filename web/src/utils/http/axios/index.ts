@@ -191,8 +191,7 @@ const transform: AxiosTransform = {
     const $message = window['$message'];
     const { response, code, message } = error || {};
     // TODO 此处要根据后端接口返回格式修改
-    const msg: string =
-      response && response.data && response.data.message ? response.data.message : '';
+    const msg: string = response.data;
     const err: string = error.toString();
     try {
       if (code === 'ECONNABORTED' && message.indexOf('timeout') !== -1) {

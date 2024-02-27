@@ -43,3 +43,30 @@ export const RedirectRoute: RouteRecordRaw = {
     },
   ],
 };
+
+export const LoginRoute: RouteRecordRaw = {
+  path: '/login',
+  name: 'Login',
+  component: () => import('@/views/login/index.vue'),
+  meta: {
+    title: '登录',
+  },
+}
+
+export const RegisterRoute: RouteRecordRaw = {
+  path: '/register',
+  name: 'Register',
+  component: () => import('@/views/login/register.vue'),
+  meta: {
+    title: '注册',
+  },
+}
+
+export const ForgetPasswordRoute: RouteRecordRaw = {
+  path: '/forgetPassword',
+  name: 'ForgetPassword',
+  component: () => import('@/views/login/forgetPassword.vue'),
+  meta: {
+    title: '忘记密码',
+  },
+}
