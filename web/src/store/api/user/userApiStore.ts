@@ -1,7 +1,7 @@
-import {PasswordLoginForm, SexEnum, UserAutoInfo} from "@/store/api/user/types";
+import {PasswordLoginForm, RegisterForm, SexEnum, UserAutoInfo} from "@/store/api/user/types";
 import {storage} from "@/utils/Storage";
 import {ACCESS_TOKEN, CURRENT_USER, IS_SCREENLOCKED} from "@/store/mutation-types";
-import { login as userLogin, logout as userLogout } from '@/api/system/login'
+import { login as userLogin, logout as userLogout, register as userRegister } from '@/api/system/login'
 import {ResultEnum} from "@/enums/httpEnum";
 import {getUserPermissions as obtainUserPermissions} from "@/api/user_role";
 
@@ -62,6 +62,14 @@ export const useUserApiStore = defineStore(
     }
 
     /**
+     * @description: 注册
+     */
+    async function register(params: RegisterForm) {
+      const response = await userRegister(params)
+      return response
+    }
+
+    /**
      * @description: 获取用户的权限值
      */
     async function getUserPermissions() {
@@ -90,6 +98,7 @@ export const useUserApiStore = defineStore(
       getPermissions,
       getUserInfo,
       login,
+      register,
       getUserPermissions,
       logout
     }

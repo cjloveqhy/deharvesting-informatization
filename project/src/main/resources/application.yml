@@ -10,6 +10,18 @@ spring:
       username: root
       password: bJF@010822
       driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:      # 密码（默认为空）
+    timeout: 6000ms  # 连接超时时长（毫秒）
+    lettuce:
+      pool:
+        max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: 10000ms      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10      # 连接池中的最大空闲连接
+        min-idle: 5       # 连接池中的最小空闲连接
 mybatis-plus:
   mapper-locations: classpath:com/cby/tcs/**/mapper/*.xml
   type-aliases-package: com.cby.**.entity
@@ -22,6 +34,7 @@ mybatis-plus:
       logic-not-delete-value: 0
   configuration:
     map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印SQL语句
 sa-token:
   # 是否打印logo
   is-print: false

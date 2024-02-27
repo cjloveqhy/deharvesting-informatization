@@ -69,4 +69,11 @@ export interface BasicLoginForm {
 export interface PasswordLoginForm extends BasicLoginForm {
   account: string
   password: string
+  code: string
+}
+
+export interface RegisterForm {
+  account: string,
+  password: string,
+  rePassword: string
 }

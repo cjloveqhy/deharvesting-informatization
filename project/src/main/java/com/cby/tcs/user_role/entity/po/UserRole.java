@@ -36,14 +36,14 @@ public class UserRole extends Model<UserRole> {
     /**
      * 额外权限，当角色权限不可满足时，可通过此属性进行添加
      */
-    @TableField("attached_permission")
+    @TableField(value = "attached_permission", updateStrategy = FieldStrategy.IGNORED)
     private String attachedPermission;
 
     /**
-     * 逻辑删除
+     *逻辑删除
      */
-    @TableField("deleted")
-    private Boolean deleted;
+    @TableLogic("deleted")
+    private Integer deleted;
 
     /**
      * 更新时间

@@ -30,14 +30,14 @@ public class RolePermission extends Model<RolePermission> {
     /**
      * 权限集合
      */
-    @TableField("permissions")
+    @TableField(value = "permissions", updateStrategy = FieldStrategy.IGNORED)
     private String permissions;
 
     /**
-     * 逻辑删除
+     *逻辑删除
      */
-    @TableField("deleted")
-    private Boolean deleted;
+    @TableLogic("deleted")
+    private Integer deleted;
 
     /**
      * 更新时间

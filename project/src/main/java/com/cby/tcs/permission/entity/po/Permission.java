@@ -2,6 +2,8 @@ package com.cby.tcs.permission.entity.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.freedom.cloud.enums.LogicalEnum;
+import com.freedom.cloud.enums.MenuType;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -37,37 +39,37 @@ public class Permission extends Model<Permission> {
      * 类型（R：权限系统根节点，M：菜单，B：按钮，C：内容）
      */
     @TableField("type")
-    private String type;
+    private MenuType type;
 
     /**
      * 访问路径
      */
-    @TableField("path")
+    @TableField(value = "path", updateStrategy = FieldStrategy.IGNORED)
     private String path;
 
     /**
      * 组件路径
      */
-    @TableField("component")
+    @TableField(value = "component", updateStrategy = FieldStrategy.IGNORED)
     private String component;
 
     /**
      * 状态（N：禁止，Y：正常）
      */
     @TableField("status")
-    private String status;
+    private LogicalEnum status;
 
     /**
      * 元数据
      */
-    @TableField("meta")
+    @TableField(value = "meta", updateStrategy = FieldStrategy.IGNORED)
     private String meta;
 
     /**
-     * 逻辑删除
+     *逻辑删除
      */
-    @TableField("deleted")
-    private Boolean deleted;
+    @TableLogic("deleted")
+    private Integer deleted;
 
     /**
      * 更新时间
