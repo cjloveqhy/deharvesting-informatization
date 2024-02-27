@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia';
 import projectSetting from '@/settings/projectSetting';
 import type {ProjectSettingState} from '/#/config';
 
@@ -14,7 +13,8 @@ const {
   permissionMode,
   isPageAnimate,
   pageAnimateType,
-  isLogin
+  isLogin,
+  whitePathList
 } = projectSetting;
 
 export const useProjectSettingStore = defineStore({
@@ -31,7 +31,8 @@ export const useProjectSettingStore = defineStore({
     permissionMode,
     isPageAnimate,
     pageAnimateType,
-    isLogin
+    isLogin,
+    whitePathList
   }),
   getters: {
     getNavMode(): string {
@@ -66,6 +67,12 @@ export const useProjectSettingStore = defineStore({
     },
     getPageAnimateType(): string {
       return this.pageAnimateType;
+    },
+    getIsLogin(): boolean {
+      return this.isLogin;
+    },
+    getWhitePathList(): string[] {
+      return this.whitePathList;
     },
   },
   actions: {

@@ -11,4 +11,8 @@ export enum PageEnum {
   BASE_HOME_REDIRECT = '/homePage/index',
   // 错误
   ERROR_PAGE_NAME = 'ErrorPage',
+  // 注册
+  REGISTER = 'Register',
+  // 忘记密码
+  FORGET_PASSWORD = 'ForgetPassword'
 }

@@ -139,10 +139,10 @@ const handleSubmit = (e) => {
           </template>
         </template>
         <n-flex justify="end" style="margin-left: auto">
-          <n-button text tag="a" @click="toPath('ForgetPassword')">
+          <n-button text tag="a" @click="toPath(PageEnum.REGISTER)">
             忘记密码
           </n-button>
-          <n-button text tag="a" @click="toPath('Register')">
+          <n-button text tag="a" @click="toPath(PageEnum.FORGET_PASSWORD)">
             注册账号
           </n-button>
         </n-flex>
