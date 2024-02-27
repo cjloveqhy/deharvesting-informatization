@@ -22,7 +22,6 @@ public class LoginFo implements Serializable {
     @NotBlank(message = "请输入密码")
     private String password;
 
-    @NotBlank(message = "请输入验证码")
     private String code;
 
 }

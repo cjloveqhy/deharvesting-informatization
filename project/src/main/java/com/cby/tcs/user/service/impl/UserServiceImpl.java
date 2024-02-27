@@ -5,6 +5,7 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -48,8 +49,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
   public UserAutoInfo login(LoginFo entity) {
     User user = getUserByAccount(entity.getAccount());
     if (Objects.isNull(user) || !DigestUtil.md5Hex(entity.getPassword()).equals(user.getPassword())) throw new UserException("账户名或密码输入错误");
-    if (!getLoginVerifyCode().equals(entity.getCode())) throw new UserException("验证码输入错误");
-    if (!StpUtil.isLogin()) StpUtil.login(user.getId());
+    if (!StpUtil.isLogin()) {
+      if (StrUtil.hasBlank(entity.getCode())) throw new UserException("请输入验证码");
+      if (!getLoginVerifyCode().equals(entity.getCode())) throw new UserException("验证码输入错误");
+      StpUtil.login(user.getId());
+    }
     UserAutoInfo info = new UserAutoInfo();
     info.setInfo(BeanUtil.copyProperties(user, UserInfo.class))
             .setId(user.getId())
