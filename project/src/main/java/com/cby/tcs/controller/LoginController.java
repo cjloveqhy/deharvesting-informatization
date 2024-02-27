@@ -1,5 +1,6 @@
 package com.cby.tcs.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.cby.tcs.user.entity.fo.LoginFo;
 import com.cby.tcs.user.entity.fo.RegisterUserFo;
 import com.cby.tcs.user.entity.vo.UserAutoInfo;
@@ -34,6 +35,15 @@ public class LoginController {
   public ResultEntity register(@Validated @RequestBody RegisterUserFo entity) {
     userService.register(entity);
     return ResultEntity.success(String.format("账户%s注册成功", entity.getAccount()));
+  }
+
+  /**
+   * 退出
+   */
+  @GetMapping("/logout")
+  public ResultEntity logout() {
+    StpUtil.logout(StpUtil.getLoginId());
+    return ResultEntity.success("推出成功");
   }
 
   /**

@@ -28,6 +28,8 @@ export interface ProjectSettingState {
   isMobile: boolean;
   // 是否需要登录
   isLogin: boolean
+  // 路由白名单
+  whitePathList: string[]
 }
 
 export interface IBodySetting {

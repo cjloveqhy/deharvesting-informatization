@@ -10,21 +10,20 @@ import {useProjectSettingStore} from "@/store/modules/projectSetting";
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
-const whitePathList = [LOGIN_PATH]; // no redirect whitelist
-
 export function createRouterGuards(router: Router) {
   const userStore = useUserApiStore();
   const asyncRouteStore = useAsyncRoute();
+  const projectSetting = useProjectSettingStore()
   router.beforeEach(async (to, from, next) => {
     const Loading = window['$loading'] || null;
     Loading && Loading.start();
-    if (from.path === LOGIN_PATH && to.name === 'errorPage') {
+    if (from.path === LOGIN_PATH && to.name === 'ErrorPage') {
       next(PageEnum.BASE_HOME);
       return;
     }
 
     // Whitelist can be directly entered
-    if (whitePathList.includes(to.path as PageEnum)) {
+    if (projectSetting.getWhitePathList.includes(to.name as PageEnum)) {
       next();
       return;
     }
@@ -38,9 +37,7 @@ export function createRouterGuards(router: Router) {
         return;
       }
 
-      const projectSetting = useProjectSettingStore()
-
-      if (projectSetting.isLogin) {
+      if (projectSetting.getIsLogin) {
         // redirect login page
         const redirectData: { path: string; replace: boolean; query?: Recordable<string> } = {
           path: LOGIN_PATH,

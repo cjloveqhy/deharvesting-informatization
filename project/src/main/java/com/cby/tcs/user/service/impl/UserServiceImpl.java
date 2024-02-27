@@ -49,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     User user = getUserByAccount(entity.getAccount());
     if (Objects.isNull(user) || !DigestUtil.md5Hex(entity.getPassword()).equals(user.getPassword())) throw new UserException("账户名或密码输入错误");
     if (!getLoginVerifyCode().equals(entity.getCode())) throw new UserException("验证码输入错误");
-    StpUtil.login(user.getId());
+    if (!StpUtil.isLogin()) StpUtil.login(user.getId());
     UserAutoInfo info = new UserAutoInfo();
     info.setInfo(BeanUtil.copyProperties(user, UserInfo.class))
             .setId(user.getId())

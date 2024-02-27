@@ -1,5 +1,6 @@
 import {ProjectSettingState} from "/#/config";
 import {funcButtons, userMenu} from "@/settings/headerSetting";
+import {PageEnum} from "@/enums/pageEnum";
 
 const setting:ProjectSettingState = {
   //导航模式 vertical 左侧菜单模式 horizontal 顶部菜单模式
@@ -63,6 +64,8 @@ const setting:ProjectSettingState = {
   //路由动画类型
   pageAnimateType: 'zoom-fade',
   // 是否需要登录
-  isLogin: false
+  isLogin: true,
+  // 路由白名单
+  whitePathList: [PageEnum.BASE_LOGIN_NAME, PageEnum.REGISTER, PageEnum.FORGET_PASSWORD]
 };
 export default setting;
