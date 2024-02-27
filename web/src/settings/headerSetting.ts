@@ -2,6 +2,7 @@ import {useUserApiStore} from "@/store/api/user";
 import {TABS_ROUTES} from "@/store/mutation-types";
 import {FuncButtonItem, UserMenuItem} from "/#/config";
 import {FullscreenExitOutlined, FullscreenOutlined, LockOutlined} from "@vicons/antd";
+import {NotificationsOutline} from "@vicons/ionicons5";
 import {useScreenLockStore} from "@/store/modules/screenLock";
 
 // 用户菜单
@@ -55,7 +56,7 @@ export const funcButtons: FuncButtonItem[] = [
     beforeIcon: {
       tips: '锁屏',
       size: '18',
-      component: LockOutlined,
+      component: shallowRef(LockOutlined),
     },
     eventObject: {
       click: () => {
@@ -68,12 +69,12 @@ export const funcButtons: FuncButtonItem[] = [
     beforeIcon: {
       tips: '全屏',
       size: '18',
-      component: FullscreenOutlined,
+      component: shallowRef(FullscreenOutlined),
     },
     afterIcon: {
       tips: '缩小',
       size: '18',
-      component: FullscreenExitOutlined,
+      component: shallowRef(FullscreenExitOutlined),
     },
     eventObject: {
       click: (e) => {
@@ -95,5 +96,20 @@ export const funcButtons: FuncButtonItem[] = [
         }
       },
     ]
-  }
+  },
+  {
+    beforeIcon: {
+      tips: '通知',
+      size: '18',
+      component: shallowRef(NotificationsOutline),
+    },
+    badge: {
+      show: true,
+    },
+    eventObject: {
+      click: () => {
+
+      },
+    }
+  },
 ]
