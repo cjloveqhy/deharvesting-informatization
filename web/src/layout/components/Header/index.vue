@@ -80,7 +80,7 @@
         <n-tooltip placement="bottom">
           <template #trigger>
             <div @click="() => funcButtonState[index].value = !funcButtonState[index].value">
-              <n-badge :dot="item.badge" v-bind="item.badge" :style="item.badge && item.badge.show ? null : {'--n-color': 'black'}">
+              <n-badge :dot="!!item.badge" v-bind="item.badge" :style="item.badge && item.badge.show ? null : getDarkTheme">
                 <n-icon v-if="funcButtonState[index].value" v-bind="item.beforeIcon" v-on="item.eventObject || {}" />
                 <n-icon v-else v-bind="item.afterIcon ? item.afterIcon : item.beforeIcon" v-on="item.eventObject || {}" />
               </n-badge>
@@ -141,6 +141,7 @@ import ProjectSetting from './ProjectSetting.vue';
 import { AsideMenu } from '@/layout/components/Menu';
 import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
 import { websiteConfig } from '@/config/website.config';
+import { useDesignSetting } from '@/store/modules/designSetting';
 
 export default defineComponent({
   name: 'PageHeader',
@@ -156,6 +157,7 @@ export default defineComponent({
   setup(props) {
     const userStore = useUserApiStore();
     const dialog = useDialog();
+    const designSetting = useDesignSetting()
     const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting();
 
     const { account } = userStore?.getUserInfo() || {};
@@ -212,6 +214,10 @@ export default defineComponent({
 
     const getMenuLocation = computed(() => {
       return 'header';
+    });
+
+    const getDarkTheme = computed(() => {
+      return {'--n-color': designSetting.getDarkTheme ? 'white' : 'black' };
     });
 
     const router = useRouter();
@@ -279,6 +285,7 @@ export default defineComponent({
       getInverted,
       getMenuLocation,
       mixMenu,
+      getDarkTheme,
       websiteConfig,
     };
   },

@@ -1,5 +1,6 @@
 import { ErrorPage, RedirectName, Layout } from '@/router/constant';
 import { RouteRecordRaw } from 'vue-router';
+import {PageEnum} from "@/enums/pageEnum";
 
 // 404 on a page
 export const ErrorPageRoute: RouteRecordRaw = {
@@ -42,6 +43,15 @@ export const RedirectRoute: RouteRecordRaw = {
       },
     },
   ],
+};
+
+export const RootRoute: RouteRecordRaw = {
+  path: '/',
+  name: 'Root',
+  redirect: PageEnum.BASE_HOME,
+  meta: {
+    title: 'Root',
+  },
 };
 
 export const LoginRoute: RouteRecordRaw = {
