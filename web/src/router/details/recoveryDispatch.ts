@@ -17,7 +17,7 @@ const routes: Array<AppRouteRecordRaw> = [
       {
         path: 'details',
         name: `${mapRouteName}_details`,
-        component: () => import('@/views/recoveryDispatch/map/index.vue'),
+        component: () => import('@/views/recoveryDispatch/component/dispatchDetail/index.vue'),
         meta: {
           title: '详情页',
           activeMenu: 'recoveryDispatch_map'
@@ -33,7 +33,17 @@ const routes: Array<AppRouteRecordRaw> = [
       title: '调度记录',
       activeMenu: 'recoveryDispatch_record'
     },
-    children: [],
+    children: [
+      {
+        path: 'details',
+        name: `${mapRouteName}_details`,
+        component: () => import('@/views/recoveryDispatch/component/dispatchDetail/index.vue'),
+        meta: {
+          title: '详情页',
+          activeMenu: 'recoveryDispatch_map'
+        },
+      },
+    ],
   }
 ];
 

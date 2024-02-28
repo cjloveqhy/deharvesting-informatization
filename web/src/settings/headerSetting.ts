@@ -4,7 +4,7 @@ import {FuncButtonItem, UserMenuItem} from "/#/config";
 import {FullscreenExitOutlined, FullscreenOutlined, LockOutlined} from "@vicons/antd";
 import {NotificationsOutline} from "@vicons/ionicons5";
 import {useScreenLockStore} from "@/store/modules/screenLock";
-
+import "./test.css"
 // 用户菜单
 export const userMenu:UserMenuItem[] = [
   {
@@ -16,6 +16,7 @@ export const userMenu:UserMenuItem[] = [
         preset: 'card',
         show: true,
         title: '个人设置',
+        className: 'n-card n-modal testClass'
       }
     }
   },

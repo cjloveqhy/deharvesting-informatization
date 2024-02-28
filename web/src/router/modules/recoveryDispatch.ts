@@ -41,8 +41,9 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '调度记录',
         },
-        component: () => import('@/views/recoveryDispatch/record/index.vue')
+        component: () => import('@/views/recoveryDispatch/record/index.vue'),
       },
+
     ],
   },
 ];
