@@ -103,10 +103,9 @@
       <div>
         <n-dropdown trigger="hover" @select="avatarSelect" :options="headerSetting.userMenu">
           <n-flex align="center" class="h-16 cursor-pointer">
-            <n-avatar round>
-              {{ username }}
-              <template #icon>
-                <UserOutlined />
+            <n-avatar round :src="photo && photo !== '' ? photo : null">
+              <template v-if="!photo">
+                {{ username }}
               </template>
             </n-avatar>
           </n-flex>
@@ -135,7 +134,7 @@
 import {defineComponent, reactive, toRefs, ref, computed, unref, Ref} from 'vue';
 import {useRouter, useRoute, RouteLocationRaw} from 'vue-router';
 import components from './components';
-import { NDialogProvider, useDialog } from 'naive-ui';
+import { NDialogProvider } from 'naive-ui';
 import { useUserApiStore } from '@/store/api/user';
 import ProjectSetting from './ProjectSetting.vue';
 import { AsideMenu } from '@/layout/components/Menu';
@@ -156,11 +155,10 @@ export default defineComponent({
   },
   setup(props) {
     const userStore = useUserApiStore();
-    const dialog = useDialog();
     const designSetting = useDesignSetting()
     const { navMode, navTheme, headerSetting, menuSetting, crumbsSetting } = useProjectSetting();
 
-    const { account } = userStore?.getUserInfo() || {};
+    const { account, photo } = userStore?.getUserInfo() || {};
 
     const drawerSetting = ref();
 
@@ -168,6 +166,7 @@ export default defineComponent({
 
     const state = reactive({
       username: account ?? '',
+      photo,
       navMode,
       navTheme,
       headerSetting,
@@ -261,8 +260,8 @@ export default defineComponent({
         option.exec(route, router)
       } else if (option.type === 'router') {
         router.push(option.exec(route, router) as RouteLocationRaw)
-      } else if (option.type === 'dialog') {
-        dialog.create({...option.exec(route, router)})
+      } else if (['message', 'dialog', 'notification', 'modal'].includes(option.type)) {
+        window[`$${option.type}`].create({...option.exec(route, router)})
       }
     };
 

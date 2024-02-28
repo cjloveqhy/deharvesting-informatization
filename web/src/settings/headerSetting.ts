@@ -10,9 +10,13 @@ export const userMenu:UserMenuItem[] = [
   {
     label: '个人设置',
     key: 1,
-    type: 'router',
+    type: 'modal',
     exec: () => {
-      return {name: 'Setting'}
+      return {
+        preset: 'card',
+        show: true,
+        title: '个人设置',
+      }
     }
   },
   {

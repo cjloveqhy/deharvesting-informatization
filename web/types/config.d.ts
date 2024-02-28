@@ -1,8 +1,7 @@
 import {IconProps} from "naive-ui/es/icon/src/Icon";
 import {Ref} from "vue";
 import {RouteLocationRaw} from "vue-router";
-import {DialogOptions} from "naive-ui/es/dialog/src/DialogProvider";
-import {BadgeProps} from "naive-ui";
+import {BadgeProps, MessageOptions, DialogOptions, NotificationOptions, ModalOptions} from "naive-ui";
 
 export interface ProjectSettingState {
   //导航模式
@@ -61,8 +60,8 @@ export interface FuncButtonItem {
 export interface UserMenuItem {
   label: string
   key: string | number
-  type: 'function' | 'router' | 'dialog'
-  exec: (route, router:RouteLocationRaw) => void | RouteLocationRaw | DialogOptions
+  type: 'function' | 'router' | 'message' | 'dialog' | 'notification' | 'modal'
+  exec: (route, router:RouteLocationRaw) => void | RouteLocationRaw | MessageOptions | DialogOptions | NotificationOptions | ModalOptions
 }
 
 export interface IHeaderSetting {
