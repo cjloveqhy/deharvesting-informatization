@@ -71,17 +71,19 @@
         </template>
       </n-breadcrumb>
     </div>
-    <div class="layout-header-right">
-      <div
-        class="layout-header-trigger layout-header-trigger-min"
+    <n-flex :size="25" align="center" class="mr-5">
+      <n-flex
         v-for="(item, index) in headerSetting.funcButtons"
         :key="index"
+        class="cursor-pointer"
       >
         <n-tooltip placement="bottom">
           <template #trigger>
             <div @click="() => funcButtonState[index].value = !funcButtonState[index].value">
-              <n-icon v-if="funcButtonState[index].value" v-bind="item.beforeIcon" v-on="item.eventObject || {}" />
-              <n-icon v-else v-bind="item.afterIcon ? item.afterIcon : item.beforeIcon" v-on="item.eventObject || {}" />
+              <n-badge :dot="item.badge" v-bind="item.badge" :style="item.badge && item.badge.show ? null : {'--n-color': 'black'}">
+                <n-icon v-if="funcButtonState[index].value" v-bind="item.beforeIcon" v-on="item.eventObject || {}" />
+                <n-icon v-else v-bind="item.afterIcon ? item.afterIcon : item.beforeIcon" v-on="item.eventObject || {}" />
+              </n-badge>
             </div>
           </template>
           <template v-if="funcButtonState[index].value">
@@ -96,23 +98,23 @@
             </template>
           </template>
         </n-tooltip>
-      </div>
+      </n-flex>
       <!-- 个人中心 -->
-      <div class="layout-header-trigger layout-header-trigger-min">
+      <div>
         <n-dropdown trigger="hover" @select="avatarSelect" :options="headerSetting.userMenu">
-          <div class="avatar">
+          <n-flex align="center" class="h-16 cursor-pointer">
             <n-avatar round>
               {{ username }}
               <template #icon>
                 <UserOutlined />
               </template>
             </n-avatar>
-          </div>
+          </n-flex>
         </n-dropdown>
       </div>
       <!--设置-->
       <template v-if="headerSetting.isProjectSetting">
-        <div class="layout-header-trigger layout-header-trigger-min" @click="openSetting">
+        <n-flex class="cursor-pointer" align="center" @click="openSetting">
           <n-tooltip placement="bottom-end">
             <template #trigger>
               <n-icon size="18" style="font-weight: bold">
@@ -121,9 +123,9 @@
             </template>
             <span>项目配置</span>
           </n-tooltip>
-        </div>
+        </n-flex>
       </template>
-    </div>
+    </n-flex>
   </div>
   <!--项目配置-->
   <ProjectSetting v-if="headerSetting.isProjectSetting" ref="drawerSetting" />
@@ -330,22 +332,6 @@ export default defineComponent({
 
       &-menu {
         color: var(--text-color);
-      }
-    }
-
-    &-right {
-      display: flex;
-      align-items: center;
-      margin-right: 20px;
-
-      .avatar {
-        display: flex;
-        align-items: center;
-        height: 64px;
-      }
-
-      > * {
-        cursor: pointer;
       }
     }
 

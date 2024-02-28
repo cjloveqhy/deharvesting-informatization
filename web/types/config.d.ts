@@ -2,6 +2,7 @@ import {IconProps} from "naive-ui/es/icon/src/Icon";
 import {Ref} from "vue";
 import {RouteLocationRaw} from "vue-router";
 import {DialogOptions} from "naive-ui/es/dialog/src/DialogProvider";
+import {BadgeProps} from "naive-ui";
 
 export interface ProjectSettingState {
   //导航模式
@@ -45,10 +46,15 @@ export interface FuncIconListener {
   ev: (state: Ref<boolean>, e: Event) => any
 }
 
+type excludeBadgeKeys = 'dot' | 'max' | 'processing' | 'showZero' | 'value'
+export interface FuncBadge extends Omit<BadgeProps, excludeBadgeKeys> {
+}
+
 export interface FuncButtonItem {
   beforeIcon: FuncIcon
   afterIcon?: FuncIcon
   eventObject?: object
+  badge?: FuncBadge
   listener?: FuncIconListener[]
 }
 
