@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import {defineComponent} from 'vue'
 import {List, LayersSharp, LayersOutline} from '@vicons/ionicons5'
+import TypeLine from "@/components/LineType/LineType.vue";
+import LineType from "@/components/LineType/LineType.vue";
 
 const props = defineProps({
   settingType: {
@@ -9,21 +11,7 @@ const props = defineProps({
   }
 })
 
-const router = useRouter()
-let fromRouterAddressTitle = ref<string>("")
-fromRouterAddressTitle.value = props.settingType
-
-let fromRouterAddressTitleList = [
-  {
-    label: "无人机",
-    value: "settingUav"
-  },
-  {
-    label: "采棉机",
-    value: "settingCottonPicker"
-  }
-]
-
+// 无人机的评价设置
 let uavCheckBoxOptions = reactive([
   {
     label: "亩用量",
@@ -51,6 +39,7 @@ let uavCheckBoxOptions = reactive([
   }
 ])
 
+// 采棉机的评价设置
 let cottonPickerCheckBoxOptions = reactive([
   {
     label: "最大行驶速度",
@@ -61,7 +50,7 @@ let cottonPickerCheckBoxOptions = reactive([
 ])
 
 // 判断是从哪个页面跳转过来的
-let showCheckBoxOption = fromRouterAddressTitle.value == 'settingUav' ? uavCheckBoxOptions : cottonPickerCheckBoxOptions;
+let showCheckBoxOption = props.settingType == 'settingUav' ? uavCheckBoxOptions : cottonPickerCheckBoxOptions;
 
 let isSelectAll = ref<boolean>(false)
 
@@ -75,7 +64,6 @@ const selectAll = (value) => {
   } else {
     monitoredParameters = ref<Array<string>>([])
   }
-  console.log(monitoredParameters.value)
 }
 
 // 复选功能
@@ -86,38 +74,9 @@ const handleUpdateValue = (value)=> {
 
 </script>
 
-<style scoped lang="less">
-::v-deep .n-card.n-card--bordered {
-  height: 87vh;
-  margin: 0;
-}
-
-::v-deep .n-card > .n-card-header {
-  padding: 10px;
-  font-size: 14px;
-}
-</style>
-
 <template>
   <div style="display: flex">
-    <n-card style="margin-right: 10px; width: 15%"
-            :segmented="{content: true,footer: 'soft'}">
-      <template #header>
-        <n-icon color="#0175A8" :size="20">
-          <List></List>
-        </n-icon>
-        农机类型
-      </template>
-      <n-timeline :icon-size="20">
-        <n-timeline-item v-for="(item, index) in fromRouterAddressTitleList" :title="item.label" :key="index">
-          <template #icon>
-            <n-icon :color="fromRouterAddressTitle == item.value ? '#80D0F9' : ''">
-              <LayersSharp/>
-            </n-icon>
-          </template>
-        </n-timeline-item>
-      </n-timeline>
-    </n-card>
+    <LineType mark="setting" :type="settingType"></LineType>
     <n-card>
       <template #header>
         <n-card style="margin-right: 10px;"
@@ -169,3 +128,14 @@ const handleUpdateValue = (value)=> {
   </div>
 </template>
 
+<style scoped lang="less">
+::v-deep .n-card.n-card--bordered {
+  height: 87vh;
+  margin: 0;
+}
+
+::v-deep .n-card > .n-card-header {
+  padding: 10px;
+  font-size: 14px;
+}
+</style>
