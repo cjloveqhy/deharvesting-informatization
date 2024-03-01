@@ -14,10 +14,10 @@ public enum SexEnum {
 
     @Getter
     @EnumValue
+    @JsonValue
     private final String code;
 
     @Getter
-    @JsonValue
     private final String description;
 
     SexEnum(String code, String description) {

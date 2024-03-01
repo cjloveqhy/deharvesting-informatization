@@ -31,7 +31,7 @@ public class User extends Model<User> {
     /**
      * 用户姓名
      */
-    @TableField("username")
+    @TableField(value = "username", updateStrategy = FieldStrategy.IGNORED)
     private String username;
 
     /**
@@ -43,13 +43,13 @@ public class User extends Model<User> {
     /**
      * 手机号
      */
-    @TableField("phone")
+    @TableField(value = "phone", updateStrategy = FieldStrategy.IGNORED)
     private String phone;
 
     /**
      * 邮箱
      */
-    @TableField("email")
+    @TableField(value = "email", updateStrategy = FieldStrategy.IGNORED)
     private String email;
 
     /**

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BasicForm from "@/views/login/basicForm.vue";
+import BasicForm from "@/views/login/details/basicForm.vue";
 
 </script>
 

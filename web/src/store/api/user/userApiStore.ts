@@ -1,4 +1,4 @@
-import {PasswordLoginForm, RegisterForm, SexEnum, UserAutoInfo} from "@/store/api/user/types";
+import {PasswordLoginForm, RegisterForm, SexEnum, UserAutoInfo, UserInfo} from "@/store/api/user/types";
 import {storage} from "@/utils/Storage";
 import {ACCESS_TOKEN, CURRENT_USER, IS_SCREENLOCKED} from "@/store/mutation-types";
 import { login as userLogin, logout as userLogout, register as userRegister } from '@/api/system/login'
@@ -39,9 +39,18 @@ export const useUserApiStore = defineStore(
         photo: null,
         sex: SexEnum.Unknown,
         account: null,
-        mobile: null,
+        phone: null,
         email: null,
+        createTime: null,
       }
+    }
+
+    /**
+     * 刷新用户信息
+     */
+    function refreshUserInfo(info: UserInfo) {
+      storage.set(CURRENT_USER, info, 7 * 24 * 60 * 60)
+      userAutoInfo.value.info = info
     }
 
     /**
@@ -55,8 +64,7 @@ export const useUserApiStore = defineStore(
         storage.set(ACCESS_TOKEN, data.token, ex);
         storage.set(CURRENT_USER, data.info, ex);
         storage.set(IS_SCREENLOCKED, false);
-        userAutoInfo.value.token = storage.get(ACCESS_TOKEN)
-        userAutoInfo.value.info = data
+        userAutoInfo.value = data
       }
       return response;
     }
@@ -94,6 +102,7 @@ export const useUserApiStore = defineStore(
 
     return {
       userAutoInfo,
+      refreshUserInfo,
       getToken,
       getPermissions,
       getUserInfo,

@@ -6,7 +6,8 @@ import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
 import { PageEnum } from '@/enums/pageEnum';
 import { websiteConfig } from '@/config/website.config';
 import {useGlobSetting} from "@/hooks/setting";
-import BasicForm from "@/views/login/basicForm.vue";
+import BasicForm from "@/views/login/details/basicForm.vue";
+import {api} from "@/api/system/login";
 
 const formRef = ref();
 const message = useMessage();
@@ -14,10 +15,10 @@ const loading = ref(false);
 const autoLogin = ref(true);
 const LOGIN_NAME = PageEnum.BASE_LOGIN_NAME;
 const globSetting = useGlobSetting();
-const verifyCodeUrl = ref<string>(globSetting.apiUrl + globSetting.urlPrefix + '/user/getLoginVerifyImg')
+const verifyCodeUrl = ref<string>(globSetting.apiUrl + globSetting.urlPrefix + api.getLoginVerifyImg)
 
 const formInline = reactive({
-  account: 'test',
+  account: 'admin',
   password: '123456',
   code: '',
   isCaptcha: true,
