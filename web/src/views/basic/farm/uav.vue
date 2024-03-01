@@ -84,10 +84,10 @@ let farmData = ref([
         <n-form
           ref="formRef"
           inline
-          :label-width="100"
           :model="formValue"
           :size="size"
           label-placement="left"
+          label-align="left"
         >
           <n-form-item label="机架号:" path="user.orderId">
             <n-input v-model:value="formValue.user.orderId"/>
