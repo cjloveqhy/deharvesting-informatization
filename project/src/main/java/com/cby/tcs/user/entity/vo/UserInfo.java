@@ -2,6 +2,8 @@ package com.cby.tcs.user.entity.vo;
 
 import com.cby.tcs.user.entity.enums.SexEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,8 +38,9 @@ public class UserInfo implements Serializable {
     private SexEnum sex;
 
     /**
-     * 用户名
+     * 账户名
      */
+    @NotBlank(message = "账户名不可设置为空")
     private String account;
 
     /**
@@ -54,6 +57,7 @@ public class UserInfo implements Serializable {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "GMT+8")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createTime;
 
 }

@@ -4,6 +4,8 @@ import {FuncButtonItem, UserMenuItem} from "/#/config";
 import {FullscreenExitOutlined, FullscreenOutlined, LockOutlined} from "@vicons/antd";
 import {NotificationsOutline} from "@vicons/ionicons5";
 import {useScreenLockStore} from "@/store/modules/screenLock";
+import UserInfo from '@/components/UserInfo/UserInfo.vue'
+
 // 用户菜单
 export const userMenu:UserMenuItem[] = [
   {
@@ -12,10 +14,12 @@ export const userMenu:UserMenuItem[] = [
     type: 'modal',
     exec: () => {
       return {
-        preset: 'card',
         show: true,
+        preset: 'dialog',
         title: '个人设置',
-        className: 'n-card n-modal userSetting'
+        className: 'n-dialog n-dialog--closable n-dialog--icon-left n-modal userSetting',
+        content: () => h(UserInfo),
+        showIcon: false
       }
     }
   },

@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.cby.tcs.user.entity.fo.LoginFo;
 import com.cby.tcs.user.entity.fo.RegisterUserFo;
 import com.cby.tcs.user.entity.vo.UserAutoInfo;
+import com.cby.tcs.user.entity.vo.UserInfo;
 import com.cby.tcs.user.entity.vo.ValidAccountVo;
 import com.cby.tcs.user.service.UserService;
 import com.freedom.cloud.result.ResultEntity;
@@ -49,10 +50,28 @@ public class LoginController {
   /**
    * 验证账户名是否存在
    */
-  @GetMapping("validAccount")
+  @GetMapping("/validAccount")
   public ResultEntity validAccount(@RequestParam String account) {
     ValidAccountVo vo = userService.validAccount(account);
     return ResultEntity.success(vo);
+  }
+
+  /**
+   * 获取用户信息
+   */
+  @GetMapping("/getUserInfo")
+  public ResultEntity getUserInfo() {
+    UserInfo userInfo = userService.getUserInfoById(StpUtil.getLoginIdAsString());
+    return ResultEntity.success(userInfo);
+  }
+
+  /**
+   * 更新用户信息
+   */
+  @PutMapping("/updateUserInfo")
+  public ResultEntity updateUserInfo(@RequestBody @Validated UserInfo userInfo) {
+    userService.updateUserInfo(userInfo);
+    return ResultEntity.success("更新成功");
   }
 
   /**

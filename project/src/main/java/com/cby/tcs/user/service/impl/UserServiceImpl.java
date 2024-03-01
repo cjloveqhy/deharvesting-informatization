@@ -109,6 +109,19 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     return accountVo;
   }
 
+  @Override
+  public UserInfo getUserInfoById(String loginId) {
+    User user = getById(loginId);
+    return BeanUtil.copyProperties(user, UserInfo.class);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public void updateUserInfo(UserInfo userInfo) {
+    User user = BeanUtil.copyProperties(userInfo, User.class, "createTime");
+    updateById(user);
+  }
+
   /**
    * 获取验证码
    */

@@ -22,8 +22,9 @@ export interface UserInfo {
   photo: string | null
   sex: SexEnum
   account: string | null
-  mobile: string | null
+  phone: string | null
   email: string | null
+  createTime: Date | null
 }
 
 export interface UserAutoInfo {

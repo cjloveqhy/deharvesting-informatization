@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BasicForm from "@/views/login/basicForm.vue";
+import BasicForm from "@/views/login/details/basicForm.vue";
 import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
 import {RegisterForm, useUserApiStore} from "@/store/api/user";
 import {ResultEnum} from "@/enums/httpEnum";

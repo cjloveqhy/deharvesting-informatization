@@ -54,4 +54,17 @@ public interface UserService extends IService<User> {
      * @return {@link ValidAccountVo}
      */
     ValidAccountVo validAccount(String account);
+
+    /**
+     * 获取用户信息
+     * @param loginId 当前登录着id编号
+     * @return {@link UserInfo}
+     */
+    UserInfo getUserInfoById(String loginId);
+
+    /**
+     * 更新用户信息
+     * @param userInfo {@link UserInfo}
+     */
+    void updateUserInfo(UserInfo userInfo);
 }
