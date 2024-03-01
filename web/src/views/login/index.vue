@@ -112,17 +112,16 @@ const handleSubmit = (e) => {
           </template>
         </n-input>
       </n-form-item>
-      <n-flex :wrap="false">
-        <img :style="{height: '45px'}" @click="changeCode" :src="verifyCodeUrl">
-        <n-form-item path="code">
-
+      <n-form-item path="code">
+        <n-flex :wrap="false">
           <n-input
             v-model:value="formInline.code"
             type="text"
             placeholder="请输入验证码"
           />
-        </n-form-item>
-      </n-flex>
+          <img :style="{height: '45px'}" @click="changeCode" :src="verifyCodeUrl">
+        </n-flex>
+      </n-form-item>
       <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
         登录
       </n-button>
