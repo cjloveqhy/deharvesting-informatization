@@ -4,6 +4,7 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 
 import { configHtmlPlugin } from './html';
@@ -18,7 +19,7 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean, prodMock) 
     vue(),
     // have to
     vueJsx(),
-
+    Unocss(),
     AutoImport({
       imports: [
         'vue',

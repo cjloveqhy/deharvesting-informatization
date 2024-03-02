@@ -11,5 +11,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, HarvestSchedule> implements HarvestScheduleService {
 
-  private final HarvestScheduleDao harvest_scheduleDao;
+  private final HarvestScheduleDao harvestScheduleDao;
 }

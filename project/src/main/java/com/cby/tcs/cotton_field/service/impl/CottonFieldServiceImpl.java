@@ -11,5 +11,5 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CottonFieldServiceImpl extends ServiceImpl<CottonFieldDao, CottonField> implements CottonFieldService {
 
-  private final CottonFieldDao cotton_fieldDao;
+  private final CottonFieldDao cottonFieldDao;
 }

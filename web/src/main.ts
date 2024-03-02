@@ -1,4 +1,5 @@
-import './styles/tailwind.css';
+import '@unocss/reset/normalize.css'
+import 'uno.css'
 import { createApp } from 'vue';
 import { setupNaiveDiscreteApi, setupNaive, setupDirectives } from '@/plugins';
 import App from './App.vue';
@@ -32,11 +33,6 @@ async function bootstrap() {
   // 路由准备就绪后挂载 APP 实例
   // https://router.vuejs.org/api/interfaces/router.html#isready
   await router.isReady();
-
-  // https://www.naiveui.com/en-US/os-theme/docs/style-conflict#About-Tailwind's-Preflight-Style-Override
-  const meta = document.createElement('meta');
-  meta.name = 'naive-ui-style';
-  document.head.appendChild(meta);
 
   app.mount('#app', true);
 }
