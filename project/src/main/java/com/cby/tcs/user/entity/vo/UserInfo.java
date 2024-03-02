@@ -2,7 +2,6 @@ package com.cby.tcs.user.entity.vo;
 
 import com.cby.tcs.user.entity.enums.SexEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,7 +56,6 @@ public class UserInfo implements Serializable {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "GMT+8")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createTime;
 
 }
