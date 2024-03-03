@@ -8,7 +8,7 @@ const details = import.meta.glob<IModuleType>('./details/**/*.ts', { eager: true
 const modules = import.meta.glob<IModuleType>('./modules/**/*.ts', { eager: true });
 
 // 组装路由
-function assembleRoute(routes: Record<string, IModuleType>): RouteRecordRaw[] {
+export function assembleRoute(routes: Record<string, IModuleType>): RouteRecordRaw[] {
   return Object.keys(routes).reduce((list, key) => {
     const mod = routes[key].default ?? {};
     const modList = Array.isArray(mod) ? [...mod] : [mod];
@@ -18,7 +18,7 @@ function assembleRoute(routes: Record<string, IModuleType>): RouteRecordRaw[] {
 
 const routeDetailList = assembleRoute(details)
 
-const routeModuleList = assembleRoute(modules)
+export const routeModuleList = assembleRoute(modules)
 
 function sortRoute(a, b) {
   return (a.meta?.sort ?? 0) - (b.meta?.sort ?? 0);

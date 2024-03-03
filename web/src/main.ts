@@ -5,6 +5,7 @@ import { setupNaiveDiscreteApi, setupNaive, setupDirectives } from '@/plugins';
 import App from './App.vue';
 import router, { setupRouter } from './router';
 import { setupStore } from '@/store';
+import { setupPushMenu } from "@/router/generatorMenu";
 
 async function bootstrap() {
   const app = createApp(App);
@@ -33,6 +34,9 @@ async function bootstrap() {
   // 路由准备就绪后挂载 APP 实例
   // https://router.vuejs.org/api/interfaces/router.html#isready
   await router.isReady();
+
+  // 挂载菜单同步，仅在菜单权限模式为 FIXED 才会生效
+  // setupPushMenu()
 
   app.mount('#app', true);
 }

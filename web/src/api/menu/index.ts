@@ -1,5 +1,6 @@
 import { http } from '@/utils/http/axios';
 import {RequestEnum} from "@/enums/httpEnum";
+import {RouteRecord} from "@/router/types";
 
 const getUri = (uri: string) => {
   return `/menu${uri}`
@@ -7,6 +8,7 @@ const getUri = (uri: string) => {
 
 export const api = {
   menus: getUri('/'),
+  update: getUri('/update'),
 }
 
 /**
@@ -16,5 +18,19 @@ export function userMenus() {
   return http.request({
     url: api.menus,
     method: RequestEnum.GET,
+  }, {
+    isReturnNativeResponse: false,
+    isTransformResponse: true
+  });
+}
+
+/**
+ * @description 更新菜单
+ */
+export function updateMenus(data: RouteRecord[]) {
+  return http.request({
+    url: api.update,
+    method: RequestEnum.PUT,
+    data: data
   });
 }
