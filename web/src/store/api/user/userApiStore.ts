@@ -65,6 +65,10 @@ export const useUserApiStore = defineStore(
         storage.set(CURRENT_USER, data.info, ex);
         storage.set(IS_SCREENLOCKED, false);
         userAutoInfo.value = data
+        const result = await obtainUserPermissions()
+        if (result && result.length) {
+          userAutoInfo.value.permissions = result
+        }
       }
       return response;
     }
@@ -80,12 +84,8 @@ export const useUserApiStore = defineStore(
     /**
      * @description: 获取用户的权限值
      */
-    async function getUserPermissions() {
-      const result = await obtainUserPermissions()
-      if (result && result.length) {
-        userAutoInfo.value.permissions = result
-      }
-      return result;
+    function getUserPermissions() {
+      return userAutoInfo.value.permissions;
     }
 
     /**

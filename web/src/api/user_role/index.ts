@@ -20,5 +20,8 @@ export function getUserPermissions() {
   return http.request({
     url: api.rolePermissions,
     method: RequestEnum.GET,
+  }, {
+    isReturnNativeResponse: false,
+    isTransformResponse: true
   });
 }
