@@ -19,7 +19,7 @@ public interface PermissionService extends IService<Permission> {
     List<PermissionTree> getTree();
 
     /**
-     * 获取指定服务标识的所有权限
+     * 获取所有权限
      * @return {@link List}<{@link Permission}>
      */
     List<Permission> getList();

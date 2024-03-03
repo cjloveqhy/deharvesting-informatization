@@ -14,4 +14,10 @@ public interface MenuService {
      * @return {@link List}<{@link RouteRecord}>
      */
     List<RouteRecord> getMenu(String userId);
+
+    /**
+     * 同步更新菜单
+     * @param router {@link List}<{@link RouteRecord}>
+     */
+    void updateMenu(List<RouteRecord> router);
 }

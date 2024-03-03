@@ -92,7 +92,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.freedom.cloud.CoreApplication</mainClass>
+                            <mainClass>com.cby.tcs.CoreApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
