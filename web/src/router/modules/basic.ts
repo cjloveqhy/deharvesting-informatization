@@ -1,7 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { DashboardOutlined } from '@vicons/antd';
-import { renderIcon } from '@/utils';
+import {constantRouterIcon} from "@/router/icons";
 
 const routeName = 'basic';
 
@@ -23,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '基础管理',
-      icon: renderIcon(DashboardOutlined),
+      icon: constantRouterIcon.DashboardOutlined,
       sort: 3,
     },
     children: [

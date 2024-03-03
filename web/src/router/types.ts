@@ -57,3 +57,36 @@ export interface Menu {
 export interface IModuleType {
   default: Array<RouteRecordRaw> | RouteRecordRaw;
 }
+
+export interface RouterIconItem<K> {
+  icon: Component
+  name: K
+}
+
+export type RouterIcon = {
+  [K in string]: RouterIconItem<K>
+}
+
+export interface RouteMeta {
+  title: string
+  disabled?: boolean
+  icon?: string
+  keepAlive?: boolean
+  hidden?: boolean
+  sort?: number
+  alwaysShow?: boolean
+  activeMenu?: string
+  isRoot?: boolean
+  frameSrc?: string
+  permissions?: string[]
+  affix?: boolean
+}
+
+export interface RouteRecord {
+  path: string
+  name: string
+  component: string
+  redirect?: string
+  meta: RouteMeta
+  children?: RouteRecord[]
+}

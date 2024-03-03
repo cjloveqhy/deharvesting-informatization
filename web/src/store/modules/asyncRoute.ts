@@ -3,6 +3,7 @@ import { store } from '@/store';
 import { asyncRoutes, constantRouter } from '@/router';
 import { generateDynamicRoutes } from '@/router/generator';
 import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
+import {deepCopy} from "@/utils/copyUtil";
 
 interface TreeHelperConfig {
   id: string;
@@ -39,6 +40,7 @@ function filter<T = any>(
       .map((node: any) => ({ ...node }))
       .filter((node) => {
         node[children] = node[children] && listFilter(node[children]);
+        if ('icon' in node.meta) node.meta.icon = node.meta.icon.icon
         return func(node) || (node[children] && node[children].length);
       });
   }
@@ -104,7 +106,7 @@ export const useAsyncRouteStore = defineStore({
       } else {
         try {
           //过滤账户是否拥有某一个权限，并将菜单从加载列表移除
-          accessedRouters = filter(asyncRoutes, routeFilter);
+          accessedRouters = filter(deepCopy(asyncRoutes) as RouteRecordRaw[], routeFilter);
         } catch (error) {
           console.log(error);
         }
