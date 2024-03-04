@@ -44,7 +44,7 @@ public class LoginController {
   @GetMapping("/logout")
   public ResultEntity logout() {
     StpUtil.logout(StpUtil.getLoginId());
-    return ResultEntity.success("推出成功");
+    return ResultEntity.success("退出成功");
   }
 
   /**
