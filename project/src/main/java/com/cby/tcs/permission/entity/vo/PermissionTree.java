@@ -1,5 +1,6 @@
 package com.cby.tcs.permission.entity.vo;
 
+import com.cby.tcs.menu.entity.RouteMeta;
 import com.freedom.cloud.enums.LogicalEnum;
 import com.freedom.cloud.enums.MenuType;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Builder
@@ -38,11 +38,6 @@ public class PermissionTree implements Serializable {
     private MenuType type;
 
     /**
-     * 权限值
-     */
-    private String permissionValue;
-
-    /**
      * 访问路径
      */
     private String path;
@@ -53,11 +48,6 @@ public class PermissionTree implements Serializable {
     private String component;
 
     /**
-     * 图标
-     */
-    private String icon;
-
-    /**
      * 状态（N：禁止，Y：正常）
      */
     private LogicalEnum status;
@@ -65,12 +55,7 @@ public class PermissionTree implements Serializable {
     /**
      * 元数据
      */
-    private Map<String, Object> meta;
-
-    /**
-     * 排列顺序
-     */
-    private Integer sortNum;
+    private RouteMeta meta;
 
     /**
      * 子菜单
