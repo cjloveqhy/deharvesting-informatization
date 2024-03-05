@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: '平台首页',
       icon: constantRouterIcon.DashboardOutlined,
-      sort: 0,
+      sort: 1,
     },
     children: [
       {
