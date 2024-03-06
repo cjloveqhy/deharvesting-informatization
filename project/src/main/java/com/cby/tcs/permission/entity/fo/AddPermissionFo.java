@@ -1,8 +1,7 @@
 package com.cby.tcs.permission.entity.fo;
 
-import com.freedom.cloud.enums.LogicalEnum;
+import com.cby.tcs.menu.entity.RouteMeta;
 import com.freedom.cloud.enums.MenuType;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.Map;
 
 @Data
 @Builder
@@ -41,11 +39,6 @@ public class AddPermissionFo implements Serializable {
     private MenuType type;
 
     /**
-     * 权限值
-     */
-    private String permissionValue;
-
-    /**
      * 访问路径
      */
     private String path;
@@ -56,24 +49,8 @@ public class AddPermissionFo implements Serializable {
     private String component;
 
     /**
-     * 图标
-     */
-    private String icon;
-
-    /**
-     * 状态（N：禁止，Y：正常）
-     */
-    private LogicalEnum status;
-
-    /**
      * 元数据
      */
-    private Map<String, Object> meta;
+    private RouteMeta meta;
 
-    /**
-     * 排列顺序
-     */
-    @NotNull(message = "请设置排列顺序")
-    @Min(value = 1L, message = "最小排序编号为1，不可小于1")
-    private Integer sortNum;
 }

@@ -1,6 +1,6 @@
 package com.cby.tcs.user.entity.vo;
 
-import com.cby.tcs.deserialize.Ignore;
+import com.cby.tcs.ignore.DeserializerIgnore;
 import com.cby.tcs.user.entity.enums.SexEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -58,7 +58,7 @@ public class UserInfo implements Serializable {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "GMT+8")
-    @JsonDeserialize(using = Ignore.class)
+    @JsonDeserialize(using = DeserializerIgnore.class)
     private LocalDateTime createTime;
 
 }

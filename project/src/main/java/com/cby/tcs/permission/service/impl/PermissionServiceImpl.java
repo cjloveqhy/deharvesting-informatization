@@ -1,7 +1,6 @@
 package com.cby.tcs.permission.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -14,7 +13,6 @@ import com.cby.tcs.permission.entity.po.Permission;
 import com.cby.tcs.permission.entity.vo.PermissionTree;
 import com.cby.tcs.permission.service.PermissionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freedom.cloud.enums.MenuType;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +32,46 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
   @Override
   public List<PermissionTree> getTree() {
     List<Permission> permissions = getList();
-    ArrayList<PermissionTree> list = new ArrayList<>();
-    PermissionTree tree = new PermissionTree();
-    assembleTree(permissions, tree);
-    list.add(tree);
+    Permission root = getAndDelServiceNode(permissions);
+    if (Objects.isNull(root)) return Collections.emptyList();
+    List<PermissionTree> firstNode = getFirstNode(permissions, root);
+    for (PermissionTree record : firstNode) {
+      children(permissions, record);
+    }
+    PermissionTree rootNode = BeanUtil.copyProperties(root, PermissionTree.class, "meta");
+    rootNode.setChildren(firstNode);
+    rootNode.setMeta(stringToMeta(root.getMeta()));
+    List<PermissionTree> list = new ArrayList<>();
+    list.add(rootNode);
     return list;
+  }
+
+  @Override
+  public Permission getAndDelServiceNode(List<Permission> permissions) {
+    Permission permission = new Permission();
+    for (Permission item : permissions) {
+      if (item.getType().equals(MenuType.Service)) {
+        BeanUtil.copyProperties(item, permission);
+        permissions.remove(item);
+        break;
+      }
+    }
+    return permission;
+  }
+
+  public List<PermissionTree> getFirstNode(List<Permission> permissions, Permission root) {
+    List<PermissionTree> records = new ArrayList<>();
+    for (int i = 0; i < permissions.size(); i++) {
+      Permission permission = permissions.get(i);
+      if (permission.getParentId().equals(root.getId())) {
+        records.add(BeanUtil.copyProperties(permission, PermissionTree.class, "meta")
+                .setMeta(stringToMeta(permission.getMeta())));
+        permissions.remove(permission);
+        --i;
+      }
+    }
+    records.sort(Comparator.comparing(item -> item.getMeta().getSort()));
+    return records;
   }
 
   /**
@@ -47,49 +80,28 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
    * @param tree 根节点
    * @return {@link PermissionTree} 生成完整的权限树
    */
-  public void assembleTree(List<Permission> permissions, PermissionTree tree) {
-    // 设置根节点
-    if (Objects.isNull(tree.getId())) {
-      List<Permission> rootPermission = permissions
-              .stream()
-              .filter(item -> item.getType().equals(MenuType.Root))
-              .toList();
-      if (rootPermission.isEmpty()) throw new PermissionException("未找到根权限，请进行添加");
-      if (rootPermission.size() > 1) throw new PermissionException("检测到该权限系统拥有两个根权限，请删除其中一个");
-      BeanUtil.copyProperties(rootPermission.get(0), tree, "meta");
-      if (!StrUtil.hasBlank(rootPermission.get(0).getMeta())) {
-        // meta转成对象
-        tree.setMeta(metaToMap(rootPermission.get(0).getMeta()));
-      }
-      permissions.remove(rootPermission.get(0));
-    }
-    // 通过递归方式设置子节点
-    for (int i = 0; i < permissions.size(); i++) {
-      if (permissions.isEmpty()) return;
-      Permission permission = permissions.get(i);
-      if (tree.getId().equals(permission.getParentId())) {
-        PermissionTree childNode = BeanUtil.copyProperties(permission, PermissionTree.class, "meta");
-        if (!StrUtil.hasBlank(permission.getMeta())) {
-          // meta转成对象
-          childNode.setMeta(metaToMap(permission.getMeta()));
+  public void children(List<Permission> permissions, PermissionTree tree) {
+    for (Permission permission : permissions) {
+      if (permission.getParentId().equals(tree.getId())) {
+        PermissionTree permissionTree = BeanUtil.copyProperties(permission, PermissionTree.class, "meta")
+                .setMeta(stringToMeta(permission.getMeta()));
+        tree.getChildren().add(permissionTree);
+        children(permissions, permissionTree);
+        if (!tree.getChildren().isEmpty()) {
+          List<PermissionTree> notSortRouters = tree.getChildren().stream().filter(item -> Objects.isNull(item.getMeta().getSort())).toList();
+          List<PermissionTree> sortRouters = new LinkedList<>(tree.getChildren()
+                  .stream()
+                  .filter(item -> Objects.nonNull(item.getMeta().getSort()))
+                  .toList());
+          if (!sortRouters.isEmpty()) {
+            sortRouters.sort(Comparator.comparing(item -> item.getMeta().getSort()));
+          }
+          if (!notSortRouters.isEmpty()) {
+            sortRouters.addAll(notSortRouters);
+          }
+          tree.setChildren(sortRouters);
         }
-        permissions.remove(i);
-        tree.getChildren().add(childNode);
-        if (childNode.getType().equals(MenuType.Menu)) {
-          assembleTree(permissions, childNode);
-        }
-        i--;
       }
-    }
-    // 正序排序
-    tree.getChildren().sort(Comparator.comparing(PermissionTree::getSortNum));
-  }
-
-  public Map<String, Object> metaToMap(String meta) {
-    try {
-      return objectMapper.readValue(meta, new TypeReference<>() {});
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException("转换失败，字符串设置异常，请检查");
     }
   }
 
@@ -129,12 +141,19 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void addPermission(AddPermissionFo entity) {
-    Permission permission = new Permission();
     LambdaQueryWrapper<Permission> wrapper = new LambdaQueryWrapper<>();
     wrapper.eq(Permission::getParentId, entity.getParentId())
             .eq(Permission::getName, entity.getName());
     if (Objects.nonNull(getOne(wrapper))) throw new PermissionException("权限名称【%s】已存在，不可重复创建");
-    BeanUtil.copyProperties(entity, permission, "meta");
+    Permission permission = BeanUtil.copyProperties(entity, Permission.class, "meta");
+    Permission oldSortPermission = getOneBySort(entity.getParentId(), entity.getMeta().getSort());
+    if (Objects.nonNull(oldSortPermission)) {
+      wrapper.clear();
+      wrapper.eq(Permission::getParentId, entity.getParentId());
+      Integer newPermissionSort = Math.toIntExact(count(wrapper) + 1);
+      oldSortPermission.setMeta(metaToString(stringToMeta(oldSortPermission.getMeta()).setSort(newPermissionSort)));
+      updateById(oldSortPermission);
+    }
     if (Objects.nonNull(entity.getMeta())) {
       permission.setMeta(metaToString(entity.getMeta()));
     }
@@ -144,13 +163,25 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
   @Override
   @Transactional(rollbackFor = Exception.class)
   public void updatePermission(UpdatePermissionFo entity) {
-    Permission permission = new Permission();
-    if (Objects.isNull(getById(entity.getId()))) throw new PermissionException("该权限记录不存在");
-    BeanUtil.copyProperties(entity, permission, "meta");
+    Permission oldPermission = getById(entity.getId());
+    if (Objects.isNull(oldPermission)) throw new PermissionException("该菜单记录不存在");
+    Permission permission = BeanUtil.copyProperties(entity, Permission.class, "meta");
+    RouteMeta oldMeta = stringToMeta(oldPermission.getMeta());
+    if (!oldMeta.getSort().equals(entity.getMeta().getSort())) {
+      Permission oldSortPermission = getOneBySort(entity.getParentId(), entity.getMeta().getSort());
+      oldSortPermission.setMeta(metaToString(stringToMeta(oldSortPermission.getMeta()).setSort(oldMeta.getSort())));
+      updateById(oldSortPermission);
+    }
     if (Objects.nonNull(entity.getMeta())) {
       permission.setMeta(metaToString(entity.getMeta()));
     }
     updateById(permission);
+  }
+
+  public Permission getOneBySort(String parentId, Integer sort) {
+    LambdaQueryWrapper<Permission> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(Permission::getParentId, parentId).like(Permission::getMeta, String.format("\"sort\":%s", sort));
+    return getOne(wrapper);
   }
 
   @Override
@@ -168,23 +199,23 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
     wrapper.in(Permission::getId, ids);
     List<Permission> list = list(wrapper);
     for (Permission permission : list) {
-      try {
-        RouteMeta meta = objectMapper.readValue(permission.getMeta(), RouteMeta.class);
-        if (!meta.getPermissions().isEmpty()) {
-          permissions.addAll(meta.getPermissions());
-        }
-      } catch (JsonProcessingException e) {
-        throw new RuntimeException(e);
+      RouteMeta meta = stringToMeta(permission.getMeta());
+      if (!meta.getPermissions().isEmpty()) {
+        permissions.addAll(meta.getPermissions());
       }
     }
     return permissions.stream().distinct().toList();
   }
 
-  public String metaToString(RouteMeta meta) {
-    return metaToString(BeanUtil.beanToMap(meta));
+  public RouteMeta stringToMeta(String meta) {
+    try {
+      return objectMapper.readValue(meta, RouteMeta.class);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
   }
 
-  public String metaToString(Map<String, Object> meta) {
+  public String metaToString(RouteMeta meta) {
     try {
       return objectMapper.writeValueAsString(meta);
     } catch (JsonProcessingException e) {

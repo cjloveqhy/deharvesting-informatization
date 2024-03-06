@@ -2,7 +2,6 @@ package com.cby.tcs.permission.entity.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.freedom.cloud.enums.LogicalEnum;
 import com.freedom.cloud.enums.MenuType;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -52,12 +51,6 @@ public class Permission extends Model<Permission> {
      */
     @TableField(value = "component", updateStrategy = FieldStrategy.IGNORED)
     private String component;
-
-    /**
-     * 状态（N：禁止，Y：正常）
-     */
-    @TableField("status")
-    private LogicalEnum status;
 
     /**
      * 元数据

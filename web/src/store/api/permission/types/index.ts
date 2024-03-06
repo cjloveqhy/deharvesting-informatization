@@ -1,4 +1,3 @@
-import {LogicalEnum} from "@/enums/LogicalEnum";
 import {RouteMeta} from "@/router/types";
 
 export enum MenuType {
@@ -10,13 +9,18 @@ export enum MenuType {
 }
 
 export interface PermissionTree {
-  id: string
-  parentId: string
-  name: string
-  type: MenuType
-  path: string
-  component: string
-  status: LogicalEnum
+  id: string | null
+  parentId: string | null
+  name: string | null
+  type: MenuType | null
+  path: string | null
+  component: string | null
   meta: RouteMeta
   children: PermissionTree[]
+}
+
+export interface UpdatePermissionFo extends Omit<PermissionTree, 'children'> {
+}
+
+export interface AddPermissionFo extends Omit<UpdatePermissionFo, 'id'> {
 }

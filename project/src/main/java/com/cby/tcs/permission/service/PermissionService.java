@@ -19,6 +19,13 @@ public interface PermissionService extends IService<Permission> {
     List<PermissionTree> getTree();
 
     /**
+     * 获取并删除服务节点
+     * @param permissions 菜单权限
+     * @return {@link Permission}服务系欸但
+     */
+    Permission getAndDelServiceNode(List<Permission> permissions);
+
+    /**
      * 获取所有权限
      * @return {@link List}<{@link Permission}>
      */

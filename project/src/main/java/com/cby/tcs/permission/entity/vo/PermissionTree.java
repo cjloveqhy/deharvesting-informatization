@@ -1,7 +1,6 @@
 package com.cby.tcs.permission.entity.vo;
 
 import com.cby.tcs.menu.entity.RouteMeta;
-import com.freedom.cloud.enums.LogicalEnum;
 import com.freedom.cloud.enums.MenuType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,11 +45,6 @@ public class PermissionTree implements Serializable {
      * 组件路径
      */
     private String component;
-
-    /**
-     * 状态（N：禁止，Y：正常）
-     */
-    private LogicalEnum status;
 
     /**
      * 元数据

@@ -1,5 +1,6 @@
 import type { RouteRecordRaw, RouteMeta } from 'vue-router';
 import { defineComponent } from 'vue';
+import {MenuType} from "@/store/api/permission/types";
 
 export type Component<T = any> =
   | ReturnType<typeof defineComponent>
@@ -58,6 +59,10 @@ export interface IModuleType {
   default: Array<RouteRecordRaw> | RouteRecordRaw;
 }
 
+export interface IPageModuleType {
+  default: PageRole;
+}
+
 export interface RouterIconItem<K> {
   icon: Component
   name: K
@@ -68,14 +73,13 @@ export type RouterIcon = {
 }
 
 export interface RouteMeta {
-  title: string
+  title: string | null
   disabled?: boolean
   icon?: string
   keepAlive?: boolean
   hidden?: boolean
   sort?: number
   alwaysShow?: boolean
-  activeMenu?: string
   isRoot?: boolean
   frameSrc?: string
   permissions?: string[]
@@ -83,10 +87,24 @@ export interface RouteMeta {
 }
 
 export interface RouteRecord {
-  path: string
+  path?: string
   name: string
-  component: string
+  component?: string
   redirect?: string
   meta: RouteMeta
   children?: RouteRecord[]
+}
+
+export interface PageRoleAtom {
+  name: string
+  meta: {
+    title: string
+    type: MenuType
+    sort?: number
+    permissions?: string[]
+  }
+}
+
+export interface PageRole {
+  [key: string]: PageRoleAtom[]
 }

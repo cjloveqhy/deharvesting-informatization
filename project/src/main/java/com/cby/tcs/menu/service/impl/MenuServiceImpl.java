@@ -1,6 +1,5 @@
 package com.cby.tcs.menu.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -48,7 +47,7 @@ public class MenuServiceImpl implements MenuService {
             }
         }
         List<Permission> permissions = permissionService.getList();
-        Permission root = getServiceRoot(permissions);
+        Permission root = permissionService.getAndDelServiceNode(permissions);
         if (Objects.isNull(root)) {
             return Collections.emptyList();
         }
@@ -78,12 +77,11 @@ public class MenuServiceImpl implements MenuService {
         List<Permission> permissions = new ArrayList<>();
         Permission serviceRoot = permissionService.getServiceRoot();
         LambdaUpdateWrapper<Permission> wrapper = new LambdaUpdateWrapper<>();
-        wrapper.eq(Permission::getParentId, serviceRoot.getId())
-                .eq(Permission::getType, MenuType.Menu);
+        wrapper.ne(Permission::getType, MenuType.Service);
         permissionService.remove(wrapper);
         for (RouteRecord route : router) {
             try {
-                routerFlatten(permissions, route, serviceRoot.getId());
+                routerFlatten(permissions, route, serviceRoot.getId(), null);
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
@@ -94,33 +92,25 @@ public class MenuServiceImpl implements MenuService {
     /**
      * 将路由树展平，便于保存
      */
-    public void routerFlatten(List<Permission> permissions, RouteRecord route, String parentId) throws JsonProcessingException {
+    public void routerFlatten(List<Permission> permissions, RouteRecord route, String parentId, Integer sort) throws JsonProcessingException {
+        if (Objects.isNull(route.getMeta().getSort())) route.getMeta().setSort(sort);
+        MenuType menuType = Objects.isNull(route.getMeta().getType()) ? MenuType.Menu : route.getMeta().getType();
         Permission permission = new Permission()
                 .setId(IdUtil.fastSimpleUUID())
                 .setName(route.getName())
                 .setPath(route.getPath())
                 .setParentId(parentId)
-                .setType(MenuType.Menu)
+                .setType(menuType)
                 .setComponent(route.getComponent())
                 .setMeta(objectMapper.writeValueAsString(route.getMeta()));
         permissions.add(permission);
         if (Objects.nonNull(route.getChildren()) && !route.getChildren().isEmpty()) {
+            int index = 1;
             for (RouteRecord child : route.getChildren()) {
-                routerFlatten(permissions, child, permission.getId());
+                routerFlatten(permissions, child, permission.getId(), index);
+                index++;
             }
         }
-    }
-
-    public Permission getServiceRoot(List<Permission> permissions) {
-        Permission permission = new Permission();
-        for (Permission item : permissions) {
-            if (item.getType().equals(MenuType.Service)) {
-                BeanUtil.copyProperties(item, permission);
-                permissions.remove(item);
-                break;
-            }
-        }
-        return permission;
     }
 
     @SneakyThrows
