@@ -255,7 +255,7 @@ function handleSubmit() {
               @focus="() => showIcons = true"
               @blur="() => showIcons = false"
             >
-              <template #prefix>
+              <template v-if="currentFormData.meta.icon" #prefix>
                 <component :is="constantRouterIcon[currentFormData.meta.icon].icon" />
               </template>
             </n-input>
