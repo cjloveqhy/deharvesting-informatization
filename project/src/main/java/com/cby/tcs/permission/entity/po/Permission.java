@@ -59,9 +59,9 @@ public class Permission extends Model<Permission> {
     private String meta;
 
     /**
-     *逻辑删除
+     * 逻辑删除
      */
-    @TableLogic("deleted")
+    @TableLogic
     private Integer deleted;
 
     /**

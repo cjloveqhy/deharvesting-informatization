@@ -48,8 +48,8 @@ public class HarvestSchedule extends Model<HarvestSchedule> {
     /**
      * 逻辑删除
      */
-    @TableField("deleted")
-    private Boolean deleted;
+    @TableLogic
+    private Integer deleted;
 
     /**
      * 更新时间
@@ -62,7 +62,5 @@ public class HarvestSchedule extends Model<HarvestSchedule> {
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
-
 
 }

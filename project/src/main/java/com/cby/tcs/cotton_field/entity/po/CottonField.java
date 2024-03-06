@@ -60,8 +60,8 @@ public class CottonField extends Model<CottonField> {
     /**
      * 逻辑删除
      */
-    @TableField("deleted")
-    private Boolean deleted;
+    @TableLogic
+    private Integer deleted;
 
     /**
      * 更新时间
@@ -74,7 +74,5 @@ public class CottonField extends Model<CottonField> {
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
-
 
 }

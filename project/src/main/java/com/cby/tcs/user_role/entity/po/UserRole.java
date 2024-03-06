@@ -40,9 +40,9 @@ public class UserRole extends Model<UserRole> {
     private String attachedPermission;
 
     /**
-     *逻辑删除
+     * 逻辑删除
      */
-    @TableLogic("deleted")
+    @TableLogic
     private Integer deleted;
 
     /**
@@ -56,7 +56,5 @@ public class UserRole extends Model<UserRole> {
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
-
 
 }

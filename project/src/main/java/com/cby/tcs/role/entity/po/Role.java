@@ -41,9 +41,9 @@ public class Role extends Model<Role> {
     private String remark;
 
     /**
-     *逻辑删除
+     * 逻辑删除
      */
-    @TableLogic("deleted")
+    @TableLogic
     private Integer deleted;
 
     /**
@@ -57,7 +57,5 @@ public class Role extends Model<Role> {
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
-
 
 }

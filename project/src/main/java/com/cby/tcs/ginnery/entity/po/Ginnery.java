@@ -1,15 +1,11 @@
 package com.cby.tcs.ginnery.entity.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-
-import java.time.LocalDateTime;
 import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -52,8 +48,8 @@ public class Ginnery extends Model<Ginnery> {
     /**
      * 逻辑删除
      */
-    @TableField("deleted")
-    private Boolean deleted;
+    @TableLogic
+    private Integer deleted;
 
     /**
      * 更新时间
@@ -66,7 +62,5 @@ public class Ginnery extends Model<Ginnery> {
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
-
 
 }

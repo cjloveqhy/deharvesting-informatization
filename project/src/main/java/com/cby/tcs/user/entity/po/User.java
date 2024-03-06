@@ -65,9 +65,9 @@ public class User extends Model<User> {
     private SexEnum sex;
 
     /**
-     *逻辑删除
+     * 逻辑删除
      */
-    @TableLogic("deleted")
+    @TableLogic
     private Integer deleted;
 
     /**
@@ -81,7 +81,5 @@ public class User extends Model<User> {
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
-
 
 }
