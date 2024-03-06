@@ -254,7 +254,11 @@ function handleSubmit() {
               v-model:value="currentFormData.meta.icon"
               @focus="() => showIcons = true"
               @blur="() => showIcons = false"
-            />
+            >
+              <template #prefix>
+                <component :is="constantRouterIcon[currentFormData.meta.icon].icon" />
+              </template>
+            </n-input>
             <n-collapse-transition :show="showIcons">
               <n-scrollbar class="max-h-200px">
                 <n-radio-group v-model:value="currentFormData.meta.icon">
