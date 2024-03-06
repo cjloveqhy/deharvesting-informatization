@@ -47,6 +47,9 @@ export function logout() {
   return http.request({
     url: api.logout,
     method: RequestEnum.GET,
+  }, {
+    isReturnNativeResponse: false,
+    isTransformResponse: true
   });
 }
 

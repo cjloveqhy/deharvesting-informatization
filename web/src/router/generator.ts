@@ -29,7 +29,7 @@ export const generateRoutes = (routerMap, parent?): any[] => {
       meta: {
         ...item.meta,
         label: item.meta.title,
-        icon: constantRouterIcon[item.meta.icon] || null,
+        icon: constantRouterIcon[item.meta.icon]?.icon || null,
         permissions: item.meta.permissions || null,
       },
     };
