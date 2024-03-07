@@ -2,6 +2,42 @@
 import * as echarts from 'echarts';
 import {onMounted} from 'vue/dist/vue.esm-bundler.js';
 
+const headerLeftData = [
+  {
+    title: "作业面积",
+    workload: "35,432",
+    unit: "亩"
+  },
+  {
+    title: "累计运行",
+    workload: "28",
+    unit: "台"
+  },
+  {
+    title: "平均工作时长",
+    workload: "9.25",
+    unit: "小时"
+  },
+]
+
+const headerRightData = [
+  {
+    title: "作业面积",
+    workload: "135,432",
+    unit: "亩"
+  },
+  {
+    title: "累计运行",
+    workload: "19",
+    unit: "台"
+  },
+  {
+    title: "平均工作时长",
+    workload: "12.50",
+    unit: "小时"
+  },
+]
+
 const getMyChart = () => {
   const chartDom = document.getElementById('main_right_category');
   const myChart = echarts.init(chartDom);
@@ -16,7 +52,7 @@ const getMyChart = () => {
       min: 0,
       max: 100,
       interval: 20,
-      boundaryGap : [ 0.2, 0.2 ]
+      boundaryGap: [0.2, 0.2]
     },
     series: [
       {
@@ -46,579 +82,350 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="homePageBox">
-    <!--首页头部-->
-    <n-card title="今日作业概况" size="small">
-      <hr>
-      <div class="header_content">
-        <div class="header_content header_border header_left">
-          <img src="../../assets/images/homePage/u460.png" class="header_left_img">
-          <div class="header_text_box">
-            <span class="header_text_num">35,432&ensp;</span>
-            <span>亩</span>
-            <p>作业面积</p>
-          </div>
-          <n-divider vertical/>
-          <div class="header_text_box">
-            <span class="header_text_num">28&ensp;</span>
-            <span>台</span>
-            <p>累计运行</p>
-          </div>
-          <n-divider vertical/>
-          <div class="header_text_box">
-            <span class="header_text_num">9.25&ensp;</span>
-            <span>小时</span>
-            <p>平均工作时长</p>
-          </div>
-        </div>
-        <div class="header_content header_border header_right">
-          <img src="../../assets/images/homePage/u462.png" class="header_right_img">
-          <div class="header_text_box">
-            <span class="header_text_num">35,432&ensp;</span>
-            <span>亩</span>
-            <p>作业面积</p>
-          </div>
-          <n-divider vertical/>
-          <div class="header_text_box">
-            <span class="header_text_num">28&ensp;</span>
-            <span>台</span>
-            <p>累计运行</p>
-          </div>
-          <n-divider vertical/>
-          <div class="header_text_box">
-            <span class="header_text_num">9.25&ensp;</span>
-            <span>小时</span>
-            <p>平均工作时长</p>
-          </div>
-        </div>
-      </div>
-    </n-card>
-    <br>
-    <!--首页中间-->
-    <main class="main_content">
-      <n-card title="设备监控" size="small" style="margin-right: 20px;width: 60%;height: 300px">
-        <hr>
-        <n-grid :x-gap="1" :y-gap="2" :cols="3">
-          <n-grid-item span="1">
-            <n-grid :x-gap="2" :y-gap="2" :cols="2">
-              <n-grid-item span="2">
-                <div class="main_left" style="background-color: #EBF4FF">
-                  <div class="main_left_img">
-                    <img src="../../assets/images/homePage/u414.png">
-                  </div>
-                  <div class="main_left_text">
-                    <p>无人机总数</p>
-                    <span class="main_left_num">45</span>
-                    <span>台</span>
-                  </div>
-                </div>
-              </n-grid-item>
-              <n-grid-item span="2">
-                <div class="main_left" style="background-color: #FCF5E3;">
-                  <div class="main_left_img">
-                    <img src="../../assets/images/homePage/u415.png">
-                  </div>
-                  <div class="main_left_text">
-                    <p>无人机总数</p>
-                    <span class="main_left_num" style="color: #FBBC7F">45</span>
-                    <span>台</span>
-                  </div>
-                </div>
-              </n-grid-item>
-            </n-grid>
-          </n-grid-item>
-          <n-grid-item span="2">
-            <n-grid :x-gap="2" :y-gap="2" :cols="2">
-              <n-grid-item class="main_left_progress_box">
-                <img src="../../assets/images/homePage/u422.png" class="main_left_progress_topImg">
-                <img src="../../assets/images/homePage/u422.png"
-                     class="main_left_progress_bottomImg">
-                <n-space class="main_left_progress">
-                  <n-progress type="circle" :percentage="20" unit="台" color="#81CEF9"
-                              border-radius="30" indicator-text-color="#fff" :stroke-width="10"
-                              rail-color="#fff"/>
-                  <div class="main_left_progress_text">当前无人机在线总数</div>
+  <!--首页头部-->
+  <n-card title="今日作业概况" :segmented="{content: true,footer: 'soft'}" style="--n-padding-top: 10px;--n-padding-bottom: 10px;--n-title-font-size: 16px">
+    <div style="display: flex">
+      <n-card style="margin: 0px 30px" class="header_card_left_border">
+        <div style="display: flex;transform: translate(-25px, 20px);">
+          <img src="../../assets/images/homePage/u460.png" class="header_card_left_img">
+          <n-card :bordered="false" size="small">
+              <n-flex size="large">
+                <n-space v-for="(item, index) in headerLeftData" :key="index">
+                  <n-space vertical style="text-align: center;margin-top: 20px">
+                    <n-gradient-text style="font-size: 1rem;color: #81D3F8">
+                      <n-space style="text-align: center">
+                        <n-gradient-text style="font-size: 1.2rem;color: #81D3F8">{{item.workload }}
+                        </n-gradient-text>
+                        <n-gradient-text style="font-size: 1rem;color: #81D3F8;transform: translate(0, 10px)">{{item.unit }}
+                        </n-gradient-text>
+                      </n-space>
+                    </n-gradient-text>
+                    <n-gradient-text style="color: black;text-align: center">{{item.title }}</n-gradient-text>
+                  </n-space>
+                  <img src="../../assets/images/homePage/u378.svg" v-if="item.title != '平均工作时长'" style="margin-left: 10%">
                 </n-space>
-              </n-grid-item>
-              <n-grid-item class="main_left_progress_box" style="background-color: #F7E9D2">
-                <img src="../../assets/images/homePage/u432.png" class="main_left_progress_topImg">
-                <img src="../../assets/images/homePage/u432.png"
-                     class="main_left_progress_bottomImg">
-                <n-space class="main_left_progress">
-                  <n-progress type="circle" :percentage="26" unit="台" color="#FBBC7F"
-                              border-radius="30" indicator-text-color="#fff" :stroke-width="10"
-                              rail-color="#fff"/>
-                  <div class="main_left_progress_text" style="color:#FBBC7F;">当前采棉机在线总数</div>
+              </n-flex>
+          </n-card>
+        </div>
+      </n-card>
+      <n-card style="margin: 0px 30px" class="header_card_right_border">
+        <div style="display: flex; transform: translate(-55px, 0px);">
+          <img src="../../assets/images/homePage/u462.png" class="header_card_left_img">
+          <n-card :bordered="false" size="small">
+            <n-flex size="small">
+              <n-space v-for="(item, index) in headerRightData" :key="index">
+                <n-space vertical style="text-align: center;margin-top: 20px">
+                    <n-space>
+                      <n-gradient-text style="font-size: 1.2rem;color: #FACD91">{{item.workload }}</n-gradient-text>
+                      <n-gradient-text style="font-size: 1rem;color: #FACD91;transform: translate(0, 10px)">{{item.unit }}</n-gradient-text>
+                    </n-space>
+                  <n-gradient-text style="color: black;text-align: center">{{item.title}}
+                  </n-gradient-text>
                 </n-space>
-              </n-grid-item>
-            </n-grid>
-          </n-grid-item>
-        </n-grid>
-      </n-card>
-      <n-card title="评价统计" size="small" style="width: 40%;height: 300px">
-        <template #header-extra>
-          <span>时间选择</span>
-          <n-date-picker v-model:value="range" type="daterange" clearable style="margin: 0 5px"/>
-          <n-button strong secondary type="info">查询</n-button>
-        </template>
-        <hr>
-        <div class="main_right">
-          <div class="main_right_progress">
-            <n-progress type="circle" :percentage="80" :offset-degree="120" color="#B4DEF6"
-                        indicator-text-color="#81CEF9" rail-color="#fff"/>
-            <div class="main_right_progress_text">平均合格率</div>
-          </div>
-          <div class="main_right_category" id="main_right_category"
-               style="width: 100%;height: 300px;margin-top: -50px"></div>
+                <img src="../../assets/images/homePage/u391.svg" v-if="item.title != '平均工作时长'">
+              </n-space>
+            </n-flex>
+          </n-card>
         </div>
       </n-card>
-    </main>
-    <br>
-    <!--首页尾部-->
-    <footer class="footer_content">
-      <n-card title="无人机作业信息" size="small" style="margin-right: 20px;width: 35%;height: 300px">
-        <hr>
-        <n-grid :x-gap="2" :y-gap="2" :cols="2">
-          <n-grid-item>
-            <div class="footer_left_item">
-              <div class="footer_left_item_img">
-                <img src="../../assets/images/homePage/u495.png">
-              </div>
-              <div class="footer_left_item_text">
-                <div>飞行总时长(小时)</div>
-                <div class="footer_left_item_num">40.25</div>
-              </div>
-            </div>
-          </n-grid-item>
-          <n-grid-item>
-            <div class="footer_left_item">
-              <div class="footer_left_item_img">
-                <img src="../../assets/images/homePage/u501.png">
-              </div>
-              <div class="footer_left_item_text">
-                <div>作业总面积(亩)</div>
-                <div class="footer_left_item_num">1817.05</div>
-              </div>
-            </div>
-          </n-grid-item>
-          <n-grid-item>
-            <div class="footer_left_item">
-              <div class="footer_left_item_img">
-                <img src="../../assets/images/homePage/u498.png">
-              </div>
-              <div class="footer_left_item_text">
-                <div>飞行总距离(公里)</div>
-                <div class="footer_left_item_num">380.88</div>
-              </div>
-            </div>
-          </n-grid-item>
-          <n-grid-item>
-            <div class="footer_left_item">
-              <div class="footer_left_item_img">
-                <img src="../../assets/images/homePage/u504.png">
-              </div>
-              <div class="footer_left_item_text">
-                <div>总喷洒量(升)</div>
-                <div class="footer_left_item_num">821.07</div>
-              </div>
-            </div>
-          </n-grid-item>
-        </n-grid>
-      </n-card>
-      <n-card title="采棉机作业信息" size="small" style="margin-right: 20px;width: 35%;height: 300px">
-        <hr>
-        <n-grid :x-gap="2" :y-gap="2" :cols="2">
-          <n-grid-item>
-            <div class="footer_center_item">
-              <div class="footer_center_item_img">
-                <img src="../../assets/images/homePage/u507.png">
-              </div>
-              <div class="footer_center_item_text">
-                <div>运行总时长(小时)</div>
-                <div class="footer_center_item_num">821.07</div>
-              </div>
-            </div>
-          </n-grid-item>
-          <n-grid-item>
-            <div class="footer_center_item">
-              <div class="footer_center_item_img">
-                <img src="../../assets/images/homePage/u513.png">
-              </div>
-              <div class="footer_center_item_text">
-                <div>作业总面积(亩)</div>
-                <div class="footer_center_item_num">821.07</div>
-              </div>
-            </div>
-          </n-grid-item>
-          <n-grid-item>
-            <div class="footer_center_item">
-            <div class="footer_center_item_img">
-              <img src="../../assets/images/homePage/u510.png">
-            </div>
-            <div class="footer_center_item_text">
-              <div>总行驶里程(公里)</div>
-              <div class="footer_center_item_num">821.07</div>
-            </div>
-          </div>
-          </n-grid-item>
-        </n-grid>
-      </n-card>
-      <n-card title="作物监控" size="small" style="width: 40%;height: 300px">
-        <hr>
-        <div class="footer_right_progress">
-          <img src="../../assets/images/homePage/u516.png" class="footer_right_progress_img">
-          <span class="footer_right_progress_title">脱叶率</span>
-          <n-progress
-            type="line"
-            :show-indicator="false"
-            status="success"
-            :percentage="68.03"
-            style="width: 50%"
-            :stroke-width="20"
-            :height="20"
-            color="#81CEF9"
-          />
-          <span class="footer_right_progress_num">68.03</span>
-          <span>%</span>
-        </div>
-        <div class="footer_right_progress">
-          <img src="../../assets/images/homePage/u516.png" class="footer_right_progress_img">
-          <span class="footer_right_progress_title">吐絮率</span>
-          <n-progress
-            type="line"
-            :show-indicator="false"
-            status="success"
-            :percentage="50.83"
-            style="width: 50%"
-            :stroke-width="20"
-            :height="20"
-            color="#81CEF9"
-          />
-          <span class="footer_right_progress_num">50.83</span>
-          <span>%</span>
-        </div>
-        <div class="footer_right_progress">
-          <img src="../../assets/images/homePage/u516.png" class="footer_right_progress_img">
-          <span class="footer_right_progress_title">除净率</span>
-          <n-progress
-            type="line"
-            :show-indicator="false"
-            status="success"
-            :percentage="88"
-            style="width: 50%"
-            :stroke-width="20"
-            :height="20"
-            color="#81CEF9"
-          />
-          <span class="footer_right_progress_num">较好</span>
-          <span>%</span>
-        </div>
-      </n-card>
-    </footer>
+    </div>
+  </n-card>
+  <!--首页中部-->
+  <div style="display:flex;margin-top: 10px">
+    <n-card title="设备监控" :segmented="{content: true,footer: 'soft'}"
+            style="margin-right: 10px;width: 140%;">
+      <div style="display: flex">
+        <n-card :bordered="false" class="clearPadding">
+          <n-space vertical>
+            <n-card class="main_left_small_top_border">
+              <n-space>
+                <img src="../../assets/images/homePage/u414.png" width="60" height="60">
+                <n-space vertical style="text-align: center">
+                  <n-gradient-text style="color: black">无人机总数</n-gradient-text>
+                  <n-space>
+                    <n-gradient-text size="22" style="transform: translate(5px, -8px);color: #7BCCF9">45</n-gradient-text>
+                    <n-gradient-text style="color: black">台</n-gradient-text>
+                  </n-space>
+                </n-space>
+              </n-space>
+            </n-card>
+            <n-card class="main_left_small_bottom_border">
+              <n-space>
+                <img src="../../assets/images/homePage/u415.png" width="60" height="60">
+                <n-space vertical>
+                  <n-gradient-text style="color: black">无人机总数</n-gradient-text>
+                  <n-space>
+                    <n-gradient-text size="22" style="transform: translate(5px, -8px);color: #FBBC7F">45</n-gradient-text>
+                    <n-gradient-text style="color: black">台</n-gradient-text>
+                  </n-space>
+                </n-space>
+              </n-space>
+            </n-card>
+          </n-space>
 
+        </n-card>
+        <n-card class="main_left_big_left_border">
+          <div style="position: relative">
+            <n-progress type="dashboard" gap-position="bottom" :percentage="40"
+                        color="#81CEF9" rail-color="#fff"
+                        :stroke-width="12" indicator-text-color="#fff" unit="台"/>
+            <div class="main_left_progress_title">当前无人机在线总数</div>
+          </div>
+        </n-card>
+        <n-card class="main_left_big_right_border">
+          <div style="position: relative">
+            <n-progress type="dashboard" gap-position="bottom" :percentage="40"
+                        color="#FBBC7F" rail-color="#fff"
+                        :stroke-width="12" indicator-text-color="#fff" unit="台"/>
+            <div class="main_right_progress_title">当前无人机在线总数</div>
+          </div>
+        </n-card>
+      </div>
+
+    </n-card>
+    <n-card title="统计评价" :segmented="{content: true,footer: 'soft'}">
+      <template #header-extra>
+        <span>时间选择</span>
+        <n-date-picker v-model:value="range" type="daterange" clearable style="margin-left: 5px;width: 18rem" />
+        <n-button style="margin-left: 5px" type="primary">查询</n-button>
+      </template>
+      <n-split direction="horizontal" style="height: 200px" :max="0.75" :min="0.35" :resize-trigger-size="0" :default-size="0.35">
+        <template #1>
+          <n-progress type="circle" :percentage="80" :offset-degree="120" color="#B4DEF6" :stroke-width="12" rail-color="#fff"  /><br><br>
+          <n-gradient-text size="14" style="margin-left: 25px">平均合格率</n-gradient-text>
+        </template>
+        <template #2>
+          <div id="main_right_category" style="height: 300px;transform: translateY(-50px)"></div>
+        </template>
+      </n-split>
+    </n-card>
+  </div>
+  <div style="display: flex;margin-top: 10px">
+    <n-card title="无人机作业信息" :segmented="{content: true,footer: 'soft'}" style="margin-right: 10px; width: 120%">
+      <n-flex justify="space-between">
+        <n-space vertical>
+          <n-space>
+            <img src="../../assets/images/homePage/u495.png" class="bottom_left_img" style="background-color: #F2F2F2;border-radius: 10px">
+            <n-space vertical>
+              <div style="font-size: 1rem">飞行总时长(小时)</div>
+              <div style="color: #81CEF9; font-size: 1.2rem;font-weight: bold">40.25</div>
+            </n-space>
+          </n-space>
+          <n-space>
+            <img src="../../assets/images/homePage/u498.png" class="bottom_left_img" style="background-color: #F2F2F2;border-radius: 10px">
+            <n-space vertical>
+              <div style="font-size: 1rem">飞行总距离(小时)</div>
+              <div style="color: #81CEF9; font-size: 1.2rem;font-weight: bold">380.88</div>
+            </n-space>
+          </n-space>
+        </n-space>
+        <n-space vertical>
+          <n-space>
+            <img src="../../assets/images/homePage/u501.png" class="bottom_left_img" style="background-color: #F2F2F2;border-radius: 10px">
+            <n-space vertical>
+              <div style="font-size: 1rem">作业总面积(亩)</div>
+              <div style="color: #81CEF9; font-size: 1.2rem;font-weight: bold">1817.05</div>
+            </n-space>
+          </n-space>
+          <n-space>
+            <img src="../../assets/images/homePage/u504.png" class="bottom_left_img" style="background-color: #F2F2F2;border-radius: 10px">
+            <n-space vertical>
+              <div style="font-size: 1rem">总喷洒流量(升)</div>
+              <div style="color: #81CEF9; font-size: 1.2rem;font-weight: bold">821.07</div>
+            </n-space>
+          </n-space>
+        </n-space>
+      </n-flex>
+    </n-card>
+    <n-card title="采棉机作业信息" :segmented="{content: true,footer: 'soft'}" style="margin-right: 10px; width: 120%">
+      <n-flex justify="space-between">
+        <n-space vertical>
+          <n-space>
+            <img src="../../assets/images/homePage/u507.png" class="bottom_left_img" style="background-color: #F2F2F2;border-radius: 10px">
+            <n-space vertical>
+              <div style="font-size: 1rem">运行总时长(小时)</div>
+              <div style="color: #FACD91; font-size: 1.2rem;font-weight: bold">40.25</div>
+            </n-space>
+          </n-space>
+          <n-space>
+            <img src="../../assets/images/homePage/u510.png" class="bottom_left_img" style="background-color: #F2F2F2;border-radius: 10px">
+            <n-space vertical>
+              <div style="font-size: 1rem">总行驶里程(小时)</div>
+              <div style="color: #FACD91; font-size: 1.2rem;font-weight: bold">380.88</div>
+            </n-space>
+          </n-space>
+        </n-space>
+        <n-space vertical>
+          <n-space>
+            <img src="../../assets/images/homePage/u513.png" class="bottom_left_img" style="background-color: #F2F2F2;border-radius: 10px">
+            <n-space vertical>
+              <div style="font-size: 1rem">作业总面积(亩)</div>
+              <div style="color: #FACD91; font-size: 1.2rem;font-weight: bold">1817.05</div>
+            </n-space>
+          </n-space>
+        </n-space>
+      </n-flex>
+    </n-card>
+    <n-card title="作物监控" :segmented="{content: true,footer: 'soft'}" style="min-width: 320px">
+      <n-space style="margin-bottom: 20px">
+        <img src="../../assets/images/homePage/u516.png" width="40" height="40">
+        <n-gradient-text>脱叶率</n-gradient-text>
+        <n-progress type="line" :percentage="60" :indicator-placement="'outside'"
+                    style="width: 15rem" color="#81CEF9" indicator-text-color="#81CEFA" :height="12" />
+      </n-space>
+      <n-space style="margin-bottom: 20px">
+        <img src="../../assets/images/homePage/u516.png" width="40" height="40">
+        <n-gradient-text>脱叶率</n-gradient-text>
+        <n-progress type="line" :percentage="60" :indicator-placement="'outside'"
+                    style="width: 15rem" color="#81CEF9" indicator-text-color="#81CEFA" :height="12" />
+      </n-space>
+      <n-space>
+        <img src="../../assets/images/homePage/u516.png" width="40" height="40">
+        <n-gradient-text>脱叶率</n-gradient-text>
+        <n-progress type="line" :percentage="60" :indicator-placement="'outside'"
+                    style="width: 15rem" color="#81CEF9" indicator-text-color="#81CEFA" :height="12" />
+      </n-space>
+    </n-card>
   </div>
 </template>
 <style lang="less" scoped>
-.homePageBox {
-  margin-left: 20px;
-
-  .header_content {
-    margin-top: 10px;
-    display: flex;
-
-    .header_left {
-      margin-left: 40px;
-      border-color: rgba(129, 211, 248, 1);
-      min-width: 745px;
-
-      .n-divider.n-divider--vertical {
-        height: 4em;
-        background-color: #81D3F8FF;
-        transform: translate(50px, 0px);
-      }
-
-      span {
-        color: #81D3F8FF;
-      }
-
-      .header_left_img {
-        position: absolute;
-        left: 35px;
-        width: 250px;
-        height: 141px;
-        background-color: white;
-        transform: translate(-75px, 0px);
-      }
-    }
-
-    .header_right {
-      border-color: rgba(250, 205, 145, 1);
-      margin-left: 40px;
-      min-width: 745px;
-
-      .n-divider.n-divider--vertical {
-        height: 4em;
-        background-color: rgba(250, 205, 145, 1);
-        transform: translate(50px, 0px);
-      }
-
-      span {
-        color: rgba(250, 205, 145, 1);
-      }
-
-      .header_right_img {
-        position: absolute;
-        left: 10px;
-        width: 250px;
-        height: 141px;
-        background-color: white;
-        transform: translate(-75px, 0px);
-      }
-    }
-  }
-
-  .main_content {
-    .main_left {
-      width: 80%;
-      display: flex;
-      padding: 20px 20px 0px 20px;
-      height: 90px;
-      background: inherit;
-      background-color: rgba(235, 244, 255, 1);
-      border-radius: 8px;
-      -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.349019607843137);
-      -webkit-box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
-      box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
-      margin-top: 20px;
-      margin-right: 20px;
-    }
-
-    .main_right {
-      display: flex;
-      margin: 20px;
-
-      .main_right_progress {
-        .main_right_progress_text {
-          text-align: center;
-          margin-top: 20px;
-        }
-      }
-
-      .main_right_category {
-        margin-left: 50px;
-      }
-    }
-  }
-
-  .footer_content{
-    .footer_left_item{
-      display: flex;
-      .footer_left_item_img{
-        min-width: 80px;
-        height: 80px;
-        border-radius: 19px;
-        background-color: rgba(242, 242, 242, 1);
-        margin: 25px 10px 10px;
-
-        img{
-          width: 70px;
-          margin: 5px;
-        }
-      }
-      .footer_left_item_text{
-        margin-top: 35px;
-        min-width: 108px;
-        .footer_left_item_num{
-          height: 32px;
-          background: inherit;
-          font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
-          font-size: 28px;
-          color: #81CEF9;
-        }
-      }
-    }
-    .footer_center_item{
-      display: flex;
-      .footer_center_item_img{
-        min-width: 80px;
-        height: 80px;
-        border-radius: 19px;
-        background-color: rgba(242, 242, 242, 1);
-        margin: 25px 10px 10px;
-
-        img{
-          width: 70px;
-          margin: 5px;
-        }
-      }
-      .footer_center_item_text{
-        margin-top: 35px;
-        min-width: 108px;
-        .footer_center_item_num{
-          height: 32px;
-          background: inherit;
-          font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
-          font-size: 28px;
-          color: #FACD91;
-        }
-      }
-    }
-    .footer_right_progress{
-      display: flex;
-      margin: 28px 20px 20px;
-
-      span{
-        margin: 0px 10px;
-      }
-
-      .footer_right_progress_img{
-        width: 40px;
-        height: 40px;
-        transform: translateY(-5px);
-      }
-      .footer_right_progress_title{
-        min-width: 48px;
-      }
-      .footer_right_progress_num{
-        min-width: 71px;
-        background-color: rgba(255, 255, 255, 0);
-        font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
-        font-weight: 700;
-        font-size: 28px;
-        color: #81CEF9;
-        transform: translate(5px, -10px);
-        text-align: center;
-      }
-    }
+::v-deep .n-card .n-card-header{
+  padding: 10px;
+  font-size: 16px;
+  .n-card .n-card-header{
+    padding: 0;
   }
 }
-
-main, footer {
-  display: flex;
-}
-
-.n-card__content {
-  border-width: 0px;
-  width: 100%;
-  height: 300px;
-  margin-left: 20px;
-  padding: 0px;
-}
-
-.header_border {
-  position: relative;
-  width: 50%;
-  height: 200px;
-  background: inherit;
+.header_card_left_border {
   background-color: rgba(255, 255, 255, 1);
   border-width: 1px;
   border-style: solid;
+  border-color: rgba(129, 211, 248, 1);
   border-radius: 5px;
   box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
-  margin-right: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
-.header_text_box {
-  margin: 0px 10px 0px 10px;
-  transform: translate(50px, 0px);
-  min-width: 100px;
-  min-height: 65px;
-}
+  .header_card_left_img {
+    width: 10rem;
+    height: 6rem;
+    background-color: white;
+    flex: none;
+  }
 
-.header_text_num {
-  font-size: 20px;
-  font-weight: bold;
-  display: inline-block;
-  margin-bottom: 10px;
-}
+  ::v-deep .n-card > .n-card__content, .n-card > .n-card__footer {
+    padding: 0;
+  }
 
-.main_left_img {
-  img {
-    width: 60px;
+  ::v-deep .n-card > .n-card__content:first-child {
+    padding: 0px;
   }
 }
 
-.main_left_text {
-  margin: 0px 10px 10px 20px;
-  min-width: 100px;
+.header_card_right_border {
+  background-color: rgba(255, 255, 255, 1);
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(250, 205, 145, 1);
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
+
+  .header_card_left_img {
+    width: 10rem;
+    height: 8rem;
+    background-color: white;
+    flex: none;
+  }
 }
 
-.main_left_num {
-  font-weight: 700;
-  font-style: normal;
-  font-size: 28px;
-  color: #7BCCF9;
-  margin-left: 12px;
-  margin-right: 10px;
-}
-
-.main_left_progress_box {
-  height: 200px;
+.main_left_small_border {
   background: inherit;
-  background-color: rgba(198, 233, 247, 1);
+  background-color: rgba(235, 244, 255, 1);
   border-radius: 8px;
   -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.349019607843137);
   -webkit-box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
   box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
-  margin: 20px;
+}
+
+.main_left_small_top_border {
+  background: inherit;
+  background-color: rgba(235, 244, 255, 1);
+  border-radius: 8px;
+  -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.349019607843137);
+  -webkit-box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
+  box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
+  margin-bottom: 10px;
+}
+
+.main_left_small_bottom_border {
+  background-color: rgba(252, 245, 227, 1);
+  border-radius: 8px;
+  box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
+}
+
+
+.main_left_big_left_border {
+  background-color: rgba(198, 233, 247, 1);
+  border-radius: 8px;
+  box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
+  margin-right: 10px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-
-  .main_left_progress_topImg {
-    position: absolute;
-    border-width: 0px;
-    left: 0px;
-    top: 0px;
-    width: 100px;
-    height: 100px;
-    opacity: 0.2;
-  }
-
-  .main_left_progress_bottomImg {
-    position: absolute;
-    border-width: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 50px;
-    height: 50px;
-    opacity: 0.2;
-  }
-
-  .main_left_progress {
-    position: relative;
-  }
-
-  .main_left_progress_text {
-    position: absolute;
-    align-self: center;
-    padding: 8px 8px 8px 8px;
-    box-sizing: border-box;
-    width: 100%;
-    position: absolute;
-    left: -50px;
-    top: 100px;
-    width: 214px;
-    height: 37px;
-    background: inherit;
-    background-color: rgba(255, 255, 255, 1);
-    border-radius: 59px;
-    font-size: 16px;
-    color: #81CEF9;
-    text-align: center;
+}
+.main_left_big_right_border {
+  background-color: rgba(247, 233, 210, 1);
+  border-radius: 8px;
+  box-shadow: 5px 5px 5px rgb(0 0 0 / 35%);
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+::v-deep .clearPadding{
+  min-width: 232px;
+  .n-card__content{
+    padding: 0px;
+    margin-top: 10px;
+    margin-right: 20px;
   }
 }
-.light-green {
-  height: 108px;
-  background-color: rgba(0, 128, 0, 0.12);
+
+.main_left_progress_title{
+  position: absolute;
+  top: 90px;
+  left: -12px;
+  background-color: white;
+  padding: 5px 0px;
+  border-radius: 20px;
+  width: 120%;
+  text-align: center;
+  color: #81CEF9;
 }
-.green {
-  height: 108px;
-  background-color: rgba(0, 128, 0, 0.24);
+
+
+.main_right_progress_title{
+  position: absolute;
+  top: 90px;
+  left: -12px;
+  background-color: white;
+  padding: 5px 0px;
+  border-radius: 20px;
+  width: 120%;
+  text-align: center;
+  color: #FBBC7F;
+}
+
+::v-deep .n-split-pane-1{
+  flex: 0 0 calc(20% + 0px);
+}
+
+::v-deep .n-progress.n-progress--line .n-progress-icon.n-progress-icon--as-text{
+  font-size: 20px;
+  width: 50px;
+}
+
+.bottom_left_img{
+  width: 3.5rem;
+  height: 3.5rem;
 }
 </style>
