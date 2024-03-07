@@ -1,5 +1,6 @@
 import { http } from '@/utils/http/axios';
 import {RequestEnum} from "@/enums/httpEnum";
+import {GinneryPageFo} from "@/store/api/ginnery";
 
 const getUri = (uri: string) => {
   return `/ginnery${uri}`
@@ -12,11 +13,11 @@ export const api = {
 /**
  * @description 根据用户id获取用户菜单
  */
-export function ginnerySearch(factoryName: string) {
+export function ginnerySearch(data: GinneryPageFo) {
   return http.request({
     url: api.search,
-    method: RequestEnum.GET,
-    params: {factoryName: factoryName}
+    method: RequestEnum.POST,
+    data
   });
 }
 

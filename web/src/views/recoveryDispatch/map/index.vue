@@ -2,6 +2,7 @@
 import {ginnerySearch} from "@/api/ginnery";
 import {NH6, NFlex, NThing} from "naive-ui";
 import { useScroll } from '@vueuse/core'
+import {GinneryPageFo, GinneryVo} from "@/store/api/ginnery";
 
 const router = useRouter();
 
@@ -14,31 +15,34 @@ const goToPlotCreateDispatch = (id: string)=> {
 
 const loading = ref<boolean>(false)
 
-const options = ref<any[]>([])
+const options = ref<GinneryVo[]>([])
 
-const searchText = ref<string>('')
+const pageQuery = ref<GinneryPageFo>({
+  page: 1,
+  size: 10,
+  factoryName: ''
+})
+
+const isLast = ref<boolean>(false)
 
 function search(text: string) {
   loading.value = true
-  searchText.value = text
+  pageQuery.value.factoryName = text
   options.value = []
-  ginnerySearch(text).then(res => {
-    options.value = res.data
+  ginnerySearch(pageQuery.value).then(res => {
+    options.value = res.data.records
+    pageQuery.value.page++
+    if (pageQuery.value.page > res.data.pages) {
+      isLast.value = true
+    }
   }).finally(() => loading.value = false)
 }
 
 search('')
 
-/*const scrollRef = ref<HTMLElement | null>(null)
-const { arrivedState } = useScroll(scrollRef, {behavior: 'smooth'})
-const { left, right, top, bottom } = toRefs(arrivedState)
-console.log(arrivedState)
-watch(
-  () => bottom.value,
-  (val) => {
-    console.log(val)
-  }
-)*/
+const el = ref<HTMLElement | null>(null)
+const { arrivedState } = useScroll(el, {behavior: 'smooth'})
+const { bottom } = toRefs(arrivedState)
 
 </script>
 
@@ -56,15 +60,8 @@ watch(
       />
       <n-card class="mt-10px" content-style="padding: 0">
         <template v-if="options.length > 0">
-          <n-virtual-list
-            ref="scrollRef"
-            style="max-height: 240px"
-            :item-size="42"
-            :items="options"
-            item-resizable
-            key-field="id"
-          >
-            <template #default="{ item, index }">
+          <n-flex ref="el" vertical class="w-full h-200px max-h-250px overflow-y-scroll">
+            <template v-for="item in options">
               <n-thing
                 :title="`轧花厂：${item.factoryName}`"
                 content-style="margin-top: 10px; padding-left: 10px"
@@ -83,10 +80,16 @@ watch(
                 </n-flex>
               </n-thing>
             </template>
-          </n-virtual-list>
+            <template v-if="loading && !isLast">
+              <div class="flex justify-center"><span>正在加载中...</span></div>
+            </template>
+            <template v-if="isLast">
+              <div class="flex justify-center"><span>到底了，没有数据了</span></div>
+            </template>
+          </n-flex>
         </template>
         <template v-else>
-          <n-empty :description="`暂无与${searchText}轧花厂相关的调度信息`" class="py-20px"/>
+          <n-empty :description="`暂无与${pageQuery.factoryName}轧花厂相关的调度信息`" class="py-20px"/>
         </template>
       </n-card>
     </div>
