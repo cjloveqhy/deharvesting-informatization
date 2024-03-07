@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import {addMenuNode, delMenuNode, getTree, updateMenuNode} from "@/api/permission";
-import {PermissionTree, UpdatePermissionFo} from "@/store/api/permission/types";
+import {PermissionTree, UpdatePermissionFo, MenuOptions} from "@/store/api/permission";
 import {NFlex, NTag, NPopconfirm} from "naive-ui";
 import {getFieldValue, getLabel} from "@/utils/optionUtil";
 import {LogicalEnum} from "@/enums/LogicalEnum";
 import {deepCopy} from "@/utils/copyUtil";
 import AddAndEditMenuDrawer from "@/views/settings/menu/details/AddAndEditMenuDrawer.vue";
 import {constantRouterIcon} from "@/router/icons";
-import {MenuOptions} from "@/store/api/permission/options";
 
 const tableData = ref<PermissionTree[]>([])
 

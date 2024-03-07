@@ -1,6 +1,6 @@
 import { http } from '@/utils/http/axios';
 import {RequestEnum} from "@/enums/httpEnum";
-import {AddPermissionFo, UpdatePermissionFo} from "@/store/api/permission/types";
+import {AddPermissionFo, UpdatePermissionFo} from "@/store/api/permission";
 
 const getUri = (uri: string) => {
   return `/permission${uri}`

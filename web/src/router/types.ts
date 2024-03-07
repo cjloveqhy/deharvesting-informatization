@@ -1,6 +1,6 @@
 import type { RouteRecordRaw, RouteMeta } from 'vue-router';
 import { defineComponent } from 'vue';
-import {MenuType} from "@/store/api/permission/types";
+import {MenuType} from "@/store/api/permission";
 
 export type Component<T = any> =
   | ReturnType<typeof defineComponent>

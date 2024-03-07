@@ -1,4 +1,4 @@
-import {MenuType} from "@/store/api/permission/types";
+import {MenuType} from "@/store/api/permission";
 
 export const MenuOptions = [
   {label: '菜单', value: MenuType.Menu, type: 'success'},

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import {MenuType, PermissionTree, UpdatePermissionFo} from "@/store/api/permission/types";
+import {MenuType, PermissionTree, UpdatePermissionFo, MenuOptions, CompOptions} from "@/store/api/permission";
 import {constantRouterIcon} from "@/router/icons";
-import {MenuOptions, CompOptions} from "@/store/api/permission/options";
 import {deepCopy} from "@/utils/copyUtil";
 import {useMessage} from "naive-ui";
 

@@ -1,5 +1,5 @@
 import {PageRole} from "@/router/types";
-import {MenuType} from "@/store/api/permission/types";
+import {MenuType} from "@/store/api/permission";
 
 /**
  * key为明确的菜单名称，及 RouteRecordRaw 对象的name值，取自modules下指定路由的name,
