@@ -84,7 +84,7 @@ const { bottom } = toRefs(arrivedState)
               <div class="flex justify-center"><span>正在加载中...</span></div>
             </template>
             <template v-if="isLast">
-              <div class="flex justify-center"><span>到底了，没有数据了</span></div>
+              <div class="flex justify-center"><span>到底啦，没有数据了</span></div>
             </template>
           </n-flex>
         </template>

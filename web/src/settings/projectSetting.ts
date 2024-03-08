@@ -40,7 +40,7 @@ const setting:ProjectSettingState = {
     //最小宽度
     minMenuWidth: 64,
     //菜单宽度
-    menuWidth: 200,
+    menuWidth: 230,
     //固定菜单
     fixed: true,
     //分割菜单

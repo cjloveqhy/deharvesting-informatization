@@ -13,11 +13,13 @@ export const api = {
 /**
  * @description 根据用户id获取用户菜单
  */
-export function ginnerySearch(data: GinneryPageFo) {
+export function ginnerySearch(params: GinneryPageFo) {
   return http.request({
     url: api.search,
-    method: RequestEnum.POST,
-    data
+    method: RequestEnum.GET,
+    params
+  },{
+    joinParamsToUrl: true
   });
 }
 
