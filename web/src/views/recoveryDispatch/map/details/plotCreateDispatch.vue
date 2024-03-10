@@ -20,7 +20,7 @@ const columns = ref([
         default: () => [
           h(NFlex, {
             wrap: false,
-            justify:'space-between'
+            justify: 'space-between'
           }, {
             default: () => [
               h('div', `棉田地址： ${row.addr}`),
@@ -31,7 +31,8 @@ const columns = ref([
               }, {
                 default: () => '调度'
               })
-            ]}),
+            ]
+          }),
           h(NFlex, {
             vertical: true,
           }, {
@@ -45,7 +46,7 @@ const columns = ref([
                     showFeedback: false,
                     labelPlacement: 'left',
                     class: 'w-1/2'
-                    }, {
+                  }, {
                     default: () => row.cottonVariety
                   }),
                   h(NFormItem, {
@@ -163,7 +164,36 @@ const data = ref<CottonFieldVo[]>([])
 function init() {
   getCottons(route.params.factoryId as string).then(res => {
     data.value = res.data
+    originalData.value = res.data;
+    getAddressOption(data.value)
   })
+}
+
+const addressOption = ref<Array<object>>([])
+
+const getAddressOption = (data)=> {
+  data.forEach(item => {
+    let obj = {
+      label: "",
+      value: ""
+    }
+    if (item.addr !== null) {
+      obj.label = item.addr
+      obj.value = item.id
+      addressOption.value.push(obj)
+    }
+  })
+}
+
+const originalData = ref<CottonFieldVo[]>([]);
+
+const searchAddress = (value: string, option: object) => {
+  if (value) {
+    data.value = originalData.value.filter(item => item.addr && item.addr.includes(value))
+  } else {
+    // 如果 value 为空，则恢复原始数据
+    data.value = originalData.value;
+  }
 }
 
 init()
@@ -173,31 +203,43 @@ const showCreate = ref<boolean>(false)
 </script>
 
 <template>
-  <div class="box relative w-full h-87vh">
+  <div class="box w-full h-87vh p-20px">
     <div class="absolute top-20px right-200px">
       <n-flex :wrap="false" :size="60">
         <n-button text class="text-white" @click="() => showCreate = true">调度单</n-button>
         <n-button text class="text-white">工具箱</n-button>
       </n-flex>
     </div>
-    <div class="absolute w-25% top-20px left-20px">
+    <div class="w-25%">
       <n-select
         clearable
         filterable
-        @search=""
-        :show="false"
+        @search="searchAddress"
         :loading="loading"
         :show-arrow="false"
+        :show="false"
         placeholder="请输入地块名"
+        :tag="true"
+        :options="addressOption"
       />
       <n-data-table
         class="mt-10px bg-white"
         single-column
         max-height="250px"
         :columns="columns"
-        :summary="summary"
         :data="data"
-        />
+      />
+    </div>
+    <div class="w-25%" style="transform: translateY(-10px)" v-show="data.length > 0">
+      <n-data-table
+        class="mt-10px bg-white summaryDataTable"
+        max-height="250px"
+        :summary="summary"
+        :columns="columns"
+        :data="data"
+        summary-placement="top"
+        :bordered="false"
+      />
     </div>
   </div>
   <n-modal
@@ -252,7 +294,7 @@ const showCreate = ref<boolean>(false)
 </template>
 
 <style lang="less" scoped>
-.box{
+.box {
   background: url("@/assets/images/recoveryDispatch/u2282.png") no-repeat;
   background-size: 100% 100%;
 }
@@ -264,5 +306,13 @@ const showCreate = ref<boolean>(false)
 
 .clickable-button:hover {
   background-color: #f1f5f9;
+}
+
+::v-deep .summaryDataTable .n-data-table-tr--summary {
+  display: table-row !important;
+}
+
+::v-deep .summaryDataTable .n-data-table-tr {
+  display: none;
 }
 </style>
