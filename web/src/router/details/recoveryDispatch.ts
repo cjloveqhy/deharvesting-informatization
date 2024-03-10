@@ -15,7 +15,7 @@ const routes: Array<AppRouteRecordRaw> = [
     },
     children: [
       {
-        path: 'map/create',
+        path: 'map/create/:factoryId',
         name: `${mapRouteName}_create`,
         component: () => import('@/views/recoveryDispatch/map/details/plotCreateDispatch.vue'),
         meta: {

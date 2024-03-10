@@ -9,7 +9,9 @@ const router = useRouter();
 const goToPlotCreateDispatch = (id: string)=> {
   router.push({
     name: 'recoveryDispatchMap_create',
-    query: {factoryId: id},
+    params: {
+      factoryId: id,
+    },
   })
 }
 
@@ -48,7 +50,7 @@ const { bottom } = toRefs(arrivedState)
 
 <template>
   <div class="box relative w-full h-87vh">
-    <div class="absolute w-35% top-20px left-20px">
+    <div class="absolute w-25% top-20px left-20px">
       <n-select
         clearable
         filterable
