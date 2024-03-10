@@ -2,6 +2,7 @@ package com.cby.tcs.harvest_schedule.entity.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.freedom.cloud.enums.LogicalEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -44,6 +45,12 @@ public class HarvestSchedule extends Model<HarvestSchedule> {
      */
     @TableField("cotton_field_id")
     private String cottonFieldId;
+
+    /**
+     * 是否生成调度单
+     */
+    @TableField("status")
+    private LogicalEnum status;
 
     /**
      * 逻辑删除

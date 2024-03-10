@@ -26,7 +26,8 @@ const columns = ref([
               h('div', `棉田地址： ${row.addr}`),
               h(NButton, {
                 text: true,
-                type: 'info'
+                type: 'info',
+                onClick: () => showCreate.value = true
               }, {
                 default: () => '调度'
               })
@@ -93,6 +94,54 @@ const columns = ref([
   },
 ])
 
+const modalColumns = ref([
+  {
+    key: 'index',
+    title: '序号',
+    render: (_, index) => {
+      return index + 1
+    }
+  },
+  {
+    key: 'plotName',
+    title: '地块名称'
+  },
+  {
+    key: 'cottonVariety',
+    title: '品种'
+  },
+  {
+    key: 'cultivatedArea',
+    title: '面积（亩）'
+  },
+  {
+    key: 'addr',
+    title: '地址'
+  },
+  {
+    key: 'username',
+    title: '联系人',
+    render: (row) => {
+      return row.contacts.username
+    }
+  },
+  {
+    key: 'phone',
+    title: '联系方式',
+    render: (row) => {
+      return row.contacts.phone
+    }
+  },
+  {
+    key: 'createTime',
+    title: '调度时间'
+  },
+  {
+    key: 'actions',
+    title: '操作'
+  },
+])
+
 const summary = (pageData: RowData[]) => {
   return {
     label: {
@@ -119,10 +168,18 @@ function init() {
 
 init()
 
+const showCreate = ref<boolean>(false)
+
 </script>
 
 <template>
   <div class="box relative w-full h-87vh">
+    <div class="absolute top-20px right-200px">
+      <n-flex :wrap="false" :size="60">
+        <n-button text class="text-white" @click="() => showCreate = true">调度单</n-button>
+        <n-button text class="text-white">工具箱</n-button>
+      </n-flex>
+    </div>
     <div class="absolute w-25% top-20px left-20px">
       <n-select
         clearable
@@ -143,6 +200,55 @@ init()
         />
     </div>
   </div>
+  <n-modal
+    v-model:show="showCreate"
+    title="调度单"
+    preset="card"
+    class="w-800px"
+    :mask-closable="false"
+  >
+    <n-flex vertical size="large">
+      <n-form
+        label-placement="left"
+        :show-feedback="false"
+        :label-width="150"
+      >
+        <n-flex :wrap="false">
+          <n-form-item class="w-1/2" label="调度单编号：">
+
+          </n-form-item>
+          <n-form-item label="生成时间：">
+
+          </n-form-item>
+        </n-flex>
+        <n-flex>
+          <n-form-item class="w-1/2" label="轧花厂名称：">
+
+          </n-form-item>
+          <n-form-item label="地址：">
+
+          </n-form-item>
+        </n-flex>
+        <n-flex>
+          <n-form-item class="w-1/2" label="联系人：">
+
+          </n-form-item>
+          <n-form-item label="联系方式：">
+
+          </n-form-item>
+        </n-flex>
+      </n-form>
+      <n-data-table
+        :columns="modalColumns"
+      />
+    </n-flex>
+    <template #action>
+      <n-flex :size="50" justify="center">
+        <n-button type="info">生成调度单</n-button>
+        <n-button type="info" ghost @click="showCreate = false">隐藏调度单</n-button>
+      </n-flex>
+    </template>
+  </n-modal>
 </template>
 
 <style lang="less" scoped>
