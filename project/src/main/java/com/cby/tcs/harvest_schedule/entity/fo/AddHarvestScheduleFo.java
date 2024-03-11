@@ -19,18 +19,13 @@ import java.util.List;
 public class AddHarvestScheduleFo implements Serializable {
 
     /**
-     * 调度编号
-     */
-    private String dispatchId;
-
-    /**
      * 轧花厂id
      */
     @NotBlank(message = "轧花厂编号为空")
     private String ginneryId;
 
     /**
-     * 调度棉地的id集合
+     * 调度棉地的id
      */
-    private List<String> cottonFieldIds;
+    private String cottonFieldId;
 }
