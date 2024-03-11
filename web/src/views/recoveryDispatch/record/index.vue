@@ -1,49 +1,63 @@
 <script setup lang="ts">
-import { h, defineComponent } from 'vue'
 import { NButton, useMessage, NFlex } from 'naive-ui'
-import type { DataTableColumns } from 'naive-ui'
-  let columns = ref([
-    {
-      title: "序号",
-      key: 'index'
-    },
-    {
-      title: "调度单编号",
-      key: 'id'
-    },
-    {
-      title: "轧花厂",
-      key: 'factoryName'
-    },
-    {
-      title: "地址",
-      key: 'address'
-    },
-    {
-      title: '联系人',
-      key: 'contacts'
-    },
-    {
-      title: '联系人',
-      key: 'phone'
-    },
-    {
-      title: "调度面积(亩)",
-      key: "dispatchArea"
-    },
-    {
-      title: "主要品种",
-      key: "mainVarieties"
-    },
-    {
-      title: "调度单时间",
-      key: "dispatchOrder"
-    },
-    {
-      title: '操作',
-      key: 'actions',
-      render (row) {
-        return h(NFlex, [
+import {FilterPageFo, HarvestScheduleVo} from "@/store/api/harvestSchedule";
+import {filterPage} from "@/api/harvestSchedule";
+
+const columns = ref([
+  {
+    title: "序号",
+    key: 'index',
+    render: (_, index) => {
+      return index + 1
+    }
+  },
+  {
+    title: "调度单编号",
+    key: 'dispatchId'
+  },
+  {
+    title: "轧花厂",
+    key: 'factoryName'
+  },
+  {
+    title: "地址",
+    key: 'addr',
+    render: (row) => {
+      return h('span', row.addr ?? '暂无地址')
+    }
+  },
+  {
+    title: '联系人',
+    key: 'username',
+    render: (row) => {
+      return h('span', row.username ?? '暂无联系人')
+    }
+  },
+  {
+    title: '联系方式',
+    key: 'phone',
+    render: (row) => {
+      return h('span', row.username ?? '暂无联系方式')
+    }
+  },
+  {
+    title: "调度面积(亩)",
+    key: "dispatchArea"
+  },
+  {
+    title: "主要品种",
+    key: "mainVarieties"
+  },
+  {
+    title: "调度单时间",
+    key: "createTime"
+  },
+  {
+    title: '操作',
+    key: 'actions',
+    render (row) {
+      return h(NFlex, {}, {
+        default: () => [
           h(NButton,
             {
               strong: true,
@@ -60,66 +74,115 @@ import type { DataTableColumns } from 'naive-ui'
               onClick: () => exportPDF(row)
             },
             { default: () => '导出PDF' }),
-        ])
-      }
+        ]
+      })
     }
-  ])
-  let data = ref([
-    {
-      index: 1,
-      id: "DD20230811001",
-      factoryName: "xxx轧花厂",
-      address: "xx农场",
-      contacts: "张三",
-      phone: '13757886913',
-      dispatchArea: "23140",
-      mainVarieties: "2023-09-01",
-      dispatchOrder: "2023-09-30"
-    },
-    {
-      index: 2,
-      id: "DD20230811002",
-      factoryName: "xxx轧花厂",
-      address: "xx农场",
-      contacts: "李四",
-      phone: '13757886913',
-      dispatchArea: "23140",
-      mainVarieties: "2023-09-01",
-      dispatchOrder: "2023-09-30"
-    },
-  ])
+  }
+])
+
 const message = useMessage()
+
 const  exportPDF = (row) => {
   console.log(row)
   message.info(`导出PDF`)
 }
+
 const router = useRouter()
+
 const checkDispatchDetail = (row) => {
   router.push({
     path: "/recoveryDispatch/record/details"
   })
 }
+
+const formData = ref<FilterPageFo>({
+  ginneryName: null,
+  contacts: null,
+  startTime: null,
+  endTime: null,
+  page: 1,
+  size: 10
+})
+
+const timeRange = ref<string[] | null>()
+
+const data = ref<HarvestScheduleVo[]>([])
+
+const pages = ref<number>(0)
+
+const loading = ref<boolean>(false)
+
+function getData() {
+  loading.value = true
+  if (timeRange.value && timeRange.value.length > 0) {
+    formData.value.startTime = timeRange.value[0]
+    formData.value.endTime = timeRange.value[1]
+  } else {
+    formData.value.startTime = null
+    formData.value.endTime = null
+  }
+  filterPage(formData.value).then(res => {
+    data.value = res.data.records
+    pages.value = res.data.pages
+  }).finally(() => loading.value = false)
+}
+
+getData()
+
+watch(
+  () => [formData.value.page, formData.value.size],
+  () => getData()
+)
+
 </script>
 
 <template>
-  <n-card>
-    <div style="display: flex;justify-content: space-between">
-      <div style="display: flex;align-items: center">
-        <span>轧花厂：</span>
-        <n-input style="width: 15%"></n-input>
-        <span style="margin-left: 30px">联系人：</span>
-        <n-input style="width: 15%"></n-input>
-        <span style="margin-left: 30px">调度单时间：</span>
-        <n-date-picker v-model:value="range" type="daterange" clearable style="width: 15%" />
-      </div>
-      <n-button type="info">查询</n-button>
-    </div>
-  </n-card>
-  <n-card>
-    <n-data-table
-      :columns="columns"
-      :data="data"
-      :bordered="false"
-    />
-  </n-card>
+  <n-flex vertical>
+    <n-card>
+      <n-flex :wrap="false" justify="space-between">
+        <n-flex :wrap="false">
+          <n-form-item label-placement="left" :show-feedback="false" label="轧花厂：">
+            <n-input
+              clearable
+              placeholder="请输入轧花厂/调度单号"
+              v-model:value="formData.ginneryName"
+            />
+          </n-form-item>
+          <n-form-item label-placement="left" :show-feedback="false" label="联系人：">
+            <n-input
+              clearable
+              placeholder="请输入联系人"
+              v-model:value="formData.contacts"
+            />
+          </n-form-item>
+          <n-form-item label-placement="left" :show-feedback="false" label="调度单时间：">
+            <n-date-picker
+              clearable
+              type="daterange"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              v-model:formatted-value="timeRange"
+            />
+          </n-form-item>
+        </n-flex>
+        <n-button type="info" @click="getData()">查询</n-button>
+      </n-flex>
+    </n-card>
+    <n-card>
+      <n-data-table
+        :columns="columns"
+        :data="data"
+        :bordered="false"
+      />
+      <n-flex justify="end">
+        <n-pagination
+          show-size-picker
+          show-quick-jumper
+          :page-count="pages"
+          v-model:page="formData.page"
+          v-model:page-size="formData.size"
+          :page-sizes="[10, 20, 30, 40]"
+        />
+      </n-flex>
+    </n-card>
+  </n-flex>
 </template>

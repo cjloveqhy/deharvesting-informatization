@@ -45,11 +45,11 @@ public class RedisUtils {
     }
 
     public <T> T get(String key, Class<T> clazz, long expire) {
-        String value = redisTemplate.opsForValue().get(key).toString();
+        Object value = redisTemplate.opsForValue().get(key);
         if(expire != NOT_EXPIRE){
             redisTemplate.expire(key, expire, TimeUnit.SECONDS);
         }
-        return value == null ? null : fromJson(value, clazz);
+        return value == null ? null : fromJson(value.toString(), clazz);
     }
 
     public <T> T get(String key, Class<T> clazz) {
