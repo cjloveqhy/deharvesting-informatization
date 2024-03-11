@@ -16,5 +16,9 @@ public interface HarvestScheduleService extends IService<HarvestSchedule> {
      */
     Page<HarvestScheduleVo> filterPage(FilterPageFo entity);
 
+    /**
+     * 创建调度订单编号
+     * @return 调度订单编号
+     */
     String createId();
 }
