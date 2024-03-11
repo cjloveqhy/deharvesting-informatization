@@ -2,6 +2,7 @@
 import {getDetails} from "@/api/harvestSchedule";
 import {HarvestScheduleDetailsVo} from "@/store/api/harvestSchedule";
 import {SexEnum} from "@/store/api/user";
+import {NFlex} from "naive-ui";
 
 const route = useRoute()
 
@@ -32,29 +33,50 @@ const columns = ref([
   {
     key: 'index',
     title: '序号',
+    align: 'center',
+    titleAlign: 'center',
     render: (_, index) => {
       return index + 1
     }
   },
   {
     key: 'plotName',
-    title: '地块名称'
+    title: '地块名称',
+    align: 'center',
+    titleAlign: 'center',
   },
   {
     key: 'cottonVariety',
-    title: '品种'
+    title: '品种',
+    align: 'center',
+    titleAlign: 'center',
   },
   {
     key: 'cultivatedArea',
-    title: '面积（亩）'
+    title: '面积（亩）',
+    align: 'center',
+    titleAlign: 'center',
   },
   {
     key: 'addr',
-    title: '地址'
+    title: '地址',
+    titleAlign: 'center',
+    render: (row) => {
+      return h(NFlex, {
+        justify: 'center'
+      }, {
+        default: () => [
+          h('span', row.addr)
+        ]
+      })
+
+    }
   },
   {
     key: 'username',
     title: '联系人',
+    align: 'center',
+    titleAlign: 'center',
     render: (row) => {
       return row.contacts.username
     }
@@ -62,13 +84,17 @@ const columns = ref([
   {
     key: 'phone',
     title: '联系方式',
+    align: 'center',
+    titleAlign: 'center',
     render: (row) => {
       return row.contacts.phone
     }
   },
   {
     key: 'createTime',
-    title: '调度时间'
+    title: '调度时间',
+    align: 'center',
+    titleAlign: 'center',
   }
 ])
 
@@ -90,10 +116,15 @@ const back = () => router.push({name: 'recoveryDispatch_record'})
 <template>
   <n-flex vertical :size="0">
     <n-card
-      title="基本信息"
       :bordered="false"
       :segmented="{content: true}"
     >
+      <template #header>
+        <n-flex :wrap="false">
+          <img src="@/assets/images/homePage/u516.png" style="width: 30px">
+          <span>基本信息</span>
+        </n-flex>
+      </template>
       <template v-if="loading">
         <n-flex vertical size="large">
           <n-flex :wrap="false" :size="150">
@@ -157,10 +188,15 @@ const back = () => router.push({name: 'recoveryDispatch_record'})
       </template>
     </n-card>
     <n-card
-      title="调度信息"
       :bordered="false"
       :segmented="{content: true}"
     >
+      <template #header>
+        <n-flex :wrap="false">
+          <img src="@/assets/images/homePage/u516.png" style="width: 30px">
+          <span>调度信息</span>
+        </n-flex>
+      </template>
       <n-data-table
         :loading="loading"
         :columns="columns"
