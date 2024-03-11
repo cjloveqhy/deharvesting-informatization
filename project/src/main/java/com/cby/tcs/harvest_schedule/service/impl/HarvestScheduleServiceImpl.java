@@ -6,17 +6,15 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cby.tcs.cotton_field.dao.CottonFieldDao;
 import com.cby.tcs.cotton_field.entity.po.CottonField;
 import com.cby.tcs.cotton_field.entity.vo.CottonFieldVo;
 import com.cby.tcs.cotton_field.service.CottonFieldService;
-import com.cby.tcs.ginnery.entity.po.Ginnery;
-import com.cby.tcs.ginnery.entity.vo.GinneryBasicVo;
-import com.cby.tcs.ginnery.service.GinneryService;
-import com.cby.tcs.cotton_field.dao.CottonFieldDao;
-import com.cby.tcs.cotton_field.entity.po.CottonField;
+import com.cby.tcs.exception.HarvestScheduleException;
 import com.cby.tcs.ginnery.dao.GinneryDao;
 import com.cby.tcs.ginnery.entity.fo.GinneryPageFo;
 import com.cby.tcs.ginnery.entity.po.Ginnery;
+import com.cby.tcs.ginnery.entity.vo.GinneryBasicVo;
 import com.cby.tcs.ginnery.entity.vo.GinneryVo;
 import com.cby.tcs.ginnery.service.GinneryService;
 import com.cby.tcs.harvest_schedule.dao.HarvestScheduleDao;
@@ -37,10 +35,6 @@ import com.freedom.cloud.utils.page.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Objects;
-import java.util.Random;
-import java.util.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -166,8 +160,10 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
   @Override
   public HarvestScheduleDetailsVo getDetails(String dispatchId) {
     LambdaQueryWrapper<HarvestSchedule> wrapper = new LambdaQueryWrapper<>();
-    wrapper.eq(HarvestSchedule::getDispatchId, dispatchId);
+    wrapper.eq(HarvestSchedule::getDispatchId, dispatchId)
+            .eq(HarvestSchedule::getStatus, LogicalEnum.YES);
     HarvestSchedule harvestSchedule = getOne(wrapper);
+    if (Objects.isNull(harvestSchedule)) throw new HarvestScheduleException("调度单号为: %s的调度信息不存在", dispatchId);
     Ginnery ginnery = ginneryService.getById(harvestSchedule.getGinneryId());
     HarvestScheduleDetailsVo detailsVo = BeanUtil.copyProperties(ginnery, HarvestScheduleDetailsVo.class, "contacts");
     detailsVo.setDispatchId(harvestSchedule.getDispatchId())

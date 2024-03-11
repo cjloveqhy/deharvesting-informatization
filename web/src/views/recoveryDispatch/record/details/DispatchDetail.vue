@@ -5,6 +5,8 @@ import {SexEnum} from "@/store/api/user";
 
 const route = useRoute()
 
+const router = useRouter()
+
 const dispatchDetails = ref<HarvestScheduleDetailsVo>({
   id: null,
   contacts: {
@@ -80,6 +82,8 @@ function getData() {
 }
 
 getData()
+
+const back = () => router.push({name: 'recoveryDispatch_record'})
 
 </script>
 
@@ -163,6 +167,19 @@ getData()
         :single-line="false"
         :data="dispatchDetails.children"
       />
+      <template #footer>
+        <n-flex justify="center">
+          <n-button
+            ghost
+            type="info"
+            size="large"
+            @click="back"
+            class="w-100px"
+          >
+            返回
+          </n-button>
+        </n-flex>
+      </template>
     </n-card>
   </n-flex>
 </template>

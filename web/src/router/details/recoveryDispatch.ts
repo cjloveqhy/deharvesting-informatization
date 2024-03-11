@@ -40,7 +40,7 @@ const routes: Array<AppRouteRecordRaw> = [
         name: `${recordRouteName}_details`,
         component: () => import('@/views/recoveryDispatch/record/details/DispatchDetail.vue'),
         meta: {
-          title: '详情页',
+          title: '调度详情',
           activeMenu: 'recoveryDispatch_record'
         },
       },
