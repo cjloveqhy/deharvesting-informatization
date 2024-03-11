@@ -2,4 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cby.tcs.harvest_schedule.dao.HarvestScheduleDao">
 
+    <select id="filterPage" resultType="com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo">
+        SELECT
+            hs.id,
+            hs.dispatch_id,
+            g.factory_name,
+            g.addr,
+            u.username,
+            u.phone,
+            ( SELECT sum( cf.cultivated_area ) FROM cotton_field cf WHERE cf.ginnery_id = hs.ginnery_id ) dispatchArea,
+            (
+                SELECT
+                    cv.cotton_variety mainVarieties
+                FROM
+                    ( SELECT cotton_variety, COUNT(*) max_variety FROM cotton_field WHERE ginnery_id = hs.ginnery_id GROUP BY cotton_variety ORDER BY max_variety DESC LIMIT 1 ) cv
+            ) mainVarieties,
+            hs.create_time
+        FROM
+            harvest_schedule hs
+                LEFT JOIN ginnery g ON hs.ginnery_id = g.id
+                LEFT JOIN `user` u ON g.contacts = u.id
+        WHERE
+            hs.`status` = 'Y'
+        <if test="params.dispatchId != null">
+            AND hs.dispatch_id = #{params.dispatchId}
+        </if>
+        <if test="params.ginneryName != null">
+            AND g.factory_name LIKE '%${params.ginneryName}%'
+        </if>
+        <if test="params.contacts != null">
+            AND g.contacts = #{params.contacts}
+        </if>
+        <if test="params.startTime != null and params.endTime != null">
+            AND hs.create_time BETWEEN #{params.startTime} AND #{params.endTime}
+        </if>
+    </select>
 </mapper>
