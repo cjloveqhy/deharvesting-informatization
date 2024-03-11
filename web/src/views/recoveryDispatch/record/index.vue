@@ -91,7 +91,8 @@ const router = useRouter()
 
 const checkDispatchDetail = (row) => {
   router.push({
-    path: "/recoveryDispatch/record/details"
+    name: 'recoveryDispatchRecord_details',
+    params: {dispatchId: row.dispatchId}
   })
 }
 

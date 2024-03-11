@@ -1,4 +1,5 @@
 import {PageQuery} from "@/store/common";
+import {GinneryVo} from "@/store/api/ginnery";
 
 export interface FilterPageFo extends PageQuery {
   ginneryName?: string | null
@@ -15,4 +16,10 @@ export interface HarvestScheduleVo {
   phone: string
   dispatchArea: number
   createTime: Date
+}
+
+export interface HarvestScheduleDetailsVo extends GinneryVo {
+  dispatchId: string | null
+  dispatchArea: number | null
+  createTime: Date | null
 }

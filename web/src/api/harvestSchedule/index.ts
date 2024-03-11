@@ -8,6 +8,7 @@ const getUri = (uri: string) => {
 
 export const api = {
   filterPage: getUri('/filterPage'),
+  details: getUri('/details'),
 }
 
 /**
@@ -20,6 +21,17 @@ export function filterPage(params: FilterPageFo) {
     params
   },{
     joinParamsToUrl: true
-  });
+  })
+}
+
+/**
+ * @description 获取调度单详细信息
+ */
+export function getDetails(dispatchId: string) {
+  return http.request({
+    url: api.details,
+    method: RequestEnum.GET,
+    params: {dispatchId: dispatchId}
+  })
 }
 

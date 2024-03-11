@@ -203,7 +203,7 @@ const showCreate = ref<boolean>(false)
 </script>
 
 <template>
-  <div class="box w-full h-87vh p-20px">
+  <div class="box relative w-full h-87vh p-20px">
     <div class="absolute top-20px right-200px">
       <n-flex :wrap="false" :size="60">
         <n-button text class="text-white" @click="() => showCreate = true">调度单</n-button>

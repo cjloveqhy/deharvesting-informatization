@@ -9,6 +9,7 @@ const routes: Array<AppRouteRecordRaw> = [
   {
     path: '/recoveryDispatch',
     name: mapRouteName,
+    redirect: '/recoveryDispatch/map',
     component: Layout,
     meta: {
       title: '地图调度',
@@ -28,14 +29,15 @@ const routes: Array<AppRouteRecordRaw> = [
   {
     path: '/recoveryDispatch',
     name: recordRouteName,
+    redirect: '/recoveryDispatch/map',
     component: Layout,
     meta: {
       title: '调度记录',
     },
     children: [
       {
-        path: 'record/details',
-        name: `${mapRouteName}_details`,
+        path: 'record/details/:dispatchId',
+        name: `${recordRouteName}_details`,
         component: () => import('@/views/recoveryDispatch/record/details/DispatchDetail.vue'),
         meta: {
           title: '详情页',
