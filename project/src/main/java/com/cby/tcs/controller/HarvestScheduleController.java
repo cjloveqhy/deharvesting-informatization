@@ -1,9 +1,15 @@
 package com.cby.tcs.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cby.tcs.harvest_schedule.entity.fo.AddHarvestScheduleFo;
+import com.cby.tcs.harvest_schedule.entity.fo.FilterPageFo;
+import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo;
+import com.freedom.cloud.annotation.ParamsToEntity;
+import com.freedom.cloud.result.ResultEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import com.cby.tcs.harvest_schedule.service.HarvestScheduleService;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/harvest-schedule")
@@ -21,6 +27,9 @@ public class HarvestScheduleController {
     return ResultEntity.success(vos);
   }
 
+  /**
+   * 创建调度单记录
+   */
   @PostMapping("/add")
   public ResultEntity add(@Validated @RequestBody AddHarvestScheduleFo entity){
     harvestScheduleService.add(entity);
