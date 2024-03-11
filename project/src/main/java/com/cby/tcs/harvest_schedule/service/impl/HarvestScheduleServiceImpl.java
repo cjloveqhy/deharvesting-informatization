@@ -2,13 +2,14 @@ package com.cby.tcs.harvest_schedule.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cby.tcs.harvest_schedule.dao.HarvestScheduleDao;
 import com.cby.tcs.harvest_schedule.entity.fo.AddHarvestScheduleFo;
 import com.cby.tcs.harvest_schedule.entity.fo.FilterPageFo;
 import com.cby.tcs.harvest_schedule.entity.po.HarvestSchedule;
+import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo;
 import com.cby.tcs.harvest_schedule.service.HarvestScheduleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cby.tcs.utils.RedisUtils;
 import com.freedom.cloud.enums.LogicalEnum;
 import com.freedom.cloud.utils.page.PageUtils;
@@ -16,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -66,7 +66,7 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
   }
 
   @Override
-  public String createId() {
+  public String createDispatchId() {
     Integer value = redisUtils.get(dispatchIdKey, Integer.class);
     if (value == null) {
       synchronized (this) {
@@ -85,6 +85,12 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
     Integer keyValue = redisUtils.get(dispatchIdKey, Integer.class);
     dispatchId.append(String.format("%03d", keyValue));
     return dispatchId.toString();
+  }
+
+  @Override
+  public HarvestScheduleDetailsVo getDetails(String dispatchId) {
+
+    return null;
   }
 
 }

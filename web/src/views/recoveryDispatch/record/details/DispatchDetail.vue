@@ -6,7 +6,7 @@
   <n-list style="padding: 20px">
     <template #header>
       <div style="display: flex">
-        <img src="../../../../assets/images/homePage/u516.png" style="width: 30px">
+        <img src="@/assets/images/homePage/u516.png" style="width: 30px">
         <span style="color: #289CEB;transform: translate(5px, 5px)">基本信息</span>
       </div>
     </template>
@@ -66,7 +66,7 @@
   <n-list style="padding: 20px">
     <template #header>
       <div style="display: flex">
-        <img src="../../../../assets/images/homePage/u516.png" style="width: 30px">
+        <img src="@/assets/images/homePage/u516.png" style="width: 30px">
         <span style="color: #289CEB;transform: translate(5px, 5px)">调度信息</span>
       </div>
     </template>
@@ -92,7 +92,7 @@
           <td>800</td>
           <td>
             <div style="display: flex;justify-content: center">
-              <img src="../../../../assets/images/dispatchDetails/u575.png" style="width: 20px;height: 20px">
+              <img src="@/assets/images/dispatchDetails/u575.png" style="width: 20px;height: 20px">
               <span>伊犁州XXX路</span>
             </div>
           </td>
@@ -107,7 +107,7 @@
           <td>800</td>
           <td>
             <div style="display: flex;justify-content: center">
-              <img src="../../../../assets/images/dispatchDetails/u575.png" style="width: 20px;height: 20px">
+              <img src="@/assets/images/dispatchDetails/u575.png" style="width: 20px;height: 20px">
               <span>伊犁州XXX路</span>
             </div>
           </td>
@@ -121,7 +121,7 @@
   </n-list>
 </template>
 <style lang="less" scoped>
-::v-deep .n-descriptions .n-descriptions-table-wrapper .n-descriptions-table{
+::v-deep(.n-descriptions .n-descriptions-table-wrapper .n-descriptions-table) {
   border-spacing: 20px
 }
 </style>

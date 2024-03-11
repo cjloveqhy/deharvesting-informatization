@@ -71,8 +71,9 @@ public class GinneryServiceImpl extends ServiceImpl<GinneryDao, Ginnery> impleme
       for (CottonField field : cottonFields) {
         if (field.getGinneryId().equals(ginnery.getId())) {
           CottonFieldVo fieldVo = BeanUtil.copyProperties(field, CottonFieldVo.class, "ginnery", "contacts");
-          fieldVo.setGinnery(ginneryMap.get(ginnery.getId()))
+          fieldVo.setGinnery(ginneryMap.get(ginnery.getId()).setContacts(userInfoMap.get(field.getContacts())))
                   .setContacts(userInfoMap.get(field.getContacts()));
+          ginneryVo.setContacts(userInfoMap.get(field.getContacts()));
           ginneryVo.getChildren().add(fieldVo);
         }
       }

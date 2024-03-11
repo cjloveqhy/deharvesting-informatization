@@ -308,11 +308,11 @@ const showCreate = ref<boolean>(false)
   background-color: #f1f5f9;
 }
 
-::v-deep .summaryDataTable .n-data-table-tr--summary {
+::v-deep(.summaryDataTable .n-data-table-tr--summary) {
   display: table-row !important;
 }
 
-::v-deep .summaryDataTable .n-data-table-tr {
+::v-deep(.summaryDataTable .n-data-table-tr) {
   display: none;
 }
 </style>

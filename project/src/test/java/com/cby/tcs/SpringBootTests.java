@@ -25,7 +25,7 @@ public class SpringBootTests {
 
     @Test
     void id() {
-        String id = harvestScheduleService.createId();
+        String id = harvestScheduleService.createDispatchId();
         System.out.println(id);
     }
 }
