@@ -3,6 +3,8 @@ import {RowData} from "naive-ui/es/data-table/src/interface";
 import {getCottons} from "@/api/cottonField";
 import {NButton, NFlex, NFormItem} from "naive-ui";
 import {CottonFieldVo} from "@/store/api/cottonField";
+import CaretGroup from '@/components/icons/CaretGroup.vue'
+import { DocumentTextOutline, BriefcaseOutline } from '@vicons/ionicons5'
 
 const route = useRoute()
 
@@ -87,11 +89,19 @@ const columns = ref([
   },
   {
     key: 'area',
-    title: '面积'
+    title: '面积',
+    sorter: (row1, row2) => row1.cultivatedArea - row2.cultivatedArea,
+    renderSorterIcon: (options: { order }) => {
+      return h(CaretGroup, {order: options.order})
+    }
   },
   {
     key: 'distance',
-    title: '距离'
+    title: '距离',
+    sorter: true,
+    renderSorterIcon: (options: { order }) => {
+      return h(CaretGroup, {order: options.order})
+    }
   },
 ])
 
@@ -206,8 +216,18 @@ const showCreate = ref<boolean>(false)
   <div class="box relative w-full h-87vh p-20px">
     <div class="absolute top-20px right-200px">
       <n-flex :wrap="false" :size="60">
-        <n-button text class="text-white" @click="() => showCreate = true">调度单</n-button>
-        <n-button text class="text-white">工具箱</n-button>
+        <n-button text class="text-white" @click="() => showCreate = true">
+          <template #icon>
+            <n-icon :component="DocumentTextOutline" />
+          </template>
+          调度单
+        </n-button>
+        <n-button text class="text-white">
+          <template #icon>
+            <n-icon :component="BriefcaseOutline" />
+          </template>
+          工具箱
+        </n-button>
       </n-flex>
     </div>
     <div class="w-25%">
