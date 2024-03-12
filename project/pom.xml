@@ -100,6 +100,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.2.3</version>
                 <configuration>
                     <!--设置为true，以便把本地的system的jar也包括进来-->
                     <includeSystemScope>true</includeSystemScope>

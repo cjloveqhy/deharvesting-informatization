@@ -11,7 +11,7 @@ const props = defineProps({
     default: ""
   }
 })
-let lineTypesInfo = ref([
+const lineTypesInfo = ref([
   {
     title: "农机类型",
     mark: "setting",
@@ -78,8 +78,7 @@ let lineTypeArr = filterLineTypesInfo[0].types
 </script>
 
 <template>
-  <n-card style="margin-right: 10px; width: 15%;height: 87vh"
-          :segmented="{content: true,footer: 'soft'}">
+  <n-card :segmented="{content: true,footer: 'soft'}">
     <template #header>
       <n-icon color="#0175A8" :size="20">
         <List></List>
@@ -97,11 +96,3 @@ let lineTypeArr = filterLineTypesInfo[0].types
     </n-timeline>
   </n-card>
 </template>
-
-<style scoped lang="less">
-::v-deep .n-card.n-card--bordered {
-  height: 87vh;
-  margin: 0;
-}
-</style>
-

@@ -120,15 +120,12 @@ const deleteTerminal = (row)=> {
 </script>
 
 <template>
-  <div style="display: flex">
-    <LineType mark="farm" type="farmDataTerminal"></LineType>
-    <div style="width: 100%;">
-      <n-card class="actionCard" :bordered="false">
+  <n-flex :wrap="false" class="w-full h-87vh">
+    <LineType mark="farm" type="farmDataTerminal" class="w-15% h-full"></LineType>
+    <n-flex vertical class="w-85%">
+      <n-card :bordered="false">
         <n-form
-          ref="formRef"
           inline
-          :model="formValue"
-          :size="size"
           label-placement="left"
           label-align="left"
         >
@@ -159,33 +156,6 @@ const deleteTerminal = (row)=> {
           :bordered="false"
         />
       </n-card>
-    </div>
-  </div>
+    </n-flex>
+  </n-flex>
 </template>
-<style lang="less" scoped>
-.n-select {
-  width: 150px;
-}
-
-::v-deep .n-form-item .n-form-item-feedback-wrapper {
-  min-height: 0px;
-}
-
-.actionCard {
-  ::v-deep .n-card__content {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
-::v-deep .n-data-table .n-data-table-th {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  min-width: 100px;
-}
-
-::v-deep .n-data-table .n-data-table-td {
-  text-align: center;
-}
-</style>

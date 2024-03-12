@@ -177,7 +177,7 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
     List<CottonField> cottonFields = cottonFieldService.listByIds(cottonIds);
     List<String> userIds = new ArrayList<>(cottonFields.stream()
             .map(CottonField::getContacts)
-            .filter(StrUtil::hasBlank)
+            .filter(StrUtil::isNotBlank)
             .distinct()
             .toList());
     if (!StrUtil.hasBlank(ginnery.getContacts())) userIds.add(ginnery.getContacts());

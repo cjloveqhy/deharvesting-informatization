@@ -1,137 +1,148 @@
 <script setup lang="ts">
-
 import LineType from "@/components/LineType/LineType.vue";
-let formValue = ref({
-  user: {
-    contractId: '',
-    customerName: '',
-    flyer: '',
-    rateResult: '',
-    workTime: ''
-  },
-})
+import {FarmUavPageFo, FarmUavVo, HoldingAttrOptions} from "@/store/api/farmUav";
+import {getFilterPage} from "@/api/farmUav";
 
-let farmUavColumns = ref([
+const farmUavColumns = ref([
   {
     title: "序号",
-    key: "index"
+    key: "index",
+    align: 'center',
+    titleAlign: 'center',
+    render: (_, index) => {
+      return index + 1
+    }
   },
   {
     title: "机架号",
-    key: "rackNumber"
+    key: "rackNumber",
+    align: 'center',
+    titleAlign: 'center',
   },
   {
     title: "所属服务商",
-    key: "serviceProvider"
+    key: "serviceProvider",
+    align: 'center',
+    titleAlign: 'center',
   },
   {
     title: "所属人",
-    key: "belongingPerson"
+    key: "username",
+    align: 'center',
+    titleAlign: 'center',
+    render: (row) => {
+      return h('span', row.belonger.username)
+    }
   },
   {
     title: "联系方式",
-    key: "phone"
+    key: "phone",
+    align: 'center',
+    titleAlign: 'center',
+    render: (row) => {
+      return h('span', row.belonger.phone)
+    }
   },
   {
     title: "持有属性",
-    key: "holdingAttributes"
+    key: "holdingAttr",
+    align: 'center',
+    titleAlign: 'center',
   },
   {
     title: "作业面积(亩)",
-    key: "workArea"
+    key: "workArea",
+    align: 'center',
+    titleAlign: 'center',
   },
   {
     title: "作业时间(小时)",
-    key: "workTime"
+    key: "workTime",
+    align: 'center',
+    titleAlign: 'center',
   },
   {
     title: "喷洒流量(升/亩)",
-    key: "sprayFlowRate"
+    key: "sprayFlowRate",
+    align: 'center',
+    titleAlign: 'center',
   }
 ])
 
-let farmData = ref([
-  {
-    index: 1,
-    rackNumber: 'EACM23071901',
-    serviceProvider: "农业发展公司",
-    belongingPerson: "张三",
-    phone: "13757886913",
-    holdingAttributes: "自有",
-    workArea: 12.22,
-    workTime: 123.11,
-    sprayFlowRate: 2.2
-  },
-  {
-    index: 1,
-    rackNumber: 'EACM23071901',
-    serviceProvider: "农业发展公司",
-    belongingPerson: "张三",
-    phone: "13757886913",
-    holdingAttributes: "自有",
-    workArea: 12.22,
-    workTime: 123.11,
-    sprayFlowRate: 2.2
-  },
-])
+const formData = ref<FarmUavPageFo>({
+  page: 1,
+  size: 10,
+  rackNumber: null,
+  serviceProvider: null,
+  holdingAttr: null,
+})
+
+const farmData = ref<FarmUavVo[]>([])
+
+const loading = ref<boolean>(false)
+
+const pages = ref<number>(0)
+
+function getData() {
+  loading.value = true
+  getFilterPage(formData.value).then(res => {
+    farmData.value = res.data.records
+    pages.value = res.data.pages
+  }).finally(() => loading.value = false)
+}
+
+getData()
+
+watch(
+  () => [formData.value.page, formData.value.size],
+  () => getData()
+)
 
 </script>
 <template>
-  <div style="display: flex">
-    <LineType mark="farm" type="farmUav"></LineType>
-    <div style="width: 100%;">
-      <n-card class="actionCard" :bordered="false">
-        <n-form
-          ref="formRef"
-          inline
-          :model="formValue"
-          :size="size"
-          label-placement="left"
-          label-align="left"
-        >
-          <n-form-item label="机架号:" path="user.orderId">
-            <n-input v-model:value="formValue.user.orderId"/>
-          </n-form-item>
-          <n-form-item label="所属服务商:" path="user.customerName">
-            <n-input v-model:value="formValue.user.customerName"/>
-          </n-form-item>
-          <n-form-item label="持有属性:" path="user.flyer">
-            <n-select v-model:value="formValue.user.rateResult" :options="options"/>
-          </n-form-item>
-        </n-form>
-        <n-button type="primary">查询</n-button>
+  <n-flex :wrap="false" class="w-full h-87vh">
+    <LineType mark="farm" type="farmUav" class="w-15% h-full"></LineType>
+    <n-flex vertical class="w-85%">
+      <n-card>
+        <n-flex :wrap="false" justify="space-between">
+          <n-flex :wrap="false">
+            <n-form-item label-placement="left" :show-feedback="false" label="机架号:">
+              <n-input v-model:value="formData.rackNumber" placeholder="请输入机架号" clearable />
+            </n-form-item>
+            <n-form-item label-placement="left" :show-feedback="false" label="所属服务商:">
+              <n-input v-model:value="formData.serviceProvider" placeholder="请输入所属服务商" clearable />
+            </n-form-item>
+            <n-form-item label-placement="left" :show-feedback="false" label="持有属性:">
+              <n-select
+                clearable
+                class="w-200px"
+                placeholder="请选择持有属性"
+                :options="HoldingAttrOptions"
+                v-model:value="formData.holdingAttr"
+              />
+            </n-form-item>
+          </n-flex>
+          <n-button type="primary" @click="getData">查询</n-button>
+        </n-flex>
       </n-card>
-      <n-card style="height: calc(87vh - 84px)">
+      <n-card>
         <n-data-table
+          :loading="loading"
           :columns="farmUavColumns"
           :data="farmData"
           :bordered="false"
         />
+        <n-flex justify="end">
+          <n-pagination
+            show-size-picker
+            show-quick-jumper
+            :page-count="pages"
+            v-model:page="formData.page"
+            v-model:page-size="formData.size"
+            :page-sizes="[10, 20, 30, 40]"
+          />
+        </n-flex>
       </n-card>
-    </div>
-  </div>
+    </n-flex>
+  </n-flex>
 </template>
-<style lang="less" scoped>
-.n-select {
-  width: 150px;
-}
-::v-deep .n-form-item .n-form-item-feedback-wrapper{
-  min-height: 0px;
-}
-.actionCard{
-  margin-bottom: 10px;
-  ::v-deep .n-card__content{
-    display: flex;
-    justify-content: space-between;
-  }
-}
-::v-deep .n-data-table .n-data-table-th {
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  min-width: 100px;
-}
-::v-deep .n-data-table .n-data-table-td{
-  text-align: center;
-}
-</style>
