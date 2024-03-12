@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import {RowData} from "naive-ui/es/data-table/src/interface";
 import {getCottons} from "@/api/cottonField";
+import {addRecord, createRecord, delCottonField, getRecord} from "@/api/harvestSchedule";
 import {NButton, NFlex, NFormItem} from "naive-ui";
 import {CottonFieldVo} from "@/store/api/cottonField";
+import {
+  AddHarvestScheduleFo, DeleteHarvestScheduleRecordCottonFieldFo,
+  HarvestScheduleRecordPageFo,
+  HarvestScheduleRecordPageVo
+} from "@/store/api/harvestSchedule";
+import {GinneryVo} from "@/store/api/ginnery";
+import {string} from "vue-types";
 
 const route = useRoute()
 
@@ -27,7 +35,7 @@ const columns = ref([
               h(NButton, {
                 text: true,
                 type: 'info',
-                onClick: () => showCreate.value = true
+                onClick: () => showRecordModal(row)
               }, {
                 default: () => '调度'
               })
@@ -139,7 +147,20 @@ const modalColumns = ref([
   },
   {
     key: 'actions',
-    title: '操作'
+    title: '操作',
+    render (row) {
+      return h(
+        NButton,
+        {
+          strong: true,
+          tertiary: true,
+          size: 'small',
+          class: 'text-red',
+          onClick: () => deleteCottonFields(row)
+        },
+        { default: () => '删除' }
+      )
+    }
   },
 ])
 
@@ -165,28 +186,12 @@ function init() {
   getCottons(route.params.factoryId as string).then(res => {
     data.value = res.data
     originalData.value = res.data;
-    getAddressOption(data.value)
   })
 }
-
-const addressOption = ref<Array<object>>([])
-
-const getAddressOption = (data)=> {
-  data.forEach(item => {
-    let obj = {
-      label: "",
-      value: ""
-    }
-    if (item.addr !== null) {
-      obj.label = item.addr
-      obj.value = item.id
-      addressOption.value.push(obj)
-    }
-  })
-}
-
+// 保存原始数据
 const originalData = ref<CottonFieldVo[]>([]);
 
+// 根据棉地 地址搜索
 const searchAddress = (value: string, option: object) => {
   if (value) {
     data.value = originalData.value.filter(item => item.addr && item.addr.includes(value))
@@ -194,6 +199,68 @@ const searchAddress = (value: string, option: object) => {
     // 如果 value 为空，则恢复原始数据
     data.value = originalData.value;
   }
+}
+
+// 分页获取调度单信息参数
+const getRecordPageInfo = ref<HarvestScheduleRecordPageFo>({
+  ginneryId: "",
+  page: 1,
+  size: 5
+})
+
+// 弹窗内调度单信息展示
+let recordModalInfo = ref<HarvestScheduleRecordPageVo>()
+// 弹窗内调度单表格展示
+let recordModalTableData = ref<GinneryVo>();
+
+// 获取调度单信息
+const getRecords = async ()=> {
+  let result = await getRecord(getRecordPageInfo.value);
+  recordModalInfo.value = result.data
+  recordModalTableData.value = result.data.cottonFields
+  deleteCottonFieldInfo.value.dispatchId = result.data.dispatchId
+  dispatchId.value = result.data.dispatchId
+}
+
+// 添加调度单记录参数
+const addRecordInfo = ref<AddHarvestScheduleFo>({
+  ginneryId: "",
+  cottonFieldId: ""
+})
+
+// 创建调度单
+const addRecords = async ()=> {
+  await addRecord(addRecordInfo.value)
+}
+
+// 显示调度单弹窗
+const showRecordModal = async (row) => {
+  addRecordInfo.value.ginneryId = row.ginnery.id
+  addRecordInfo.value.cottonFieldId = row.id
+  getRecordPageInfo.value.ginneryId = row.ginnery.id
+  await addRecords()
+  await getRecords()
+  showCreate.value = true
+}
+
+let deleteCottonFieldInfo = ref<DeleteHarvestScheduleRecordCottonFieldFo>({
+  dispatchId: "",
+  cottonFieldId: ""
+})
+
+// 删除调度单内的棉地信息
+const deleteCottonFields = async (row) => {
+  deleteCottonFieldInfo.value.cottonFieldId = row.id
+  await delCottonField(deleteCottonFieldInfo.value)
+  await getRecords()
+}
+
+let dispatchId = ref<string>("");
+
+// 生成调度单
+const createRecords = async () => {
+ await createRecord(dispatchId.value)
+  showCreate.value = false
 }
 
 init()
@@ -220,7 +287,6 @@ const showCreate = ref<boolean>(false)
         :show="false"
         placeholder="请输入地块名"
         :tag="true"
-        :options="addressOption"
       />
       <n-data-table
         class="mt-10px bg-white"
@@ -228,6 +294,7 @@ const showCreate = ref<boolean>(false)
         max-height="250px"
         :columns="columns"
         :data="data"
+
       />
     </div>
     <div class="w-25%" style="transform: translateY(-10px)" v-show="data.length > 0">
@@ -246,7 +313,7 @@ const showCreate = ref<boolean>(false)
     v-model:show="showCreate"
     title="调度单"
     preset="card"
-    class="w-800px"
+    class="w-850px"
     :mask-closable="false"
   >
     <n-flex vertical size="large">
@@ -254,39 +321,41 @@ const showCreate = ref<boolean>(false)
         label-placement="left"
         :show-feedback="false"
         :label-width="150"
+        :model="recordModalInfo"
       >
         <n-flex :wrap="false">
           <n-form-item class="w-1/2" label="调度单编号：">
-
+            {{ recordModalInfo.dispatchId }}
           </n-form-item>
           <n-form-item label="生成时间：">
-
+            {{ recordModalInfo.createTime }}
           </n-form-item>
         </n-flex>
         <n-flex>
           <n-form-item class="w-1/2" label="轧花厂名称：">
-
+            {{ recordModalInfo.ginnery.factoryName }}
           </n-form-item>
           <n-form-item label="地址：">
-
+            {{ recordModalInfo.ginnery.addr }}
           </n-form-item>
         </n-flex>
         <n-flex>
           <n-form-item class="w-1/2" label="联系人：">
-
+            {{ recordModalInfo.ginnery.contacts.username }}
           </n-form-item>
           <n-form-item label="联系方式：">
-
+            {{ recordModalInfo.ginnery.contacts.phone }}
           </n-form-item>
         </n-flex>
       </n-form>
       <n-data-table
         :columns="modalColumns"
+        :data="recordModalTableData"
       />
     </n-flex>
     <template #action>
       <n-flex :size="50" justify="center">
-        <n-button type="info">生成调度单</n-button>
+        <n-button type="info" @click="createRecords">生成调度单</n-button>
         <n-button type="info" ghost @click="showCreate = false">隐藏调度单</n-button>
       </n-flex>
     </template>

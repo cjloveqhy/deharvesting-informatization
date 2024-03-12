@@ -1,6 +1,10 @@
 import { http } from '@/utils/http/axios';
 import {RequestEnum} from "@/enums/httpEnum";
-import {FilterPageFo} from "@/store/api/harvestSchedule";
+import {
+  AddHarvestScheduleFo, DeleteHarvestScheduleRecordCottonFieldFo,
+  FilterPageFo,
+  HarvestScheduleRecordPageFo
+} from "@/store/api/harvestSchedule";
 
 const getUri = (uri: string) => {
   return `/harvest-schedule${uri}`
@@ -8,7 +12,11 @@ const getUri = (uri: string) => {
 
 export const api = {
   filterPage: getUri('/filterPage'),
+  getRecord: getUri("/get"),
+  addRecord: getUri("/add"),
   details: getUri('/details'),
+  delCottonField: getUri("/delCottonField"),
+  createRecord: getUri("/create")
 }
 
 /**
@@ -35,3 +43,48 @@ export function getDetails(dispatchId: string) {
   })
 }
 
+/**
+ * 获取调度单信息
+ * @param params
+ */
+export function getRecord(params: HarvestScheduleRecordPageFo){
+  return http.request({
+    url: api.getRecord,
+    method: RequestEnum.GET,
+    params
+  })
+}
+
+/**
+ * 添加调度单记录
+ * @param data
+ */
+export function addRecord(data: AddHarvestScheduleFo){
+  return http.request({
+    url: api.addRecord,
+    method: RequestEnum.POST,
+    data
+  })
+}
+
+/**
+ * 删除调度单内的棉地信息
+ * @param data
+ */
+export function delCottonField(data: DeleteHarvestScheduleRecordCottonFieldFo) {
+  return http.request({
+    url: api.delCottonField,
+    method: RequestEnum.DELETE,
+    data
+  })
+}
+
+export function createRecord(dispatchId: string){
+  return http.request({
+    url: api.createRecord,
+    method: RequestEnum.PUT,
+    data: {
+      dispatchId
+    }
+  })
+}

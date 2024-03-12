@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cby.tcs.cotton_field.dao.CottonFieldDao;
+import com.cby.tcs.cotton_field.entity.fo.CottonFieldByIdsFo;
 import com.cby.tcs.cotton_field.entity.po.CottonField;
 import com.cby.tcs.cotton_field.entity.vo.CottonFieldVo;
 import com.cby.tcs.cotton_field.service.CottonFieldService;
@@ -18,10 +19,7 @@ import com.cby.tcs.ginnery.entity.vo.GinneryBasicVo;
 import com.cby.tcs.ginnery.entity.vo.GinneryVo;
 import com.cby.tcs.ginnery.service.GinneryService;
 import com.cby.tcs.harvest_schedule.dao.HarvestScheduleDao;
-import com.cby.tcs.harvest_schedule.entity.fo.AddHarvestScheduleFo;
-import com.cby.tcs.harvest_schedule.entity.fo.DeleteHarvestScheduleRecordCottonFieldFo;
-import com.cby.tcs.harvest_schedule.entity.fo.FilterPageFo;
-import com.cby.tcs.harvest_schedule.entity.fo.HarvestScheduleRecordPageFo;
+import com.cby.tcs.harvest_schedule.entity.fo.*;
 import com.cby.tcs.harvest_schedule.entity.po.HarvestSchedule;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
@@ -75,11 +73,13 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
               .setDeleted(0);
       harvestScheduleDao.insert(newHarvestSchedule);
     } else {
-      List<String> cottonFieldList = Arrays.stream(existingSchedule.getCottonFieldId().split(",")).toList();
-      if (!cottonFieldList.contains(entity.getCottonFieldId())){
-        cottonFieldId = existingSchedule.getCottonFieldId() + "," + cottonFieldId;
-      } else {
-        cottonFieldId = existingSchedule.getCottonFieldId();
+      if (!existingSchedule.getCottonFieldId().isEmpty()){
+        List<String> cottonFieldList = Arrays.stream(existingSchedule.getCottonFieldId().split(",")).toList();
+        if (!cottonFieldList.contains(entity.getCottonFieldId())){
+          cottonFieldId = String.join(",", existingSchedule.getCottonFieldId(), entity.getCottonFieldId());
+        } else {
+          cottonFieldId = existingSchedule.getCottonFieldId();
+        }
       }
       existingSchedule.setCottonFieldId(cottonFieldId);
       harvestScheduleDao.updateById(existingSchedule);
@@ -119,17 +119,21 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
 
   @Override
   public HarvestScheduleRecordVo getRecord(HarvestScheduleRecordPageFo entity) {
-    // 获取调度单信息
     HarvestSchedule harvestSchedule = harvestScheduleDao.selectOne(new LambdaQueryWrapper<HarvestSchedule>()
             .eq(HarvestSchedule::getGinneryId, entity.getGinneryId()).eq(HarvestSchedule::getStatus, LogicalEnum.NO));
-    // 获取轧花厂信息
+    // 轧花厂信息
     Ginnery ginnery = ginneryDao.selectById(harvestSchedule.getGinneryId());
     GinneryPageFo ginneryPageFo = new GinneryPageFo();
     ginneryPageFo.setFactoryName(ginnery.getFactoryName()).setPage(entity.getPage()).setSize(entity.getSize());
     Page<GinneryVo> ginneryVoPage = ginneryService.search(ginneryPageFo);
-    // 联系人信息
+    // 棉地信息
+    CottonFieldByIdsFo cottonFieldByIdsFo = new CottonFieldByIdsFo();
+    cottonFieldByIdsFo.setGinneryId(harvestSchedule.getGinneryId())
+            .setCottonFieldIds(Arrays.stream(harvestSchedule.getCottonFieldId().split(",")).toList());
+    // 设置返回体
     HarvestScheduleRecordVo harvestScheduleRecordVo = new HarvestScheduleRecordVo();
-    harvestScheduleRecordVo.setDispatchId(harvestSchedule.getDispatchId()).setGinneryList(ginneryVoPage.getRecords())
+    harvestScheduleRecordVo.setDispatchId(harvestSchedule.getDispatchId()).setGinnery(ginneryVoPage.getRecords().get(0))
+            .setCottonFields(cottonFieldService.getCottonsByIds(cottonFieldByIdsFo))
             .setCreateTime(harvestSchedule.getCreateTime());
     return harvestScheduleRecordVo;
   }
@@ -150,9 +154,10 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
   }
 
   @Override
-  public void create(String dispatchId) {
+  public void create(CreateHarvestScheduleFo createHarvestScheduleFo) {
+    System.out.println("-------" + createHarvestScheduleFo.getDispatchId());
     HarvestSchedule harvestSchedule = harvestScheduleDao
-            .selectOne(new LambdaQueryWrapper<HarvestSchedule>().eq(HarvestSchedule::getDispatchId, dispatchId));
+            .selectOne(new LambdaQueryWrapper<HarvestSchedule>().eq(HarvestSchedule::getDispatchId, createHarvestScheduleFo.getDispatchId()));
     harvestSchedule.setStatus(LogicalEnum.YES).setCreator(String.valueOf(StpUtil.getLoginId()));
     harvestScheduleDao.updateById(harvestSchedule);
   }

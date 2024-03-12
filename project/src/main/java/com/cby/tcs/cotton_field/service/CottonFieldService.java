@@ -1,5 +1,6 @@
 package com.cby.tcs.cotton_field.service;
 
+import com.cby.tcs.cotton_field.entity.fo.CottonFieldByIdsFo;
 import com.cby.tcs.cotton_field.entity.po.CottonField;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cby.tcs.cotton_field.entity.vo.CottonFieldVo;
@@ -15,4 +16,5 @@ public interface CottonFieldService extends IService<CottonField> {
      */
     List<CottonFieldVo> getCottons(String factoryId);
 
+    List<CottonFieldVo> getCottonsByIds(CottonFieldByIdsFo cottonFieldByIdsFo);
 }

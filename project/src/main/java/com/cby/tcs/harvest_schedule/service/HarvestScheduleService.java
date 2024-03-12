@@ -1,10 +1,7 @@
 package com.cby.tcs.harvest_schedule.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cby.tcs.harvest_schedule.entity.fo.AddHarvestScheduleFo;
-import com.cby.tcs.harvest_schedule.entity.fo.DeleteHarvestScheduleRecordCottonFieldFo;
-import com.cby.tcs.harvest_schedule.entity.fo.FilterPageFo;
-import com.cby.tcs.harvest_schedule.entity.fo.HarvestScheduleRecordPageFo;
+import com.cby.tcs.harvest_schedule.entity.fo.*;
 import com.cby.tcs.harvest_schedule.entity.po.HarvestSchedule;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
@@ -44,5 +41,5 @@ public interface HarvestScheduleService extends IService<HarvestSchedule> {
      */
     HarvestScheduleDetailsVo getDetails(String dispatchId);
 
-    void create(String dispatchId);
+    void create(CreateHarvestScheduleFo createHarvestScheduleFo);
 }

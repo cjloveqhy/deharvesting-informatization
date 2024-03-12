@@ -18,8 +18,29 @@ export interface HarvestScheduleVo {
   createTime: Date
 }
 
+export interface HarvestScheduleRecordPageFo extends PageQuery{
+  ginneryId: string
+}
+
+export interface AddHarvestScheduleFo {
+  ginneryId:string,
+  cottonFieldId: string
+}
+
+export interface HarvestScheduleRecordPageVo extends GinneryVo{
+   dispatchId: string;
+   ginneryList: Array<GinneryVo>;
+  createTime: Date | null
+
+}
+
 export interface HarvestScheduleDetailsVo extends GinneryVo {
   dispatchId: string | null
   dispatchArea: number | null
   createTime: Date | null
+}
+
+export interface DeleteHarvestScheduleRecordCottonFieldFo {
+  dispatchId:string,
+  cottonFieldId: string
 }

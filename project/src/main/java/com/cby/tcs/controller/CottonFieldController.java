@@ -1,13 +1,12 @@
 package com.cby.tcs.controller;
 
+import com.cby.tcs.cotton_field.entity.fo.CottonFieldByIdsFo;
 import com.cby.tcs.cotton_field.entity.vo.CottonFieldVo;
+import com.freedom.cloud.annotation.ParamsToEntity;
 import com.freedom.cloud.result.ResultEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.cby.tcs.cotton_field.service.CottonFieldService;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -24,6 +23,12 @@ public class CottonFieldController {
   @GetMapping("/cottons")
   public ResultEntity getCottons(@RequestParam String factoryId) {
     List<CottonFieldVo> cottons =  cottonFieldService.getCottons(factoryId);
+    return ResultEntity.success(cottons);
+  }
+
+  @PostMapping("/cottonsByIds")
+  public ResultEntity getCottonsByIds(@RequestBody CottonFieldByIdsFo cottonFieldByIdsFo) {
+    List<CottonFieldVo> cottons =  cottonFieldService.getCottonsByIds(cottonFieldByIdsFo);
     return ResultEntity.success(cottons);
   }
 }

@@ -1,10 +1,7 @@
 package com.cby.tcs.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cby.tcs.harvest_schedule.entity.fo.AddHarvestScheduleFo;
-import com.cby.tcs.harvest_schedule.entity.fo.DeleteHarvestScheduleRecordCottonFieldFo;
-import com.cby.tcs.harvest_schedule.entity.fo.FilterPageFo;
-import com.cby.tcs.harvest_schedule.entity.fo.HarvestScheduleRecordPageFo;
+import com.cby.tcs.harvest_schedule.entity.fo.*;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo;
@@ -62,8 +59,8 @@ public class HarvestScheduleController {
      * 生成调度单
      */
     @PutMapping("/create")
-    public ResultEntity create(@RequestParam String dispatchId){
-        harvestScheduleService.create(dispatchId);
+    public ResultEntity create(@RequestBody CreateHarvestScheduleFo createHarvestScheduleFo){
+        harvestScheduleService.create(createHarvestScheduleFo);
         return ResultEntity.success("生成成功");
     }
 
