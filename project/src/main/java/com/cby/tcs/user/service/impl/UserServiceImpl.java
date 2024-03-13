@@ -16,6 +16,7 @@ import com.cby.tcs.user.entity.fo.RegisterUserFo;
 import com.cby.tcs.user.entity.po.User;
 import com.cby.tcs.user.entity.vo.UserAutoInfo;
 import com.cby.tcs.user.entity.vo.UserInfo;
+import com.cby.tcs.user.entity.vo.UserOption;
 import com.cby.tcs.user.entity.vo.ValidAccountVo;
 import com.cby.tcs.user.service.UserService;
 import com.cby.tcs.utils.IPUtil;
@@ -120,6 +121,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
   public void updateUserInfo(UserInfo userInfo) {
     User user = BeanUtil.copyProperties(userInfo, User.class, "createTime");
     updateById(user);
+  }
+
+  @Override
+  public List<UserOption> getUserOptions() {
+    return userDao.getUserOptions();
   }
 
   /**

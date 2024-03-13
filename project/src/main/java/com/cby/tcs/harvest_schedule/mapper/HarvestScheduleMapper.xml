@@ -23,7 +23,7 @@
                 LEFT JOIN ginnery g ON hs.ginnery_id = g.id
                 LEFT JOIN `user` u ON g.contacts = u.id
         WHERE
-            hs.`status` = 'Y'
+            hs.`status` = 'Y' AND hs.deleted = 0
         <if test="params.dispatchId != null">
             AND hs.dispatch_id = #{params.dispatchId}
         </if>

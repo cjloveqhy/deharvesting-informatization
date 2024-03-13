@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.freedom.cloud.enums.LogicalEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -31,7 +32,7 @@ public class FarmTerminalPicker extends Model<FarmTerminalPicker> {
      * 是否关联农机
      */
     @TableField("status")
-    private String status;
+    private LogicalEnum status;
 
     /**
      * 采棉机机架号

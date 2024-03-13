@@ -174,7 +174,7 @@ watch(
         :data="data"
         :bordered="false"
       />
-      <n-flex justify="end">
+      <n-flex justify="end" class="pt-20px">
         <n-pagination
           show-size-picker
           show-quick-jumper

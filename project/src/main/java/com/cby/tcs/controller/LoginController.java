@@ -5,6 +5,7 @@ import com.cby.tcs.user.entity.fo.LoginFo;
 import com.cby.tcs.user.entity.fo.RegisterUserFo;
 import com.cby.tcs.user.entity.vo.UserAutoInfo;
 import com.cby.tcs.user.entity.vo.UserInfo;
+import com.cby.tcs.user.entity.vo.UserOption;
 import com.cby.tcs.user.entity.vo.ValidAccountVo;
 import com.cby.tcs.user.service.UserService;
 import com.freedom.cloud.result.ResultEntity;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -82,4 +85,9 @@ public class LoginController {
     userService.getLoginVerifyImg(response);
   }
 
+  @GetMapping("/userOptions")
+  public ResultEntity getUserOptions() {
+    List<UserOption> options = userService.getUserOptions();
+    return ResultEntity.success(options);
+  }
 }

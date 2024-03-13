@@ -78,3 +78,10 @@ export interface RegisterForm {
   password: string,
   rePassword: string
 }
+
+export interface UserOption {
+  id: string | null
+  username: string | null
+  account: string | null
+  phone: string | null
+}

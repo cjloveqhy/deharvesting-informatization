@@ -1,7 +1,19 @@
-import {PasswordLoginForm, RegisterForm, SexEnum, UserAutoInfo, UserInfo} from "@/store/api/user/types";
+import {
+  PasswordLoginForm,
+  RegisterForm,
+  SexEnum,
+  UserAutoInfo,
+  UserInfo,
+  UserOption
+} from "@/store/api/user/types";
 import {storage} from "@/utils/Storage";
-import {ACCESS_TOKEN, CURRENT_USER, IS_SCREENLOCKED} from "@/store/mutation-types";
-import { login as userLogin, logout as userLogout, register as userRegister } from '@/api/system/login'
+import {ACCESS_TOKEN, CURRENT_USER, IS_SCREENLOCKED, USER_OPTIONS} from "@/store/mutation-types";
+import {
+  getUserOptions,
+  login as userLogin,
+  logout as userLogout,
+  register as userRegister
+} from '@/api/system/login'
 import {ResultEnum} from "@/enums/httpEnum";
 import {getUserPermissions as obtainUserPermissions} from "@/api/user_role";
 
@@ -16,6 +28,8 @@ export const useUserApiStore = defineStore(
       permissions: [],
       info: storage.get(CURRENT_USER, {}),
     })
+
+    const userOptions = ref<UserOption[]>(storage.get(USER_OPTIONS, []))
 
     function getToken() {
       return userAutoInfo.value.token
@@ -66,6 +80,9 @@ export const useUserApiStore = defineStore(
         storage.set(IS_SCREENLOCKED, false);
         userAutoInfo.value = data
         const result = await obtainUserPermissions()
+        const options = await getUserOptions()
+        storage.set(USER_OPTIONS, options)
+        userOptions.value = options
         if (result && result.length) {
           userAutoInfo.value.permissions = result
         }
@@ -95,6 +112,7 @@ export const useUserApiStore = defineStore(
       const msg = await userLogout()
       userAutoInfo.value.permissions = []
       resetUserInfo()
+      storage.remove(USER_OPTIONS)
       storage.remove(ACCESS_TOKEN)
       storage.remove(CURRENT_USER)
       return msg
@@ -102,6 +120,7 @@ export const useUserApiStore = defineStore(
 
     return {
       userAutoInfo,
+      userOptions,
       refreshUserInfo,
       getToken,
       getPermissions,

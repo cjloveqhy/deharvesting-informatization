@@ -2,4 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cby.tcs.farm_cotton_picker.dao.FarmCottonPickerDao">
 
+    <select id="getBrandOptions" resultType="java.lang.String">
+        SELECT DISTINCT brand FROM farm_cotton_picker where deleted = 0
+    </select>
+    <select id="getFilterPage" resultType="com.cby.tcs.farm_cotton_picker.entity.vo.CottonPickerVo">
+        SELECT
+            fcp.*,
+            fdp.`status`,
+            fdp.data_terminal_rack_id,
+            u.username,
+            u.phone
+        FROM
+            farm_cotton_picker fcp
+                LEFT JOIN farm_terminal_picker fdp ON fcp.rack_number = fdp.cotton_picker_rack_id
+                LEFT JOIN `user` u ON u.id = fcp.belonger
+        WHERE
+            fcp.deleted = 0
+        <if test="params.brand != null">
+            AND fcp.brand = #{params.brand}
+        </if>
+        <if test="params.belonger != null">
+            AND fcp.belonger LIKE '%${params.belonger}%'
+        </if>
+        <if test="params.holdingAttr != null">
+            AND fcp.holding_attr = #{params.holdingAttr.code}
+        </if>
+        <if test="params.status != null">
+            AND fdp.status = #{params.status.code}
+        </if>
+        <if test="params.startTime != null and params.endTime != null">
+            AND fcp.create_time BETWEEN #{params.startTime} AND #{params.endTime}
+        </if>
+    </select>
 </mapper>

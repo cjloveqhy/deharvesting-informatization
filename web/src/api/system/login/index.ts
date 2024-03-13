@@ -14,6 +14,7 @@ export const api = {
   getUserInfo: getUri('/getUserInfo'),
   updateUserInfo: getUri('/updateUserInfo'),
   getLoginVerifyImg: getUri('/getLoginVerifyImg'),
+  userOptions: getUri('/userOptions'),
 }
 
 /**
@@ -29,7 +30,7 @@ export function login(params: PasswordLoginForm) {
 }
 
 /**
- * @description: 用户登录
+ * @description: 用户注册
  */
 export function register(params: RegisterForm) {
   return http.request({
@@ -54,7 +55,7 @@ export function logout() {
 }
 
 /**
- * @description: 用户登出
+ * @description: 账户名校验
  */
 export function validAccount(account: string) {
   return http.request({
@@ -67,7 +68,7 @@ export function validAccount(account: string) {
 }
 
 /**
- * @description: 用户登出
+ * @description: 获取用户信息
  */
 export function getLoginUserInfo() {
   return http.request({
@@ -77,7 +78,7 @@ export function getLoginUserInfo() {
 }
 
 /**
- * @description: 用户登出
+ * @description: 更新用户信息
  */
 export function updateUserInfo(data: UserInfo) {
   return http.request({
@@ -85,4 +86,17 @@ export function updateUserInfo(data: UserInfo) {
     method: RequestEnum.PUT,
     data: data
   });
+}
+
+/**
+ * @description: 获取所有用户的信息作为可选项，以方便选择用户
+ */
+export function getUserOptions() {
+  return http.request({
+    url: api.userOptions,
+    method: RequestEnum.GET,
+  }, {
+    isReturnNativeResponse: false,
+    isTransformResponse: true
+  })
 }

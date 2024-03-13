@@ -6,6 +6,7 @@ import com.cby.tcs.user.entity.fo.RegisterUserFo;
 import com.cby.tcs.user.entity.po.User;
 import com.cby.tcs.user.entity.vo.UserAutoInfo;
 import com.cby.tcs.user.entity.vo.UserInfo;
+import com.cby.tcs.user.entity.vo.UserOption;
 import com.cby.tcs.user.entity.vo.ValidAccountVo;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -67,4 +68,11 @@ public interface UserService extends IService<User> {
      * @param userInfo {@link UserInfo}
      */
     void updateUserInfo(UserInfo userInfo);
+
+    /**
+     * 获取所有用户的信息作为可选项，以方便选择用户
+     * @return {@link List}<{@link UserOption}>
+     */
+    List<UserOption> getUserOptions();
+
 }

@@ -28,7 +28,7 @@ public class FarmCottonPicker extends Model<FarmCottonPicker> {
     private String id;
 
     /**
-     * 机架号
+     * 农机编号
      */
     @TableField("rack_number")
     private String rackNumber;
@@ -54,7 +54,7 @@ public class FarmCottonPicker extends Model<FarmCottonPicker> {
     /**
      * 所属公司
      */
-    @TableField("affiliated_company")
+    @TableField(value = "affiliated_company", updateStrategy = FieldStrategy.IGNORED)
     private String affiliatedCompany;
 
     /**

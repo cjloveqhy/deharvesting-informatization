@@ -3,3 +3,9 @@ export interface PageQuery {
   size: number
   isMax?: boolean
 }
+
+export interface BasicOption {
+  label: string
+  value: string | number
+  [key: string]: any
+}
