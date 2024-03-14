@@ -8,13 +8,13 @@
     <select id="getFilterPage" resultType="com.cby.tcs.farm_cotton_picker.entity.vo.CottonPickerVo">
         SELECT
             fcp.*,
-            fdp.`status`,
-            fdp.data_terminal_rack_id,
+            ftp.`status`,
+            ftp.data_terminal_rack_id,
             u.username,
             u.phone
         FROM
             farm_cotton_picker fcp
-                LEFT JOIN farm_terminal_picker fdp ON fcp.rack_number = fdp.cotton_picker_rack_id
+                LEFT JOIN farm_terminal_picker ftp ON fcp.rack_number = ftp.cotton_picker_rack_id
                 LEFT JOIN `user` u ON u.id = fcp.belonger
         WHERE
             fcp.deleted = 0
@@ -28,7 +28,7 @@
             AND fcp.holding_attr = #{params.holdingAttr.code}
         </if>
         <if test="params.status != null">
-            AND fdp.status = #{params.status.code}
+            AND ftp.status = #{params.status.code}
         </if>
         <if test="params.startTime != null and params.endTime != null">
             AND fcp.create_time BETWEEN #{params.startTime} AND #{params.endTime}

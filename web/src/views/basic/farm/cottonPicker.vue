@@ -264,6 +264,7 @@ const deleteCottonPicker = (row)=> {
   delFarmCottonPicker(row.id).then(res => {
     message.success(res.data)
     getData()
+    initOptions()
   })
 }
 
@@ -357,6 +358,7 @@ function renderLabel(option) {
           v-model:show="show"
           @after-leave="resetFormData"
           content-class="flex justify-center"
+          :title="submitType === 'add' ? '新机入库' : '修改'"
         >
           <n-form
             ref="formRef"

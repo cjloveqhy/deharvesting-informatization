@@ -79,9 +79,11 @@ public class FarmCottonPickerServiceImpl extends ServiceImpl<FarmCottonPickerDao
     if (!entity.getRackNumber().equals(farmCottonPicker.getRackNumber())) {
       LambdaQueryWrapper<FarmTerminalPicker> wrapper = new LambdaQueryWrapper<>();
       wrapper.eq(FarmTerminalPicker::getCottonPickerRackId, farmCottonPicker.getRackNumber());
-      List<FarmTerminalPicker> terminalPickers = farmTerminalPickerService.list(wrapper);
-      terminalPickers.forEach(item -> item.setCottonPickerRackId(entity.getRackNumber()));
-      farmTerminalPickerService.updateBatchById(terminalPickers);
+      FarmTerminalPicker terminalPicker = farmTerminalPickerService.getOne(wrapper);
+      if (Objects.nonNull(terminalPicker)) {
+        terminalPicker.setCottonPickerRackId(entity.getRackNumber());
+        farmTerminalPickerService.updateById(terminalPicker);
+      }
     }
     farmCottonPicker = BeanUtil.copyProperties(entity, FarmCottonPicker.class);
     updateById(farmCottonPicker);

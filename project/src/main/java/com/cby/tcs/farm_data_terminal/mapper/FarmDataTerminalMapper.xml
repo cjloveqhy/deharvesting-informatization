@@ -2,4 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cby.tcs.farm_data_terminal.dao.FarmDataTerminalDao">
 
+    <select id="getBrandOptions" resultType="java.lang.String">
+        SELECT DISTINCT brand FROM farm_data_terminal WHERE deleted = 0
+    </select>
+    <select id="getFilterPage" resultType="com.cby.tcs.farm_data_terminal.entity.vo.DataTerminalVo">
+        SELECT
+            fdt.*,
+            ftp.cotton_picker_rack_id,
+            ftp.`status`
+        FROM
+            farm_data_terminal fdt
+                LEFT JOIN farm_terminal_picker ftp ON fdt.terminal_id = ftp.data_terminal_rack_id
+        WHERE
+            fdt.deleted = 0
+        <if test="params.terminalId != null">
+            AND fdt.terminal_id = #{params.terminalId}
+        </if>
+        <if test="params.brand != null">
+            AND fdt.brand = #{params.brand}
+        </if>
+        <if test="params.status != null">
+            AND ftp.status = #{params.status.code}
+        </if>
+        <if test="params.cottonPickerRackId != null">
+            AND fdt.cotton_picker_rack_id = #{params.cottonPickerRackId}
+        </if>
+        <if test="params.startTime != null and params.endTime != null">
+            AND fdt.update_time BETWEEN #{params.startTime} AND #{params.endTime}
+        </if>
+    </select>
 </mapper>
