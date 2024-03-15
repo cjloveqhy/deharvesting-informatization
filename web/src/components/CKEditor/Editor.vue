@@ -18,6 +18,7 @@ const getConfig = computed(() => {
 
 onMounted(() => {
   nextTick(() => {
+    // @ts-ignore
     ClassicEditor.create(document.querySelector(`#${randomId}`), getConfig.value)
       .then(editor => {
         if (props.value) editor.setData(props.value)
@@ -47,11 +48,3 @@ defineExpose({
 <template>
   <div :id="randomId"></div>
 </template>
-
-<style scoped>
-
-::v-deep(.ck-editor__editable .ck-content .powered-by-ckeditor) {
-  display: none;
-}
-
-</style>

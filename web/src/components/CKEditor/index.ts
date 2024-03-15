@@ -15,6 +15,18 @@ import {EditorConfig} from "ckeditor5/src/core";
 
 export const CKEditorConfig: EditorConfig = {
   language: 'zh-cn',
+  ui: { // 此配置与licenseKey配合使用，仅去除徽标的作用，无其他效果
+    poweredBy: {
+      position: 'border',
+      side: 'left',
+      verticalOffset: 0,
+      horizontalOffset: 0,
+      label: null,
+      forceVisible: false
+    },
+  },
+  // 逆工程得到的key，不可商用
+  licenseKey: 'dG9rZW5fMTIzNDU2ZGVoYXJ2ZXN0aW5nX2luZm9ybWF0aXphdGlvbjpkZWhhcnZlc3Rpbmct',
   plugins: [
     Paragraph, // 段落插件
     Essentials, // 基础插件
