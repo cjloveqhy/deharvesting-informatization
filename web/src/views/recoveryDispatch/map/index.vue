@@ -63,25 +63,28 @@ const { bottom } = toRefs(arrivedState)
       <n-card class="mt-10px" content-style="padding: 0">
         <template v-if="options.length > 0">
           <n-flex ref="el" vertical class="w-full h-200px max-h-250px overflow-y-scroll">
-            <template v-for="item in options">
-              <n-thing
-                :title="`轧花厂：${item.factoryName}`"
-                content-style="margin-top: 10px; padding-left: 10px"
-                class="cursor-pointer clickable-button p-20px"
-                @click="goToPlotCreateDispatch(item.id)"
-              >
-                <n-flex vertical size="large">
-                  <template v-for="option in item.children">
-                    <n-h6 prefix="bar" style="--n-bar-color: #AAAAAA; --n-margin: 0">
-                      <n-flex :wrap="false" class="w-full text-base">
-                        <span class="truncate w-1/2">{{ option.plotName }}</span>
-                        <span class="w-1/2">已收面积：{{ option.cultivatedArea }}亩</span>
-                      </n-flex>
-                    </n-h6>
-                  </template>
-                </n-flex>
-              </n-thing>
-            </template>
+            <n-list clickable hoverable>
+              <template v-for="item in options">
+                <n-list-item>
+                  <n-thing
+                    :title="`轧花厂：${item.factoryName}`"
+                    content-style="margin-top: 10px; padding-left: 10px"
+                    @click="goToPlotCreateDispatch(item.id)"
+                  >
+                    <n-flex vertical size="large">
+                      <template v-for="option in item.children">
+                        <n-h6 prefix="bar" style="--n-bar-color: #AAAAAA; --n-margin: 0">
+                          <n-flex :wrap="false" class="w-full text-base">
+                            <span class="truncate w-1/2">{{ option.plotName }}</span>
+                            <span class="w-1/2">已收面积：{{ option.cultivatedArea }}亩</span>
+                          </n-flex>
+                        </n-h6>
+                      </template>
+                    </n-flex>
+                  </n-thing>
+                </n-list-item>
+              </template>
+            </n-list>
             <template v-if="loading && !isLast">
               <div class="flex justify-center"><span>正在加载中...</span></div>
             </template>
@@ -98,17 +101,10 @@ const { bottom } = toRefs(arrivedState)
   </div>
 </template>
 <style lang="less" scoped>
+
 .box{
   background: url("@/assets/images/recoveryDispatch/u2282.png") no-repeat;
   background-size: 100% 100%;
 }
 
-.clickable-button {
-  transition: background-color 0.3s ease;
-  background-color: white;
-}
-
-.clickable-button:hover {
-  background-color: #f1f5f9;
-}
 </style>
