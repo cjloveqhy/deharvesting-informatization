@@ -6,6 +6,7 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import Unocss from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+import ckeditor5 from '@ckeditor/vite-plugin-ckeditor5'
 
 import { configHtmlPlugin } from './html';
 import { configMockPlugin } from './mock';
@@ -35,6 +36,8 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean, prodMock) 
       vueTemplate: true,
       dts: true
     }),
+    // ckeditor5 富文本插件
+    ckeditor5({theme: require.resolve('@ckeditor/ckeditor5-theme-lark')}),
 
     // 按需引入NaiveUi且自动创建组件声明
     Components({

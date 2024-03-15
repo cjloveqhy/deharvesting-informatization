@@ -25,6 +25,13 @@
     "test prod gzip": "http-server dist --cors --gzip -c-1"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-basic-styles": "^41.2.0",
+    "@ckeditor/ckeditor5-editor-classic": "^41.2.0",
+    "@ckeditor/ckeditor5-essentials": "^41.2.0",
+    "@ckeditor/ckeditor5-paragraph": "^41.2.0",
+    "@ckeditor/ckeditor5-theme-lark": "^41.2.0",
+    "@ckeditor/ckeditor5-vue": "^5.1.0",
+    "@ckeditor/vite-plugin-ckeditor5": "^0.1.3",
     "@unocss/preset-uno": "^0.48.0",
     "@unocss/reset": "^0.48.0",
     "@vicons/antd": "^0.12.0",
@@ -33,6 +40,7 @@
     "@vueuse/core": "^9.13.0",
     "axios": "^1.4.0",
     "blueimp-md5": "^2.19.0",
+    "ckeditor5": "^41.2.0",
     "date-fns": "^2.30.0",
     "echarts": "^5.4.3",
     "element-resize-detector": "^1.2.4",
