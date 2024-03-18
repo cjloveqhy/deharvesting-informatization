@@ -8,7 +8,7 @@ const config = ref({
   placeholder: '请输入...',
 })
 
-const text = ref('<p>nihao<p>')
+const text = ref('<img src="https://ckeditor.com/docs/ckeditor5/latest/assets/img/waterfalls/map.jpg" srcset="https://ckeditor.com/docs/ckeditor5/latest/assets/img/waterfalls/map.jpg, https://ckeditor.com/docs/ckeditor5/latest/assets/img/waterfalls/map_2x.jpg 2x" sizes="100vw">')
 
 </script>
 
