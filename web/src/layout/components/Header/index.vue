@@ -6,8 +6,7 @@
       v-if="navMode === 'horizontal' || (navMode === 'horizontal-mix' && mixMenu)"
     >
       <div class="logo" v-if="navMode === 'horizontal'">
-        <img :src="websiteConfig.logo" alt="" />
-        <h2 v-show="!collapsed" class="title">{{ websiteConfig.title }}</h2>
+        <Logo :collapsed="collapsed" />
       </div>
       <AsideMenu
         v-model:collapsed="collapsed"
@@ -323,9 +322,6 @@ export default defineComponent({
           margin-right: 10px;
         }
 
-        .title {
-          margin-bottom: 0;
-        }
       }
 
       ::v-deep(.ant-breadcrumb span:last-child .link-text) {

@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
     <img :src="websiteConfig.logo" alt="" :class="{ 'mr-2': !collapsed }" />
-    <h2 v-show="!collapsed" class="title">{{ websiteConfig.title }}</h2>
+    <h2 v-show="!collapsed" class="mb-0">{{ websiteConfig.title }}</h2>
   </div>
 </template>
 
@@ -31,6 +31,11 @@
     line-height: 64px;
     overflow: hidden;
     white-space: nowrap;
+
+    > h2 {
+      font-size: inherit;
+      font-weight: inherit;
+    }
 
     img {
       width: auto;
