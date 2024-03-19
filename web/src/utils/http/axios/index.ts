@@ -1,23 +1,23 @@
 // axios配置  可自行根据项目进行更改，只需更改该文件即可，其他文件可以不动
-import { VAxios } from './Axios';
-import { AxiosTransform } from './axiosTransform';
-import axios, { AxiosResponse } from 'axios';
-import { checkStatus } from './checkStatus';
-import { joinTimestamp, formatRequestDate } from './helper';
-import { RequestEnum, ResultEnum, ContentTypeEnum } from '@/enums/httpEnum';
-import { PageEnum } from '@/enums/pageEnum';
-import { useGlobSetting } from '@/hooks/setting';
-import { isString } from '@/utils/is/';
-import { deepMerge, isUrl } from '@/utils';
-import { setObjToUrlParams } from '@/utils/urlUtils';
-import { RequestOptions, Result, CreateAxiosOptions } from './types';
-import { useUserApiStore } from '@/store/api/user'
+import {VAxios} from './Axios';
+import {AxiosTransform} from './axiosTransform';
+import axios, {AxiosResponse} from 'axios';
+import {checkStatus} from './checkStatus';
+import {formatRequestDate, joinTimestamp} from './helper';
+import {ContentTypeEnum, RequestEnum, ResultEnum} from '@/enums/httpEnum';
+import {PageEnum} from '@/enums/pageEnum';
+import {useGlobSetting} from '@/hooks/setting';
+import {isString} from '@/utils/is/';
+import {deepMerge, isUrl} from '@/utils';
+import {setObjToUrlParams} from '@/utils/urlUtils';
+import {CreateAxiosOptions, RequestOptions, Result} from './types';
+import {useUserApiStore} from '@/store/api/user'
+import router from '@/router';
+import {storage} from '@/utils/Storage';
+import {useProjectSettingStore} from "@/store/modules/projectSetting";
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix || '';
-
-import router from '@/router';
-import { storage } from '@/utils/Storage';
 
 /**
  * @description: 数据处理，方便区分多种处理方式
@@ -173,10 +173,12 @@ const transform: AxiosTransform = {
   requestInterceptors: (config, options) => {
     // 请求之前处理config
     const userStore = useUserApiStore();
+    const projectSettingStore = useProjectSettingStore()
+    const { tokenName } = projectSettingStore.getAxiosConfig
     const token = userStore.getToken();
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
-      (config as Recordable).headers.access_token = options.authenticationScheme
+      (config as Recordable).headers[tokenName as string] = options.authenticationScheme
         ? `${options.authenticationScheme} ${token}`
         : token;
     }

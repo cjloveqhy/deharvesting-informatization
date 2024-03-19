@@ -1,7 +1,13 @@
 import {IconProps} from "naive-ui/es/icon/src/Icon";
 import {Ref} from "vue";
 import {RouteLocationRaw} from "vue-router";
-import {BadgeProps, MessageOptions, DialogOptions, NotificationOptions, ModalOptions} from "naive-ui";
+import {
+  BadgeProps,
+  DialogOptions,
+  MessageOptions,
+  ModalOptions,
+  NotificationOptions
+} from "naive-ui";
 
 export interface ProjectSettingState {
   //导航模式
@@ -30,6 +36,12 @@ export interface ProjectSettingState {
   isLogin: boolean
   // 路由白名单
   whitePathList: string[]
+  // axios请求配置
+  axiosConfig: AxiosConfig
+}
+
+export interface AxiosConfig {
+  tokenName?: string
 }
 
 export interface IBodySetting {

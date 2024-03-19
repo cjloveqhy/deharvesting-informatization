@@ -1,5 +1,5 @@
 import projectSetting from '@/settings/projectSetting';
-import type {ProjectSettingState} from '/#/config';
+import type {AxiosConfig, ProjectSettingState} from '/#/config';
 
 const {
   navMode,
@@ -14,7 +14,8 @@ const {
   isPageAnimate,
   pageAnimateType,
   isLogin,
-  whitePathList
+  whitePathList,
+  axiosConfig
 } = projectSetting;
 
 export const useProjectSettingStore = defineStore({
@@ -32,7 +33,8 @@ export const useProjectSettingStore = defineStore({
     isPageAnimate,
     pageAnimateType,
     isLogin,
-    whitePathList
+    whitePathList,
+    axiosConfig
   }),
   getters: {
     getNavMode(): string {
@@ -73,6 +75,9 @@ export const useProjectSettingStore = defineStore({
     },
     getWhitePathList(): string[] {
       return this.whitePathList;
+    },
+    getAxiosConfig(): AxiosConfig {
+      return this.axiosConfig;
     },
   },
   actions: {

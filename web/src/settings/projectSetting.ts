@@ -66,6 +66,10 @@ const setting:ProjectSettingState = {
   // 是否需要登录
   isLogin: true,
   // 路由白名单
-  whitePathList: [PageEnum.BASE_LOGIN_NAME, PageEnum.REGISTER, PageEnum.FORGET_PASSWORD]
+  whitePathList: [PageEnum.BASE_LOGIN_NAME, PageEnum.REGISTER, PageEnum.FORGET_PASSWORD],
+  // axios请求配置
+  axiosConfig: {
+    tokenName: 'access_token'
+  }
 };
 export default setting;
