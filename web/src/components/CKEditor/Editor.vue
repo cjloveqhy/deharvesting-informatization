@@ -46,5 +46,7 @@ defineExpose({
 </script>
 
 <template>
-  <div :id="randomId"></div>
+  <div>
+    <div :id="randomId"></div>
+  </div>
 </template>

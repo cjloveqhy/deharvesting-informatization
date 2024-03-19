@@ -130,20 +130,21 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, toRefs, ref, computed, unref, Ref} from 'vue';
-import {useRouter, useRoute, RouteLocationRaw} from 'vue-router';
+import {computed, defineComponent, reactive, ref, Ref, toRefs, unref} from 'vue';
+import {RouteLocationRaw, useRoute, useRouter} from 'vue-router';
 import components from './components';
-import { NDialogProvider } from 'naive-ui';
-import { useUserApiStore } from '@/store/api/user';
+import {NDialogProvider} from 'naive-ui';
+import {useUserApiStore} from '@/store/api/user';
 import ProjectSetting from './ProjectSetting.vue';
-import { AsideMenu } from '@/layout/components/Menu';
-import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
-import { websiteConfig } from '@/config/website.config';
-import { useDesignSetting } from '@/store/modules/designSetting';
+import {Logo} from '@/layout/components/Logo';
+import {AsideMenu} from '@/layout/components/Menu';
+import {useProjectSetting} from '@/hooks/setting/useProjectSetting';
+import {websiteConfig} from '@/config/website.config';
+import {useDesignSetting} from '@/store/modules/designSetting';
 
 export default defineComponent({
   name: 'PageHeader',
-  components: { ...components, NDialogProvider, ProjectSetting, AsideMenu },
+  components: { ...components, NDialogProvider, ProjectSetting, Logo, AsideMenu },
   props: {
     collapsed: {
       type: Boolean,
