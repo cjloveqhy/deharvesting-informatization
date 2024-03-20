@@ -52,6 +52,7 @@
     "@ckeditor/ckeditor5-special-characters": "41.2.0",
     "@ckeditor/ckeditor5-table": "41.2.0",
     "@ckeditor/ckeditor5-theme-lark": "^41.2.0",
+    "@ckeditor/ckeditor5-ui": "41.2.0",
     "@ckeditor/ckeditor5-upload": "v41.2.0",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
     "@ckeditor/vite-plugin-ckeditor5": "^0.1.3",

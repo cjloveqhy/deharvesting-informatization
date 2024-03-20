@@ -86,6 +86,9 @@ dependencies:
   '@ckeditor/ckeditor5-theme-lark':
     specifier: ^41.2.0
     version: 41.2.0
+  '@ckeditor/ckeditor5-ui':
+    specifier: 41.2.0
+    version: 41.2.0
   '@ckeditor/ckeditor5-upload':
     specifier: v41.2.0
     version: 41.2.0

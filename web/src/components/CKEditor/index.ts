@@ -1,4 +1,4 @@
-import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph'
+import {Paragraph, ParagraphButtonUI} from '@ckeditor/ckeditor5-paragraph/src/index'
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials'
 import {
   Bold,
@@ -18,7 +18,7 @@ import {
   FontFamily,
   FontSize
 } from '@ckeditor/ckeditor5-font/src/index'
-import {Heading} from '@ckeditor/ckeditor5-heading/src/index'
+import {Heading, HeadingButtonsUI} from '@ckeditor/ckeditor5-heading/src/index'
 import {GeneralHtmlSupport, HtmlComment} from '@ckeditor/ckeditor5-html-support/src/index'
 import {PasteFromMarkdownExperimental} from '@ckeditor/ckeditor5-markdown-gfm/src/index'
 import {Highlight} from '@ckeditor/ckeditor5-highlight/src/index'
@@ -54,7 +54,7 @@ import {
 } from '@ckeditor/ckeditor5-table/src/index'
 import {Alignment} from '@ckeditor/ckeditor5-alignment/src/index'
 import {RemoveFormat} from '@ckeditor/ckeditor5-remove-format/src/index'
-// import {SourceEditing} from '@ckeditor/ckeditor5-source-editing/src/index'
+import {BalloonToolbar, BlockToolbar} from '@ckeditor/ckeditor5-ui/src/index'
 import 'ckeditor5/build/translations/zh-cn.js'
 import '@ckeditor/ckeditor5-indent/build/translations/zh-cn.js'
 import '@ckeditor/ckeditor5-block-quote/build/translations/zh-cn.js'
@@ -96,10 +96,13 @@ export const CKEditorConfig: EditorConfig = {
   // 逆工程得到的key，不可商用
   licenseKey: 'dG9rZW5fMTIzNDU2ZGVoYXJ2ZXN0aW5nX2luZm9ybWF0aXphdGlvbjpkZWhhcnZlc3Rpbmct',
   plugins: [
+    BlockToolbar, // 块工具栏
+    BalloonToolbar, // 气泡工具栏
     GeneralHtmlSupport, // 通用HTML支持
     HtmlComment, // HTML注释元素
     // Markdown, // markdown支持
     Paragraph, // 段落
+    ParagraphButtonUI, // 段落按钮
     Essentials, // 基础
     Bold, // 加粗
     Italic, // 斜体
@@ -118,6 +121,7 @@ export const CKEditorConfig: EditorConfig = {
     FontColor, // 字体颜色
     FontBackgroundColor, //字体背景颜色
     Heading, // 标题
+    HeadingButtonsUI, // 标题按钮
     Highlight, // 强调
     HorizontalLine, // 水平线
     Image, // 图片
@@ -201,6 +205,23 @@ export const CKEditorConfig: EditorConfig = {
     ],
     shouldNotGroupWhenFull: true
   },
+  blockToolbar: [
+    'paragraph', 'heading1', 'heading2', 'heading3', 'heading4', 'heading5', 'heading6',
+    '|',
+    'numberedList', 'bulletedList', 'todolist',
+    '|',
+    'blockQuote', 'uploadImage'
+  ],
+  balloonToolbar: {
+    items: [
+      'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor',
+      '|',
+      'bold', 'italic', 'strikethrough', 'underline',
+      '|',
+      'link'
+    ],
+  },
+  // @ts-ignore
   autosave: {
     save: (_) => {
       return new Promise((_, reject) => {
@@ -220,9 +241,15 @@ export const CKEditorConfig: EditorConfig = {
     ]
   },
   fontFamily: {
+    /*options: [
+
+    ],*/
     supportAllValues: true
   },
   fontSize: {
+    /*options: [
+
+    ],*/
     supportAllValues: false
   },
   image: {
