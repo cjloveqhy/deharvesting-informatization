@@ -50,3 +50,17 @@ defineExpose({
     <div :id="randomId"></div>
   </div>
 </template>
+
+<style scoped>
+
+::v-deep(.ck-editor__editable .ck-content .powered-by-ckeditor) {
+  display: block;
+}
+::v-deep(.ck .ck-button__label){
+  font-size: 16px !important;
+}
+::v-deep(.ck .ck-reset .ck-list){
+  overflow: auto;
+  height: 15rem;
+}
+</style>

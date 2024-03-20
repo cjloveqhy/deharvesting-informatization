@@ -75,6 +75,7 @@ import '@ckeditor/ckeditor5-basic-styles/build/translations/zh-cn.js'
 import {EditorConfig} from "ckeditor5/src/core";
 import {useProjectSettingStore} from "@/store/modules/projectSetting";
 import {useUserApiStore} from "@/store/api/user";
+import {fontFamilyOptions} from "@/components/CKEditor/fontFamily";
 
 const userStore = useUserApiStore();
 const token = userStore.getToken();
@@ -241,15 +242,13 @@ export const CKEditorConfig: EditorConfig = {
     ]
   },
   fontFamily: {
-    /*options: [
-
-    ],*/
+    options: fontFamilyOptions,
     supportAllValues: true
   },
   fontSize: {
-    /*options: [
-
-    ],*/
+    options: [
+      5, 5.5, 6.5, 7.5, 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72
+    ],
     supportAllValues: false
   },
   image: {
