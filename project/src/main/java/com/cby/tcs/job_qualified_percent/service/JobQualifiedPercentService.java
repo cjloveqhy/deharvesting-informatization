@@ -20,4 +20,5 @@ public interface JobQualifiedPercentService extends IService<JobQualifiedPercent
      * @return {@link Page}<{@link JobQualifiedPercentPageVo}>
      */
     Page<JobQualifiedPercentPageVo> getPageData(JobQualifiedPercentPageFo entity);
+
 }

@@ -53,4 +53,5 @@ public class JobQualifiedPercentServiceImpl extends ServiceImpl<JobQualifiedPerc
     }
     return voPage;
   }
+
 }

@@ -1,6 +1,7 @@
 package com.cby.tcs.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cby.tcs.job_evaluation.entity.enums.JobType;
 import com.cby.tcs.job_qualified_percent.entity.fo.JobQualifiedPercentPageFo;
 import com.cby.tcs.job_qualified_percent.entity.vo.JobQualifiedPercentPageVo;
 import com.cby.tcs.job_qualified_percent.service.JobQualifiedPercentService;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -31,6 +34,33 @@ public class JobQualifiedPercentController {
   public ResultEntity getPageData(@ParamsToEntity(required = false, params = {@RequestParam("jobType")}) JobQualifiedPercentPageFo entity) {
     Page<JobQualifiedPercentPageVo> pageVo = jobQualifiedPercentService.getPageData(entity);
     return ResultEntity.success(pageVo);
+  }
+
+  /**
+   * 综合合格率
+   */
+  @GetMapping("/passRate")
+  public ResultEntity passRate(@RequestParam JobType type) {
+
+    return ResultEntity.success();
+  }
+
+  /**
+   * 月作业评价结果
+   */
+  @GetMapping("/monthJobEvaluation")
+  public ResultEntity monthJobEvaluation(@RequestParam JobType type, @RequestParam(required = false) LocalDate month) {
+
+    return ResultEntity.success();
+  }
+
+  /**
+   * 合格率排行TOP3
+   */
+  @GetMapping("/passRateRanking")
+  public ResultEntity passRateRanking(@RequestParam JobType type) {
+
+    return ResultEntity.success();
   }
 
 }
