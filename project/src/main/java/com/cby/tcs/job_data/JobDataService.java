@@ -23,7 +23,21 @@ public class JobDataService {
         }
     }
 
+    /**
+     * 获取实例
+     * @return {@link JobData} 实例对象
+     */
+    private JobData getInstance(JobType type) {
+        return this.supports.get(type);
+    }
+
+    /**
+     * 获取基础信息
+     * @param type {@link JobType} 工作类型
+     * @param ids 工作id编号
+     * @return 基础信息体
+     */
     public Map<String, Object> getInfo(JobType type, Set<String> ids) {
-        return this.supports.get(type).getInfo(ids);
+        return getInstance(type).getInfo(ids);
     }
 }
