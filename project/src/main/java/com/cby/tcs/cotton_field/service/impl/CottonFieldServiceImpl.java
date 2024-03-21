@@ -39,7 +39,7 @@ public class CottonFieldServiceImpl extends ServiceImpl<CottonFieldDao, CottonFi
     List<CottonField> cottonFields = list(cottonWrapper);
     if (cottonFields.isEmpty()) return cottonFieldVos;
     // 归集所有联系人，统一查询
-    List<String> contactsIds = new ArrayList<>(cottonFields.stream().map(CottonField::getContacts).toList());
+    List<String> contactsIds = new ArrayList<>();
     contactsIds.addAll(cottonFields.stream().map(CottonField::getContacts).toList());
     Ginnery ginnery = ginneryDao.selectById(factoryId);
     GinneryBasicVo ginneryBasicVo = BeanUtil.copyProperties(ginnery, GinneryBasicVo.class, "contacts");
@@ -65,7 +65,7 @@ public class CottonFieldServiceImpl extends ServiceImpl<CottonFieldDao, CottonFi
     List<CottonField> cottonFields = list(cottonWrapper);
     if (cottonFields.isEmpty()) return cottonFieldVos;
     // 归集所有联系人，统一查询
-    List<String> contactsIds = new ArrayList<>(cottonFields.stream().map(CottonField::getContacts).toList());
+    List<String> contactsIds = new ArrayList<>();
     contactsIds.addAll(cottonFields.stream().map(CottonField::getContacts).toList());
     Ginnery ginnery = ginneryDao.selectById(cottonFieldByIdsFo.getGinneryId());
     GinneryBasicVo ginneryBasicVo = BeanUtil.copyProperties(ginnery, GinneryBasicVo.class, "contacts");
@@ -75,6 +75,38 @@ public class CottonFieldServiceImpl extends ServiceImpl<CottonFieldDao, CottonFi
             .collect(Collectors.toMap(UserInfo::getId, Function.identity()));
     ginneryBasicVo.setContacts(userInfoMap.get(ginnery.getContacts()));
     for (CottonField cottonField : cottonFields) {
+      CottonFieldVo fieldVo = BeanUtil.copyProperties(cottonField, CottonFieldVo.class, "ginnery", "contacts");
+      fieldVo.setContacts(userInfoMap.get(cottonField.getContacts()))
+              .setGinnery(ginneryBasicVo);
+      cottonFieldVos.add(fieldVo);
+    }
+    return cottonFieldVos;
+  }
+
+  @Override
+  public List<CottonFieldVo> getCottonsByIds(List<String> ids) {
+    List<CottonFieldVo> cottonFieldVos = new ArrayList<>();
+    LambdaQueryWrapper<CottonField> cottonWrapper = new LambdaQueryWrapper<>();
+    cottonWrapper.in(CottonField::getId, ids);
+    List<CottonField> cottonFields = list(cottonWrapper);
+    if (cottonFields.isEmpty()) return cottonFieldVos;
+    // 归集所有联系人，统一查询
+    Set<String> contactsIds = new HashSet<>(cottonFields.stream().map(CottonField::getContacts).collect(Collectors.toSet()));
+    List<String> ginneryIds = cottonFields.stream().map(CottonField::getGinneryId).distinct().toList();
+    List<Ginnery> ginneries = ginneryDao.selectBatchIds(ginneryIds);
+    contactsIds.addAll(ginneries.stream().map(Ginnery::getContacts).collect(Collectors.toSet()));
+    Map<String, Ginnery> ginneryMap = ginneries.stream().collect(Collectors.toMap(Ginnery::getId, Function.identity()));
+
+    Map<String, UserInfo> userInfoMap = userService.getUserInfoList(contactsIds.stream().toList())
+            .stream()
+            .collect(Collectors.toMap(UserInfo::getId, Function.identity()));
+
+    for (CottonField cottonField : cottonFields) {
+      Ginnery ginnery = ginneryMap.get(cottonField.getGinneryId());
+      GinneryBasicVo ginneryBasicVo = BeanUtil.copyProperties(ginnery, GinneryBasicVo.class, "contacts");
+      if (!StrUtil.hasBlank(ginnery.getContacts())) contactsIds.add(ginnery.getContacts());
+      ginneryBasicVo.setContacts(userInfoMap.get(ginnery.getContacts()));
+
       CottonFieldVo fieldVo = BeanUtil.copyProperties(cottonField, CottonFieldVo.class, "ginnery", "contacts");
       fieldVo.setContacts(userInfoMap.get(cottonField.getContacts()))
               .setGinnery(ginneryBasicVo);

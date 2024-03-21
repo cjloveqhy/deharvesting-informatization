@@ -4,11 +4,11 @@ import {NButton, NFlex, NPopconfirm, useMessage} from "naive-ui";
 import {BasicOption, LogicalOptions} from '@/store/common'
 import {DataTerminalFo, DataTerminalPageFo, DataTerminalVo} from "@/store/api/farmDataTerminal";
 import {
-  getFilterPage,
-  getBrandOptions,
   addFarmDataTerminal,
-  updateFarmDataTerminal,
-  delFarmDataTerminal
+  delFarmDataTerminal,
+  getBrandOptions,
+  getFilterPage,
+  updateFarmDataTerminal
 } from "@/api/farmDataTerminal";
 import {LogicalEnum} from "@/enums/LogicalEnum";
 
@@ -308,8 +308,10 @@ const deleteTerminal = (row)=> {
               />
             </n-form-item>
           </n-flex>
-          <n-button type="default" @click="reset">重置</n-button>
-          <n-button type="primary" @click="getData">查询</n-button>
+          <n-flex :wrap="false" justify="end">
+            <n-button type="default" @click="reset">重置</n-button>
+            <n-button type="primary" @click="getData">查询</n-button>
+          </n-flex>
         </n-flex>
       </n-card>
       <n-flex>

@@ -2,7 +2,8 @@
 import LineType from "@/components/LineType/LineType.vue";
 import {NButton, NFlex, NIcon, NPopconfirm, useMessage} from "naive-ui";
 import {
-  addFarmCottonPicker, delFarmCottonPicker,
+  addFarmCottonPicker,
+  delFarmCottonPicker,
   getBrandOptions,
   getFilterPage,
   updateFarmCottonPicker
@@ -12,7 +13,7 @@ import {HoldingAttrOptions} from '@/store/api/farmUav'
 import {CottonPickerFo, CottonPickerPageFo, CottonPickerVo} from "@/store/api/farmCottonPicker";
 import {getLabel} from "@/utils/optionUtil";
 import {useUserApiStore} from "@/store/api/user";
-import {UserOutlined, PhoneOutlined} from '@vicons/antd'
+import {PhoneOutlined, UserOutlined} from '@vicons/antd'
 
 const userStore = useUserApiStore()
 
@@ -346,8 +347,10 @@ function renderLabel(option) {
               />
             </n-form-item>
           </n-flex>
-          <n-button type="default" @click="reset">重置</n-button>
-          <n-button type="info" @click="getData">查询</n-button>
+          <n-flex :wrap="false" justify="end">
+            <n-button type="default" @click="reset">重置</n-button>
+            <n-button type="info" @click="getData">查询</n-button>
+          </n-flex>
         </n-flex>
       </n-card>
       <n-flex>

@@ -2,4 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cby.tcs.job_evaluation.dao.JobEvaluationDao">
 
+    <select id="getFilterPage" resultType="com.cby.tcs.job_evaluation.entity.po.JobEvaluation">
+        SELECT
+            je.*
+        FROM
+            job_evaluation je
+            <if test="params.customerId != null">
+                LEFT JOIN cotton_field cf ON je.cotton_field_id = cf.id
+            </if>
+        WHERE
+            je.job_type = #{params.jobType.code}
+        <if test="params.orderId != null">
+            AND je.order_id = #{params.orderId}
+        </if>
+        <if test="params.jobId != null">
+            AND je.job_id = #{params.jobId}
+        </if>
+        <if test="params.customerId != null">
+            AND cf.contacts = #{params.customerId}
+        </if>
+        <if test="params.evaluationResult != null">
+            AND je.evaluation_result = #{params.evaluationResult}
+        </if>
+        <if test="params.startTime != null and params.endTime != null">
+            AND je.work_time BETWEEN #{params.startTime} AND #{params.endTime}
+        </if>
+        ORDER BY je.work_time DESC
+    </select>
 </mapper>

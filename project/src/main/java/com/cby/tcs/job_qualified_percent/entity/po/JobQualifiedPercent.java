@@ -2,6 +2,7 @@ package com.cby.tcs.job_qualified_percent.entity.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.cby.tcs.job_evaluation.entity.enums.JobType;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -30,7 +31,7 @@ public class JobQualifiedPercent extends Model<JobQualifiedPercent> {
      * 工作性质，飞手：U，采棉机：C
      */
     @TableField("job_type")
-    private String jobType;
+    private JobType jobType;
 
     /**
      * 工作id编号，若工作性质为飞手，则为飞手的ID编号，若为采棉机则为采棉机的编号
@@ -39,7 +40,7 @@ public class JobQualifiedPercent extends Model<JobQualifiedPercent> {
     private String jobId;
 
     /**
-     * 作业面积		（亩）
+     * 作业面积（亩）
      */
     @TableField("area")
     private Double area;
@@ -59,8 +60,8 @@ public class JobQualifiedPercent extends Model<JobQualifiedPercent> {
     /**
      * 逻辑删除
      */
-    @TableField("deleted")
-    private Boolean deleted;
+    @TableLogic
+    private Integer deleted;
 
     /**
      * 更新时间
