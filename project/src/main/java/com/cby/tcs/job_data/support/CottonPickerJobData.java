@@ -23,7 +23,7 @@ public class CottonPickerJobData implements JobData {
     }
 
     @Override
-    public List<Option<Double>> passRateRanking() {
+    public List<Option<Float>> passRateRanking() {
         return Collections.emptyList();
     }
 

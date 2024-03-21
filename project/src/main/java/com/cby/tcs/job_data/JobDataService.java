@@ -45,9 +45,9 @@ public class JobDataService {
     /**
      * 获取合格率排行TOP3的数据
      * @param type {@link JobType} 工作类型
-     * @return {@link List}<{@link Option}<{@link Double}>>
+     * @return {@link List}<{@link Option}<{@link Float}>>
      */
-    public List<Option<Double>> passRateRanking(JobType type) {
+    public List<Option<Float>> passRateRanking(JobType type) {
         return getInstance(type).passRateRanking();
     }
 }

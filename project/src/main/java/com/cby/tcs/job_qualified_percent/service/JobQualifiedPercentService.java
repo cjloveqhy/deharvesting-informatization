@@ -29,7 +29,7 @@ public interface JobQualifiedPercentService extends IService<JobQualifiedPercent
      * 获取合格率排行TOP3的数据
      *
      * @param type {@link JobType} 工作类型
-     * @return {@link List}<{@link Option}<{@link Double}>>
+     * @return {@link List}<{@link Option}<{@link Float}>>
      */
-    List<Option<Double>> passRateRanking(JobType type);
+    List<Option<Float>> passRateRanking(JobType type);
 }

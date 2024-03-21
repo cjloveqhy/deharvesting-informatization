@@ -61,7 +61,7 @@ public class JobQualifiedPercentController {
    */
   @GetMapping("/passRateRanking")
   public ResultEntity passRateRanking(@RequestParam JobType type) {
-    List<Option<Double>> options = jobQualifiedPercentService.passRateRanking(type);
+    List<Option<Float>> options = jobQualifiedPercentService.passRateRanking(type);
     return ResultEntity.success(options);
   }
 

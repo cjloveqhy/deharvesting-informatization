@@ -1,10 +1,8 @@
 package com.cby.tcs.job_data.support;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.cby.tcs.job_data.JobData;
 import com.cby.tcs.job_evaluation.entity.enums.JobType;
 import com.cby.tcs.job_qualified_percent.dao.JobQualifiedPercentDao;
-import com.cby.tcs.job_qualified_percent.entity.po.JobQualifiedPercent;
 import com.cby.tcs.user.entity.vo.UserInfo;
 import com.cby.tcs.user.service.UserService;
 import com.freedom.cloud.options.Option;
@@ -35,14 +33,11 @@ public class UavJobData implements JobData {
     }
 
     @Override
-    public List<Option<Double>> passRateRanking() {
-        LambdaQueryWrapper<JobQualifiedPercent> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(JobQualifiedPercent::getJobType, JobType.Uav)
-                .orderByDesc(JobQualifiedPercent::getPercentPass).last("limit 3");
-        List<JobQualifiedPercent> jobQualifiedPercents = jobQualifiedPercentDao.selectList(wrapper);
-        List<Option<Double>> options = new LinkedList<>();
-        for (JobQualifiedPercent percent : jobQualifiedPercents) {
-            options.add(new Option<Double>().setLabel("").setValue(percent.getPercentPass()));
+    public List<Option<Float>> passRateRanking() {
+        List<Option<Float>> passRateRankingInfo = jobQualifiedPercentDao.getUavPassRateRanking();
+        List<Option<Float>> options = new LinkedList<>();
+        for (Option<Float> passRateRanking : passRateRankingInfo) {
+            options.add(new Option<Float>().setLabel(passRateRanking.getLabel()).setValue(passRateRanking.getValue()));
         }
         return options;
     }

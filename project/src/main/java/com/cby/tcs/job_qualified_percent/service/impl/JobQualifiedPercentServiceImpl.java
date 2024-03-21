@@ -58,7 +58,7 @@ public class JobQualifiedPercentServiceImpl extends ServiceImpl<JobQualifiedPerc
   }
 
   @Override
-  public List<Option<Double>> passRateRanking(JobType type) {
+  public List<Option<Float>> passRateRanking(JobType type) {
     return jobDataService.passRateRanking(type);
   }
 

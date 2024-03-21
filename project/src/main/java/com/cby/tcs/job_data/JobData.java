@@ -25,8 +25,8 @@ public interface JobData {
 
     /**
      * 获取合格率排行TOP3的数据
-     * @return {@link List}<{@link Option}<{@link Double}>>
+     * @return {@link List}<{@link Option}<{@link Float}>>
      */
-    List<Option<Double>> passRateRanking();
+    List<Option<Float>> passRateRanking();
 
 }
