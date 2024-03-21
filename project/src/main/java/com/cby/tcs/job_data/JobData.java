@@ -15,7 +15,7 @@ public interface JobData {
     boolean supports(JobType type);
 
     /**
-     * 获取基础i西南西
+     * 获取基础信息
      * @param ids 工作id编号
      * @return {@link Map}<{@link String}, {@link Object}>
      */
