@@ -5,16 +5,19 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cby.tcs.job_data.JobDataService;
+import com.cby.tcs.job_evaluation.entity.enums.JobType;
 import com.cby.tcs.job_qualified_percent.dao.JobQualifiedPercentDao;
 import com.cby.tcs.job_qualified_percent.entity.fo.JobQualifiedPercentPageFo;
 import com.cby.tcs.job_qualified_percent.entity.po.JobQualifiedPercent;
 import com.cby.tcs.job_qualified_percent.entity.vo.JobQualifiedPercentPageVo;
 import com.cby.tcs.job_qualified_percent.service.JobQualifiedPercentService;
+import com.freedom.cloud.options.Option;
 import com.freedom.cloud.utils.page.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,6 +55,11 @@ public class JobQualifiedPercentServiceImpl extends ServiceImpl<JobQualifiedPerc
       voPage.getRecords().add(vo);
     }
     return voPage;
+  }
+
+  @Override
+  public List<Option<Double>> passRateRanking(JobType type) {
+    return jobDataService.passRateRanking(type);
   }
 
 }

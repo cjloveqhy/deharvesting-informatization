@@ -2,11 +2,10 @@ package com.cby.tcs.job_data.support;
 
 import com.cby.tcs.job_data.JobData;
 import com.cby.tcs.job_evaluation.entity.enums.JobType;
+import com.freedom.cloud.options.Option;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class CottonPickerJobData implements JobData {
@@ -21,6 +20,11 @@ public class CottonPickerJobData implements JobData {
         Map<String, Object> infoMap = new HashMap<>();
         ids.forEach(id -> infoMap.put(id, id));
         return infoMap;
+    }
+
+    @Override
+    public List<Option<Double>> passRateRanking() {
+        return Collections.emptyList();
     }
 
 }

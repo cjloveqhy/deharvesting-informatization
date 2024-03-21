@@ -6,6 +6,7 @@ import com.cby.tcs.job_qualified_percent.entity.fo.JobQualifiedPercentPageFo;
 import com.cby.tcs.job_qualified_percent.entity.vo.JobQualifiedPercentPageVo;
 import com.cby.tcs.job_qualified_percent.service.JobQualifiedPercentService;
 import com.freedom.cloud.annotation.ParamsToEntity;
+import com.freedom.cloud.options.Option;
 import com.freedom.cloud.result.ResultEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <p>
@@ -59,8 +61,8 @@ public class JobQualifiedPercentController {
    */
   @GetMapping("/passRateRanking")
   public ResultEntity passRateRanking(@RequestParam JobType type) {
-
-    return ResultEntity.success();
+    List<Option<Double>> options = jobQualifiedPercentService.passRateRanking(type);
+    return ResultEntity.success(options);
   }
 
 }
