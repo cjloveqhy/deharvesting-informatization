@@ -8,6 +8,7 @@ const props = withDefaults(defineProps<BasicEchartsProps>(), {
   dataField: 'dataset.source',
   loading: false,
   data: null,
+  ignoreData: false,
   theme: ''
 })
 
@@ -45,9 +46,9 @@ function setData() {
 
 onMounted(() => {
   nextTick(() => {
-    if (!props.loading && props.data && props.data.length >= 0) {
+    if (!props.loading && (props.ignoreData || (props.data && props.data.length >= 0))) {
       init()
-      setData()
+      !props.ignoreData && setData()
     }
   })
 })
@@ -57,9 +58,9 @@ watch(
   (val) => {
     if (!val) {
       nextTick(() => {
-        if (props.data && props.data.length >= 0) {
+        if (props.ignoreData || (props.data && props.data.length >= 0)) {
           init()
-          setData()
+          !props.ignoreData && setData()
         }
       })
     }
@@ -68,7 +69,7 @@ watch(
 
 watch(
   () => props.data,
-  () => !props.loading && setData(),
+  () => !props.loading && !props.ignoreData && setData(),
   {
     deep: true
   }
@@ -94,7 +95,7 @@ onUnmounted(() => {
       </slot>
     </template>
     <template v-else>
-      <template v-if="props.data && props.data.length >= 0">
+      <template v-if="props.ignoreData || (props.data && props.data.length >= 0)">
         <div :id="echartsId" :class="props.chartClass" />
       </template>
       <template v-else>
