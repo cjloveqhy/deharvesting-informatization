@@ -36,9 +36,14 @@ public class UavJobData implements JobData {
     public List<Option<Float>> passRateRanking() {
         List<Option<Float>> passRateRankingInfo = jobQualifiedPercentDao.getUavPassRateRanking();
         List<Option<Float>> options = new LinkedList<>();
+        Option<Float> maxOption = new Option<>();
+        maxOption.setValue(0F);
         for (Option<Float> passRateRanking : passRateRankingInfo) {
+            if (maxOption.getValue() < passRateRanking.getValue()) maxOption = passRateRanking;
             options.add(new Option<Float>().setLabel(passRateRanking.getLabel()).setValue(passRateRanking.getValue()));
         }
+        options.remove(maxOption);
+        options.add(options.size() / 2, maxOption);
         return options;
     }
 

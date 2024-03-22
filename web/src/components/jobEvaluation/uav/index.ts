@@ -1,5 +1,3 @@
-import {number} from "echarts";
-
 export const monthHomeWorkResultOption = {
   tooltip: {
     trigger: 'axis',
@@ -9,10 +7,6 @@ export const monthHomeWorkResultOption = {
         color: '#999'
       }
     }
-  },
-  legend: {
-    data: ['Evaporation', 'Precipitation', 'Temperature'],
-    show: false,
   },
   xAxis: [
     {
@@ -26,7 +20,7 @@ export const monthHomeWorkResultOption = {
   yAxis: [
     {
       type: 'value',
-      name: 'Precipitation',
+      name: 'noPassNum',
       min: 0,
       max: 250,
       interval: 50,
@@ -34,7 +28,7 @@ export const monthHomeWorkResultOption = {
     },
     {
       type: 'value',
-      name: 'Temperature',
+      name: 'passRate',
       min: 0,
       max: 250,
       interval: 50,
@@ -45,13 +39,22 @@ export const monthHomeWorkResultOption = {
     left: "0px",
     right: "0px",
   },
+  dataset: {
+    dimensions: ['days', 'passNum', 'noPassNum', 'passRate'],
+    source: [
+      { days: '01', passNum: 100, noPassNum: 130, passRate: 120 },
+      { days: '02', passNum: 50, noPassNum: 50, passRate: 50 },
+      { days: '03', passNum: 30, noPassNum: 30, passRate: 30 },
+      { days: '04', passNum: 40, noPassNum: 40, passRate: 40 },
+      { days: '05', passNum: 60, noPassNum: 60, passRate: 60 },
+      { days: '06', passNum: 50, noPassNum: 50, passRate: 50 },
+      { days: '07', passNum: 30, noPassNum: 30, passRate: 30 },
+      { days: '08', passNum: 100, noPassNum: 100, passRate: 100 }
+    ]
+  },
   series: [
     {
-      name: 'Evaporation',
       type: 'bar',
-      data: [
-        100, 50, 30, 40, 60, 50, 30, 100
-      ],
       itemStyle: {
         normal: {
           color: '#81D3F8'
@@ -59,11 +62,7 @@ export const monthHomeWorkResultOption = {
       }
     },
     {
-      name: 'Precipitation',
       type: 'bar',
-      data: [
-        130, 50, 30, 40, 60, 50, 30, 100
-      ],
       itemStyle: {
         normal: {
           color: '#02A7F0'
@@ -71,10 +70,8 @@ export const monthHomeWorkResultOption = {
       }
     },
     {
-      name: 'Temperature',
       type: 'line',
       yAxisIndex: 1,
-      data: [120, 50, 30, 40, 60, 50, 30, 100],
       itemStyle: {
         normal: {
           color: '#015478'
