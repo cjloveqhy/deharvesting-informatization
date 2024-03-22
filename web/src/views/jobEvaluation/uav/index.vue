@@ -5,8 +5,21 @@ import {JobType} from "@/store/api/job/evaluation";
 import FilterPageData from "@/views/jobEvaluation/details/filterPageData.vue";
 import QualifiedPercentPageData from "@/views/jobEvaluation/details/qualifiedPercentPageData.vue";
 import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";
+import {getUavPassRateRanking} from "@/api/job/qulifiedPercent";
+import {BasicOption} from "@/store/common";
 
 const timestamp = ref(1183135260000)
+
+let uavPassRateRanking = ref<Array<BasicOption>>([])
+
+const getUavPassRateRankingInfo = async ()=> {
+  let result = await getUavPassRateRanking("Uav");
+  uavPassRateRanking.value = result.data
+}
+
+onBeforeMount(() => {
+  getUavPassRateRankingInfo()
+})
 
 </script>
 
@@ -34,7 +47,7 @@ const timestamp = ref(1183135260000)
           <n-date-picker size="small" v-model:value="timestamp" type="month" clearable/>
         </template>
       </basic-echarts>
-      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption" :data="[]">
+      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption" :data="uavPassRateRanking.value">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>合格率排行TOP3</span>

@@ -8,6 +8,7 @@ const getUri = (uri: string) => {
 
 export const api = {
   page: getUri('/page'),
+  passRateRanking: getUri("/passRateRanking")
 }
 
 /**
@@ -18,6 +19,22 @@ export function getPage(params: JobQualifiedPercentPageFo) {
     url: api.page,
     method: RequestEnum.GET,
     params
+  },{
+    joinParamsToUrl: true
+  })
+}
+
+/**
+ * 获取无人机合格率排行TOP3的接口
+ * @param type
+ */
+export function getUavPassRateRanking(type: string){
+  return http.request({
+    url: api.passRateRanking,
+    method: RequestEnum.GET,
+    params: {
+      type
+    }
   },{
     joinParamsToUrl: true
   })

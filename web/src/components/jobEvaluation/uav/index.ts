@@ -1,3 +1,5 @@
+import {number} from "echarts";
+
 export const monthHomeWorkResultOption = {
   tooltip: {
     trigger: 'axis',
@@ -10,7 +12,7 @@ export const monthHomeWorkResultOption = {
   },
   legend: {
     data: ['Evaporation', 'Precipitation', 'Temperature'],
-    show:false,
+    show: false,
   },
   xAxis: [
     {
@@ -39,9 +41,9 @@ export const monthHomeWorkResultOption = {
       show: false,
     }
   ],
-  grid:{ // 让图表占满容器
-    left:"0px",
-    right:"0px",
+  grid: { // 让图表占满容器
+    left: "0px",
+    right: "0px",
   },
   series: [
     {
@@ -51,7 +53,7 @@ export const monthHomeWorkResultOption = {
         100, 50, 30, 40, 60, 50, 30, 100
       ],
       itemStyle: {
-        normal:{
+        normal: {
           color: '#81D3F8'
         }
       }
@@ -63,7 +65,7 @@ export const monthHomeWorkResultOption = {
         130, 50, 30, 40, 60, 50, 30, 100
       ],
       itemStyle: {
-        normal:{
+        normal: {
           color: '#02A7F0'
         }
       }
@@ -74,7 +76,7 @@ export const monthHomeWorkResultOption = {
       yAxisIndex: 1,
       data: [120, 50, 30, 40, 60, 50, 30, 100],
       itemStyle: {
-        normal:{
+        normal: {
           color: '#015478'
         }
       },
@@ -83,21 +85,22 @@ export const monthHomeWorkResultOption = {
   ]
 }
 
-export const rankingPassRatesOption  = {
+export const rankingPassRatesOption = {
   xAxis: {
     type: 'category',
-    data: ['张三', '李四', '王五']
   },
   yAxis: {
     type: 'value',
     show: false
   },
+  dataset: {
+    source: []
+  },
   series: [
     {
-      data: [20, 30, 10],
       type: 'bar',
       itemStyle: {
-        normal:{
+        normal: {
           color: function (params) {
             let colorList = [
               '#43A1CA',
@@ -108,6 +111,6 @@ export const rankingPassRatesOption  = {
           }
         }
       }
-    }
+    },
   ]
 };
