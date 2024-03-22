@@ -8,10 +8,6 @@ export const workResultOption = {
       }
     }
   },
-
-  legend: {
-    data: ['Evaporation', 'Precipitation']
-  },
   xAxis: [
     {
       type: 'category',
@@ -24,7 +20,7 @@ export const workResultOption = {
   yAxis: [
     {
       type: 'value',
-      name: 'Precipitation',
+      name: 'noPassNum',
       min: 0,
       max: 250,
       interval: 50,
@@ -32,49 +28,52 @@ export const workResultOption = {
     },
     {
       type: 'value',
-      name: 'Temperature',
+      name: 'passRate',
       min: 0,
       max: 250,
       interval: 50,
       show: false,
     }
   ],
-  grid:{ // 让图表占满容器
-    left:"0px",
-    right:"0px",
+  grid: { // 让图表占满容器
+    left: "0px",
+    right: "0px",
+  },
+  dataset: {
+    dimensions: ['days', 'noPassNum', 'passNum', 'passRate'],
+    source: [
+      { days: '01', passNum: 100, noPassNum: 130, passRate: 120 },
+      { days: '02', passNum: 50, noPassNum: 50, passRate: 50 },
+      { days: '03', passNum: 30, noPassNum: 30, passRate: 30 },
+      { days: '04', passNum: 40, noPassNum: 40, passRate: 40 },
+      { days: '05', passNum: 60, noPassNum: 60, passRate: 60 },
+      { days: '06', passNum: 50, noPassNum: 50, passRate: 50 },
+      { days: '07', passNum: 30, noPassNum: 30, passRate: 30 },
+      { days: '08', passNum: 100, noPassNum: 100, passRate: 100 }
+    ]
   },
   series: [
     {
-      name: 'Evaporation',
       type: 'bar',
-      data: [
-        100, 50, 30, 40, 60, 50, 30, 100
-      ],
       itemStyle: {
-        normal:{
+        normal: {
           color: '#81D3F8'
         }
       }
     },
     {
-      name: 'Precipitation',
       type: 'bar',
-      data: [
-        130, 50, 30, 40, 60, 50, 30, 100
-      ],
       itemStyle: {
-        normal:{
+        normal: {
           color: '#02A7F0'
         }
       }
     },
     {
-      name: 'Temperature',
       type: 'line',
       yAxisIndex: 1,
-      data: [120, 50, 30, 40, 60, 50, 30, 100],
       itemStyle: {
-        normal:{
+        normal: {
           color: '#015478'
         }
       },

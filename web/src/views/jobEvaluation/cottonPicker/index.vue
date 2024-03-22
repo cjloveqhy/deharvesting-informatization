@@ -19,11 +19,23 @@ import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";</script>
                       :stroke-width="15" color="#248DD4" :gap-degree="10" />
         </n-flex>
       </n-card>
-      <basic-echarts class="w-5/12" :bordered="false" :option="workResultOption" :data="[]" data-field="series[0].data">
+      <basic-echarts class="w-5/12" :bordered="false" :option="workResultOption" :data="[]" data-field="series.data">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>作业评价结果</span>
           </n-h6>
+        </template>
+        <template #header-extra>
+          <n-flex justify="center" align="center">
+            <div class="w-4 h-4 bg-[#81D3F8]"></div>
+            <n-h6 style="--n-bar-color: #248DD4; --n-margin: 0">
+              不合格
+            </n-h6>
+            <div class="w-4 h-4 bg-[#02A7F0]"></div>
+            <n-h6 style="--n-bar-color: #248DD4; --n-margin: 0">
+              合格
+            </n-h6>
+          </n-flex>
         </template>
       </basic-echarts>
       <qualified-percent-page-data class="w-5/12 min-w-500px" :type="JobType.Cotton_Picker">
@@ -42,5 +54,4 @@ import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";</script>
 ::v-deep(.n-progress.n-progress--circle) {
   width: 80%;
 }
-
 </style>
