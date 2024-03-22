@@ -19,7 +19,7 @@ import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";</script>
                       :stroke-width="15" color="#248DD4" :gap-degree="10" />
         </n-flex>
       </n-card>
-      <basic-echarts class="w-5/12" :bordered="false" :option="workResultOption" :data="[]">
+      <basic-echarts class="w-5/12" :bordered="false" :option="workResultOption" :data="[]" data-field="series[0].data">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>作业评价结果</span>

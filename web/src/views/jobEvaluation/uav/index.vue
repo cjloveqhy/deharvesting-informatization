@@ -36,7 +36,7 @@ getUavPassRateRankingInfo()
                       :stroke-width="15" color="#248DD4" :gap-degree="10" />
         </n-flex>
       </n-card>
-      <basic-echarts class="w-2/6" :bordered="false" :option="monthHomeWorkResultOption" :data="[]">
+      <basic-echarts class="w-2/6" :bordered="false" :option="monthHomeWorkResultOption" :data="[]" data-field="series[0].data">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>月作业评价结果</span>
