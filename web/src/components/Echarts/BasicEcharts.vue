@@ -4,8 +4,12 @@ import {BasicEchartsProps} from "@/components/Echarts/index";
 import {deepCopy} from "@/utils/copyUtil";
 
 const props = withDefaults(defineProps<BasicEchartsProps>(), {
-  dataField: 'series[0].data'
+  chartClass: 'w-full h-full',
+  dataField: 'dataset.source',
+  theme: ''
 })
+
+const emits = defineEmits(['addEvent'])
 
 const echartsId = "echarts_" + new Date().getDate().toString() + Math.random() * 100000000000000000
 
@@ -13,13 +17,14 @@ let chart
 
 function init() {
   const dom = document.getElementById(echartsId)
-  chart = echarts.init(dom, props.theme || '', props.opts || {renderer: 'svg'})
+  chart = echarts.init(dom, props.theme, props.opts || {renderer: 'svg'})
   props.option && initOption()
 
   chart.resize()
   window.addEventListener('resize', () => {
     chart.resize()
   })
+  emits('addEvent', chart)
 }
 
 const currentOption = ref<echarts.EChartsOption>()
@@ -58,10 +63,10 @@ watch(
     <template v-if="!!useSlots().header" #header>
       <slot name="header" />
     </template>
-    <template v-if="!!useSlots().headerExtra" #header-extra>
-      <slot name="headerExtra" />
+    <template v-if="!!useSlots()['header-extra']" #header-extra>
+      <slot name="header-extra" />
     </template>
-    <div :id="echartsId" class="w-full h-full" />
+    <div :id="echartsId" :class="props.chartClass" />
     <template v-if="!!useSlots().footer" #footer>
       <slot name="footer" />
     </template>

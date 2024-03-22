@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import * as echarts from 'echarts';
 import {monthHomeWorkResultOption, rankingPassRatesOption} from "@/components/jobEvaluation/uav";
 import {NFlex} from 'naive-ui';
 import {JobType} from "@/store/api/job/evaluation";
@@ -8,33 +7,6 @@ import QualifiedPercentPageData from "@/views/jobEvaluation/details/qualifiedPer
 import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";
 
 const timestamp = ref(1183135260000)
-// 获取月作业评价结果 ---- 折柱混合图
-const getMonthHomeWorkResultChart = () => {
-  const monthHomeWorkResultDom = document.getElementById('monthHomeWorkResultDom');
-  const monthHomeWorkResultChart = echarts.init(monthHomeWorkResultDom);
-  monthHomeWorkResultOption && monthHomeWorkResultChart.setOption(monthHomeWorkResultOption);
-  const resizeHandler = () => {
-    monthHomeWorkResultChart.resize(); // 重新绘制图表
-  }
-  window.addEventListener('resize', resizeHandler);
-}
-
-// 获取合格率排行 ---- 柱状图
-const getRankingPassRatesChart = () => {
-  const rankingPassRatesDom = document.getElementById('rankingPassRatesDom');
-  const rankingPassRatesChart = echarts.init(rankingPassRatesDom);
-  rankingPassRatesOption && rankingPassRatesChart.setOption(rankingPassRatesOption);
-  const resizeHandler = () => {
-    rankingPassRatesChart.resize(); // 重新绘制图表
-  }
-  window.addEventListener('resize', resizeHandler);
-}
-
-/*onMounted(() => {
-  getMonthHomeWorkResultChart()
-  getRankingPassRatesChart()
-})*/
-
 
 </script>
 
@@ -52,32 +24,13 @@ const getRankingPassRatesChart = () => {
                       :stroke-width="15" color="#248DD4" :gap-degree="10" />
         </n-flex>
       </n-card>
-<!--      <n-card class="w-2/6" :bordered="false">
-        <template #header>
-          <n-h6 prefix="bar" style="&#45;&#45;n-bar-color: #248DD4; &#45;&#45;n-margin: 0">
-            <span>月作业评价结果</span>
-          </n-h6>
-        </template>
-        <template #header-extra>
-          <n-date-picker size="small" v-model:value="timestamp" type="month" clearable/>
-        </template>
-        <div id="monthHomeWorkResultDom" class="w-full h-full"></div>
-      </n-card>-->
-<!--      <n-card class="w-1/6" :bordered="false">
-        <template #header>
-          <n-h6 prefix="bar" style="&#45;&#45;n-bar-color: #248DD4; &#45;&#45;n-margin: 0">
-            <span>合格率排行TOP3</span>
-          </n-h6>
-        </template>
-        <div id="rankingPassRatesDom" class="w-full h-full"></div>
-      </n-card>-->
       <basic-echarts class="w-2/6" :bordered="false" :option="monthHomeWorkResultOption" :data="[]">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>月作业评价结果</span>
           </n-h6>
         </template>
-        <template #headerExtra>
+        <template #header-extra>
           <n-date-picker size="small" v-model:value="timestamp" type="month" clearable/>
         </template>
       </basic-echarts>

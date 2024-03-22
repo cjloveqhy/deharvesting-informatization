@@ -1,25 +1,9 @@
 <script setup lang="ts">
-import * as echarts from 'echarts';
 import {workResultOption} from "@/components/jobEvaluation/cottonPicker";
 import {JobType} from "@/store/api/job/evaluation";
 import FilterPageData from "@/views/jobEvaluation/details/filterPageData.vue";
 import QualifiedPercentPageData from "@/views/jobEvaluation/details/qualifiedPercentPageData.vue";
-
-// 获取月作业评价结果 ---- 折柱混合图
-const getWorkResultChart = () => {
-  const workResultDom = document.getElementById('workResultDom');
-  const workResultChart = echarts.init(workResultDom);
-  workResultOption && workResultChart.setOption(workResultOption);
-  const resizeHandler = () => {
-    workResultChart.resize(); // 重新绘制图表
-  }
-  window.addEventListener('resize', resizeHandler);
-}
-onMounted(() => {
-  getWorkResultChart()
-})
-
-</script>
+import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";</script>
 
 <template>
   <n-flex vertical>
@@ -35,14 +19,13 @@ onMounted(() => {
                       :stroke-width="15" color="#248DD4" :gap-degree="10" />
         </n-flex>
       </n-card>
-      <n-card class="w-5/12" :bordered="false">
+      <basic-echarts class="w-5/12" :bordered="false" :option="workResultOption" :data="[]">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>作业评价结果</span>
           </n-h6>
         </template>
-        <div id="workResultDom" class="w-full h-full"></div>
-      </n-card>
+      </basic-echarts>
       <qualified-percent-page-data class="w-5/12 min-w-500px" :type="JobType.Cotton_Picker">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
