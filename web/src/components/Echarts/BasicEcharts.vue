@@ -6,6 +6,8 @@ import {deepCopy} from "@/utils/copyUtil";
 const props = withDefaults(defineProps<BasicEchartsProps>(), {
   chartClass: 'w-full h-full',
   dataField: 'dataset.source',
+  loading: false,
+  data: null,
   theme: ''
 })
 
@@ -43,18 +45,38 @@ function setData() {
 
 onMounted(() => {
   nextTick(() => {
-    init()
-    setData()
+    if (!props.loading && props.data && props.data.length >= 0) {
+      init()
+      setData()
+    }
   })
 })
 
 watch(
+  () => props.loading,
+  (val) => {
+    if (!val) {
+      nextTick(() => {
+        if (props.data && props.data.length >= 0) {
+          init()
+          setData()
+        }
+      })
+    }
+  }
+)
+
+watch(
   () => props.data,
-  () => setData(),
+  () => !props.loading && setData(),
   {
     deep: true
   }
 )
+
+onUnmounted(() => {
+  chart && chart.dispose()
+})
 
 </script>
 
@@ -66,7 +88,24 @@ watch(
     <template v-if="!!useSlots()['header-extra']" #header-extra>
       <slot name="header-extra" />
     </template>
-    <div :id="echartsId" :class="props.chartClass" />
+    <template v-if="props.loading">
+      <slot name="loading" :loading="props.loading">
+        <n-spin :show="true" v-bind="props.spinProps" class="w-full h-full" />
+      </slot>
+    </template>
+    <template v-else>
+      <template v-if="props.data && props.data.length >= 0">
+        <div :id="echartsId" :class="props.chartClass" />
+      </template>
+      <template v-else>
+        <slot name="empty">
+          <n-empty
+            :size="props.emptyProps?.size || 'large'"
+            v-bind="props.emptyProps"
+            class="w-full h-full justify-center" />
+        </slot>
+      </template>
+    </template>
     <template v-if="!!useSlots().footer" #footer>
       <slot name="footer" />
     </template>

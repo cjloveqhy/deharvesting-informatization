@@ -1,15 +1,8 @@
 <script lang="ts" setup>
-import {defineComponent} from 'vue'
-import {List, LayersSharp, LayersOutline} from '@vicons/ionicons5'
-import TypeLine from "@/components/LineType/LineType.vue";
+import {LayersOutline} from '@vicons/ionicons5'
 import LineType from "@/components/LineType/LineType.vue";
 
-const props = defineProps({
-  settingType: {
-    type: String,
-    default: ""
-  }
-})
+const props = defineProps<{settingType: string}>()
 
 // 无人机的评价设置
 let uavCheckBoxOptions = reactive([
@@ -83,41 +76,40 @@ const handleUpdateValue = (value)=> {
           <n-icon color="#80D0F9" :size="20">
             <LayersOutline></LayersOutline>
           </n-icon>
-          <span style="color: #289CEB;margin-left: 10px">监测参数</span>
+          <span class="text-14px text-#289CEB ml-10px">监测参数</span>
         </template>
-        <n-space item-style="display: flex;" vertical>
+        <n-flex vertical>
           <n-checkbox
             :checked="isSelectAll"
             label="全选"
             @update:checked="selectAll"
           />
           <n-checkbox-group :value="monitoredParameters" @update:value="handleUpdateValue">
-            <n-space item-style="display: flex;" align="center">
+            <n-flex align="center">
               <n-checkbox v-for="(item, index) in showCheckBoxOption" :key="index" :value="item.value" :label="item.label"/>
-            </n-space>
+            </n-flex>
           </n-checkbox-group>
-        </n-space>
+        </n-flex>
       </n-card>
       <n-card :segmented="{content: true,footer: 'soft'}" :bordered="false">
         <template #header>
           <n-icon color="#80D0F9" :size="20">
             <LayersOutline></LayersOutline>
           </n-icon>
-          <span style="color: #289CEB;margin-left: 10px">参数设置</span>
+          <span class="text-14px text-#289CEB ml-10px">参数设置</span>
         </template>
         <div v-for="(item, index) in showCheckBoxOption" :key="index">
           <n-h6 prefix="bar" align-text>
             {{ item.label }}
           </n-h6>
-          <div style="display: flex">
-            <n-slider v-model:value="item.minToMaxValue" range :step="1" style="width: 25%; margin-right: 20px;margin-top: 5px;
-                --n-fill-color-hover: #81D3F8;
-                --n-fill-color:#81D3F8;--n-rail-height: 8px" />
-            <n-input-number v-model:value="item.minToMaxValue[0]" size="small" style="width: 10%" />
+          <n-flex>
+            <n-slider v-model:value="item.minToMaxValue" range :step="1" class="w-1/4 mr-20px mt-5px"
+                      style="--n-fill-color-hover: #81D3F8;--n-fill-color:#81D3F8;--n-rail-height: 8px" />
+            <n-input-number v-model:value="item.minToMaxValue[0]" size="small" class="w-10%" />
             <span>&emsp;-&emsp;</span>
-            <n-input-number v-model:value="item.minToMaxValue[1]" size="small" style="width: 10%" />
+            <n-input-number v-model:value="item.minToMaxValue[1]" size="small" class="w-10%" />
             <span>&emsp;{{ item.unit }}</span>
-          </div>
+          </n-flex>
         </div>
       </n-card>
     </n-flex>
@@ -125,13 +117,8 @@ const handleUpdateValue = (value)=> {
 </template>
 
 <style scoped lang="less">
-::v-deep .n-card.n-card--bordered {
-  height: 87vh;
-  margin: 0;
-}
 
-::v-deep .n-card > .n-card-header {
+::v-deep(.n-card > .n-card-header) {
   padding: 10px;
-  font-size: 14px;
 }
 </style>

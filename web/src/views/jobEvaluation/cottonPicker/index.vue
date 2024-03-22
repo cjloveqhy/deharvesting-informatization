@@ -1,9 +1,22 @@
 <script setup lang="ts">
-import {workResultOption} from "@/components/jobEvaluation/cottonPicker";
+import {workResultOption} from "@/store/api/job/echarts";
 import {JobType} from "@/store/api/job/evaluation";
 import FilterPageData from "@/views/jobEvaluation/details/filterPageData.vue";
 import QualifiedPercentPageData from "@/views/jobEvaluation/details/qualifiedPercentPageData.vue";
-import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";</script>
+import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";
+
+const data = [
+  { days: '01', passNum: 100, noPassNum: 130, passRate: 120 },
+  { days: '02', passNum: 50, noPassNum: 50, passRate: 50 },
+  { days: '03', passNum: 30, noPassNum: 30, passRate: 30 },
+  { days: '04', passNum: 40, noPassNum: 40, passRate: 40 },
+  { days: '05', passNum: 60, noPassNum: 60, passRate: 60 },
+  { days: '06', passNum: 50, noPassNum: 50, passRate: 50 },
+  { days: '07', passNum: 30, noPassNum: 30, passRate: 30 },
+  { days: '08', passNum: 100, noPassNum: 100, passRate: 100 }
+]
+
+</script>
 
 <template>
   <n-flex vertical>
@@ -19,7 +32,7 @@ import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";</script>
                       :stroke-width="15" color="#248DD4" :gap-degree="10" />
         </n-flex>
       </n-card>
-      <basic-echarts class="w-5/12" :bordered="false" :option="workResultOption" :data="[]" data-field="series.data">
+      <basic-echarts class="w-5/12" :bordered="false" :option="workResultOption" :data="data">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>作业评价结果</span>

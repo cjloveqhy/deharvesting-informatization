@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {monthHomeWorkResultOption, rankingPassRatesOption} from "@/components/jobEvaluation/uav";
+import {monthHomeWorkResultOption, rankingPassRatesOption} from "@/store/api/job/echarts";
 import {NFlex} from 'naive-ui';
 import {JobType} from "@/store/api/job/evaluation";
 import FilterPageData from "@/views/jobEvaluation/details/filterPageData.vue";
@@ -12,13 +12,27 @@ const timestamp = ref(1183135260000)
 
 const uavPassRateRanking = ref<BasicOption[]>([])
 
+const loading = ref<boolean>(false)
+
 function getUavPassRateRankingInfo() {
+  loading.value = true
   getUavPassRateRanking(JobType.Uav).then(res => {
     uavPassRateRanking.value = res.data
-  })
+  }).finally(() => loading.value = false)
 }
+
 getUavPassRateRankingInfo()
 
+const data = [
+  { days: '01', passNum: 100, noPassNum: 130, passRate: 120 },
+  { days: '02', passNum: 50, noPassNum: 50, passRate: 50 },
+  { days: '03', passNum: 30, noPassNum: 30, passRate: 30 },
+  { days: '04', passNum: 40, noPassNum: 40, passRate: 40 },
+  { days: '05', passNum: 60, noPassNum: 60, passRate: 60 },
+  { days: '06', passNum: 50, noPassNum: 50, passRate: 50 },
+  { days: '07', passNum: 30, noPassNum: 30, passRate: 30 },
+  { days: '08', passNum: 100, noPassNum: 100, passRate: 100 }
+]
 
 </script>
 
@@ -36,7 +50,7 @@ getUavPassRateRankingInfo()
                       :stroke-width="15" color="#248DD4" :gap-degree="10" />
         </n-flex>
       </n-card>
-      <basic-echarts class="w-2/6" :bordered="false" :option="monthHomeWorkResultOption" :data="[]" data-field="series.data">
+      <basic-echarts class="w-2/6" :bordered="false" :option="monthHomeWorkResultOption" :data="data">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>月作业评价结果</span>
@@ -46,7 +60,7 @@ getUavPassRateRankingInfo()
           <n-date-picker size="small" v-model:value="timestamp" type="month" clearable/>
         </template>
       </basic-echarts>
-      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption" :data="uavPassRateRanking">
+      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption" :data="uavPassRateRanking" :loading="loading">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>合格率排行TOP3</span>

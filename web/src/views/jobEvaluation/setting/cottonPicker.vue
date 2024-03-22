@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import EvaluateSetting from "@/components/jobEvaluation/setting/EvaluateSetting.vue";
+import EvaluateSetting from "@/views/jobEvaluation/details/EvaluateSetting.vue";
+
 const settingCottonPicker = "settingCottonPicker"
 </script>
 
