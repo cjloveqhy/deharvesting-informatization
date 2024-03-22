@@ -10,16 +10,15 @@ import {BasicOption} from "@/store/common";
 
 const timestamp = ref(1183135260000)
 
-let uavPassRateRanking = ref<Array<BasicOption>>([])
+const uavPassRateRanking = ref<BasicOption[]>([])
 
-const getUavPassRateRankingInfo = async ()=> {
-  let result = await getUavPassRateRanking("Uav");
-  uavPassRateRanking.value = result.data
+function getUavPassRateRankingInfo() {
+  getUavPassRateRanking(JobType.Uav).then(res => {
+    uavPassRateRanking.value = res.data
+  })
 }
 
-onBeforeMount(() => {
-  getUavPassRateRankingInfo()
-})
+getUavPassRateRankingInfo()
 
 </script>
 
@@ -47,7 +46,7 @@ onBeforeMount(() => {
           <n-date-picker size="small" v-model:value="timestamp" type="month" clearable/>
         </template>
       </basic-echarts>
-      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption" :data="uavPassRateRanking.value">
+      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption" :data="uavPassRateRanking">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>合格率排行TOP3</span>

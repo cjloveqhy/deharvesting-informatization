@@ -1,6 +1,6 @@
 import {http} from '@/utils/http/axios';
 import {RequestEnum} from "@/enums/httpEnum";
-import {JobQualifiedPercentPageFo} from "@/store/api/job/evaluation";
+import {JobQualifiedPercentPageFo, JobType} from "@/store/api/job/evaluation";
 
 const getUri = (uri: string) => {
   return `/job-qualified-percent${uri}`
@@ -28,14 +28,12 @@ export function getPage(params: JobQualifiedPercentPageFo) {
  * 获取无人机合格率排行TOP3的接口
  * @param type
  */
-export function getUavPassRateRanking(type: string){
+export function getUavPassRateRanking(type: JobType){
   return http.request({
     url: api.passRateRanking,
     method: RequestEnum.GET,
     params: {
-      type
+      type: type
     }
-  },{
-    joinParamsToUrl: true
   })
 }
