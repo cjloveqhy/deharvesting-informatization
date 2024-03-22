@@ -9,16 +9,16 @@ const props = withDefaults(defineProps<BasicEchartsProps>(), {
 
 const echartsId = "echarts_" + new Date().getDate().toString() + Math.random() * 100000000000000000
 
-const chart = ref()
+let chart
 
 function init() {
   const dom = document.getElementById(echartsId)
-  chart.value = echarts.init(dom, props.theme || '', props.opts || {renderer: 'svg'})
+  chart = echarts.init(dom, props.theme || '', props.opts || {renderer: 'svg'})
   props.option && initOption()
 
-  chart.value.resize()
+  chart.resize()
   window.addEventListener('resize', () => {
-    chart.value.resize()
+    chart.resize()
   })
 }
 
@@ -26,14 +26,14 @@ const currentOption = ref<echarts.EChartsOption>()
 
 function initOption() {
   currentOption.value = deepCopy(props.option)
-  chart.value.setOption(currentOption.value)
+  chart.setOption(currentOption.value)
 }
 
 function setData() {
   const expr = `(refVal, data) => { refVal.${props.dataField} = data }`
   eval(expr)(currentOption.value, props.data || [])
-  chart.value.setOption(currentOption.value)
-  chart.value.resize()
+  chart.setOption(currentOption.value)
+  chart.resize()
 }
 
 onMounted(() => {
@@ -61,9 +61,7 @@ watch(
     <template v-if="!!useSlots().headerExtra" #header-extra>
       <slot name="headerExtra" />
     </template>
-      <div :id="echartsId" class="w-full h-full" />
-    <slot name="default" :id="echartsId">
-    </slot>
+    <div :id="echartsId" class="w-full h-full" />
     <template v-if="!!useSlots().footer" #footer>
       <slot name="footer" />
     </template>

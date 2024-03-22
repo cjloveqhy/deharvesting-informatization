@@ -71,7 +71,7 @@ const getRankingPassRatesChart = () => {
         </template>
         <div id="rankingPassRatesDom" class="w-full h-full"></div>
       </n-card>-->
-      <basic-echarts class="w-2/6" :bordered="false" :option="monthHomeWorkResultOption">
+      <basic-echarts class="w-2/6" :bordered="false" :option="monthHomeWorkResultOption" :data="[]">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>月作业评价结果</span>
@@ -81,7 +81,7 @@ const getRankingPassRatesChart = () => {
           <n-date-picker size="small" v-model:value="timestamp" type="month" clearable/>
         </template>
       </basic-echarts>
-      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption">
+      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption" :data="[]">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>合格率排行TOP3</span>
