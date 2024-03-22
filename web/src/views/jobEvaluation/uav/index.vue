@@ -5,6 +5,7 @@ import {NFlex} from 'naive-ui';
 import {JobType} from "@/store/api/job/evaluation";
 import FilterPageData from "@/views/jobEvaluation/details/filterPageData.vue";
 import QualifiedPercentPageData from "@/views/jobEvaluation/details/qualifiedPercentPageData.vue";
+import BasicEcharts from "@/components/Echarts/BasicEcharts.vue";
 
 const timestamp = ref(1183135260000)
 // 获取月作业评价结果 ---- 折柱混合图
@@ -29,10 +30,10 @@ const getRankingPassRatesChart = () => {
   window.addEventListener('resize', resizeHandler);
 }
 
-onMounted(() => {
+/*onMounted(() => {
   getMonthHomeWorkResultChart()
   getRankingPassRatesChart()
-})
+})*/
 
 
 </script>
@@ -51,9 +52,9 @@ onMounted(() => {
                       :stroke-width="15" color="#248DD4" :gap-degree="10" />
         </n-flex>
       </n-card>
-      <n-card class="w-2/6" :bordered="false">
+<!--      <n-card class="w-2/6" :bordered="false">
         <template #header>
-          <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
+          <n-h6 prefix="bar" style="&#45;&#45;n-bar-color: #248DD4; &#45;&#45;n-margin: 0">
             <span>月作业评价结果</span>
           </n-h6>
         </template>
@@ -61,15 +62,32 @@ onMounted(() => {
           <n-date-picker size="small" v-model:value="timestamp" type="month" clearable/>
         </template>
         <div id="monthHomeWorkResultDom" class="w-full h-full"></div>
-      </n-card>
-      <n-card class="w-1/6" :bordered="false">
+      </n-card>-->
+<!--      <n-card class="w-1/6" :bordered="false">
+        <template #header>
+          <n-h6 prefix="bar" style="&#45;&#45;n-bar-color: #248DD4; &#45;&#45;n-margin: 0">
+            <span>合格率排行TOP3</span>
+          </n-h6>
+        </template>
+        <div id="rankingPassRatesDom" class="w-full h-full"></div>
+      </n-card>-->
+      <basic-echarts class="w-2/6" :bordered="false" :option="monthHomeWorkResultOption">
+        <template #header>
+          <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
+            <span>月作业评价结果</span>
+          </n-h6>
+        </template>
+        <template #headerExtra>
+          <n-date-picker size="small" v-model:value="timestamp" type="month" clearable/>
+        </template>
+      </basic-echarts>
+      <basic-echarts class="w-1/6" :bordered="false" :option="rankingPassRatesOption">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
             <span>合格率排行TOP3</span>
           </n-h6>
         </template>
-        <div id="rankingPassRatesDom" class="w-full h-full"></div>
-      </n-card>
+      </basic-echarts>
       <qualified-percent-page-data class="w-2/6 min-w-450px" :type="JobType.Uav">
         <template #header>
           <n-h6 prefix="bar" style="--n-bar-color: #248DD4; --n-margin: 0">
