@@ -75,10 +75,6 @@ watch(
   }
 )
 
-onUnmounted(() => {
-  chart && chart.dispose()
-})
-
 </script>
 
 <template>
