@@ -5,10 +5,9 @@
       class="layout-header-left"
       v-if="navMode === 'horizontal' || (navMode === 'horizontal-mix' && mixMenu)"
     >
-      <div class="logo" v-if="navMode === 'horizontal'">
-        <img :src="websiteConfig.logo" alt="" />
-        <h2 v-show="!collapsed" class="title">{{ websiteConfig.title }}</h2>
-      </div>
+      <template v-if="navMode === 'horizontal'">
+        <Logo :collapsed="collapsed" class="ml-10px" />
+      </template>
       <AsideMenu
         v-model:collapsed="collapsed"
         v-model:location="getMenuLocation"
@@ -131,20 +130,21 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, toRefs, ref, computed, unref, Ref} from 'vue';
-import {useRouter, useRoute, RouteLocationRaw} from 'vue-router';
+import {computed, defineComponent, reactive, ref, Ref, toRefs, unref} from 'vue';
+import {RouteLocationRaw, useRoute, useRouter} from 'vue-router';
 import components from './components';
-import { NDialogProvider } from 'naive-ui';
-import { useUserApiStore } from '@/store/api/user';
+import {NDialogProvider} from 'naive-ui';
+import {useUserApiStore} from '@/store/api/user';
 import ProjectSetting from './ProjectSetting.vue';
-import { AsideMenu } from '@/layout/components/Menu';
-import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
-import { websiteConfig } from '@/config/website.config';
-import { useDesignSetting } from '@/store/modules/designSetting';
+import {AsideMenu} from '@/layout/components/Menu';
+import {useProjectSetting} from '@/hooks/setting/useProjectSetting';
+import {websiteConfig} from '@/config/website.config';
+import {useDesignSetting} from '@/store/modules/designSetting';
+import {Logo} from '@/layout/components/Logo';
 
 export default defineComponent({
   name: 'PageHeader',
-  components: { ...components, NDialogProvider, ProjectSetting, AsideMenu },
+  components: { ...components, NDialogProvider, ProjectSetting, AsideMenu, Logo },
   props: {
     collapsed: {
       type: Boolean,
@@ -306,27 +306,6 @@ export default defineComponent({
     &-left {
       display: flex;
       align-items: center;
-
-      .logo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 64px;
-        line-height: 64px;
-        overflow: hidden;
-        white-space: nowrap;
-        padding-left: 10px;
-
-        img {
-          width: auto;
-          height: 32px;
-          margin-right: 10px;
-        }
-
-        .title {
-          margin-bottom: 0;
-        }
-      }
 
       ::v-deep(.ant-breadcrumb span:last-child .link-text) {
         color: #515a6e;
