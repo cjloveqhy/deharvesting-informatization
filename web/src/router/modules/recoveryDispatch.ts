@@ -42,7 +42,14 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/views/recoveryDispatch/record/index.vue'),
       },
-
+      {
+        path: 'order',
+        name: `${routeName}_order`,
+        meta: {
+          title: '查看订单',
+        },
+        component: () => import('@/views/recoveryDispatch/order/index.vue'),
+      },
     ],
   },
 ];
