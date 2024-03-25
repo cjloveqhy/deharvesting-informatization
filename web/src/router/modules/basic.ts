@@ -67,14 +67,6 @@ const routes: Array<RouteRecordRaw> = [
           },
         ]
       },
-      {
-        path: 'personalSetting',
-        name: `${routeName}_personalSetting`,
-        meta: {
-          title: '个人设置',
-        },
-        component: () => import('@/views/basic/personalSetting/index.vue'),
-      },
     ],
   },
 ];

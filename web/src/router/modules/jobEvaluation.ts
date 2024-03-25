@@ -67,14 +67,6 @@ const routes: Array<RouteRecordRaw> = [
           }
         ]
       },
-      {
-        path: 'check',
-        name: `${routeName}_check`,
-        meta: {
-          title: '查看评价',
-        },
-        component: () => import('@/views/jobEvaluation/check/index.vue')
-      },
     ],
   },
 ];
