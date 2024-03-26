@@ -12,6 +12,7 @@ import com.cby.tcs.cotton_field.entity.po.CottonField;
 import com.cby.tcs.cotton_field.entity.vo.CottonFieldVo;
 import com.cby.tcs.cotton_field.service.CottonFieldService;
 import com.cby.tcs.exception.HarvestScheduleException;
+import com.cby.tcs.farm_uav.dao.FarmUavDao;
 import com.cby.tcs.ginnery.dao.GinneryDao;
 import com.cby.tcs.ginnery.entity.fo.GinneryPageFo;
 import com.cby.tcs.ginnery.entity.po.Ginnery;
@@ -25,6 +26,8 @@ import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo;
 import com.cby.tcs.harvest_schedule.service.HarvestScheduleService;
+import com.cby.tcs.uav_harvest_schedule.dao.UavHarvestScheduleDao;
+import com.cby.tcs.uav_harvest_schedule.entity.po.UavHarvestSchedule;
 import com.cby.tcs.user.entity.vo.UserInfo;
 import com.cby.tcs.user.service.UserService;
 import com.cby.tcs.utils.RedisUtils;
@@ -46,6 +49,10 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
   private final CottonFieldDao cottonFieldDao;
 
   private final GinneryDao ginneryDao;
+
+  private final FarmUavDao farmUavDao;
+
+  private final UavHarvestScheduleDao uavHarvestScheduleDao;
 
   private final GinneryService ginneryService;
 
@@ -155,10 +162,18 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
 
   @Override
   public void create(CreateHarvestScheduleFo createHarvestScheduleFo) {
-    System.out.println("-------" + createHarvestScheduleFo.getDispatchId());
     HarvestSchedule harvestSchedule = harvestScheduleDao
-            .selectOne(new LambdaQueryWrapper<HarvestSchedule>().eq(HarvestSchedule::getDispatchId, createHarvestScheduleFo.getDispatchId()));
+            .selectOne(new LambdaQueryWrapper<HarvestSchedule>()
+                    .eq(HarvestSchedule::getDispatchId, createHarvestScheduleFo.getDispatchId()));
     harvestSchedule.setStatus(LogicalEnum.YES).setCreator(String.valueOf(StpUtil.getLoginId()));
+    List<String> uavBelongerIds = farmUavDao.uavBelongerIds();
+    UavHarvestSchedule uavHarvestSchedule = new UavHarvestSchedule();
+    Random random = new Random();
+    uavHarvestSchedule.setHsId(createHarvestScheduleFo.getDispatchId())
+            .setBelonger(uavBelongerIds.get(random.nextInt(uavBelongerIds.size())));
+    List<String> cottonFieldIdList = Arrays.asList(harvestSchedule.getCottonFieldId().split(","));
+    uavHarvestSchedule.setCottonFieldId(String.valueOf(cottonFieldIdList.get(random.nextInt(cottonFieldIdList.size()))));
+    uavHarvestScheduleDao.insert(uavHarvestSchedule);
     harvestScheduleDao.updateById(harvestSchedule);
   }
 

@@ -3,6 +3,7 @@ package com.cby.tcs.job_evaluation.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cby.tcs.job_evaluation.entity.fo.JobEvaluationPageFo;
+import com.cby.tcs.job_evaluation.entity.fo.JobEvaluationSelfPageFo;
 import com.cby.tcs.job_evaluation.entity.po.JobEvaluation;
 import com.cby.tcs.job_evaluation.entity.vo.JobEvaluationPageVo;
 
@@ -19,4 +20,11 @@ public interface JobEvaluationService extends IService<JobEvaluation> {
      * @return {@link Page}<{@link JobEvaluationPageVo}>
      */
     Page<JobEvaluationPageVo> getFilterPage(JobEvaluationPageFo entity);
+
+    /**
+     * 获取个人的评价信息
+     * @param entity {@link JobEvaluationSelfPageFo} 分页过滤对象
+     * @return {@link Page}<{@link JobEvaluationPageVo}>
+     */
+    Page<JobEvaluationPageVo> getSelfFilterPage(JobEvaluationSelfPageFo entity);
 }

@@ -6,9 +6,12 @@ import {
   JobType,
 } from "@/store/api/job/evaluation";
 import {getLabel} from "@/utils/optionUtil";
-import {filterPage} from "@/api/job/evaluation";
+import {filterPage, getSelfFilterPage} from "@/api/job/evaluation";
+import {UserInfo} from "@/store/api/user";
+import {getUserRoles} from "@/api/user_role";
+import router from "@/router";
 
-const props = defineProps<{type: JobType}>()
+const props = defineProps<{ type: JobType, isCheck: boolean }>()
 
 const columns = ref([
   {
@@ -79,16 +82,16 @@ const columns = ref([
   },
   {
     title: "操作",
-    render (row) {
+    render(row) {
       return h(
         NButton,
         {
           strong: true,
           tertiary: true,
           size: 'small',
-          onClick: () => null
+          onClick: () => checkJobEvaluationDetail(row)
         },
-        { default: () => '查看' }
+        {default: () => '查看'}
       )
     }
   }
@@ -111,8 +114,33 @@ const formData = ref<JobEvaluationPageFo>({
 })
 
 onMounted(() => {
-  const item = ref()
-  if (props.type === JobType.Uav) {
+  if (!props.isCheck) {
+    updateDataTableTitle(props.type)
+  }
+})
+
+const data = ref<JobEvaluationPageVo[]>([])
+let userRole = ref<string>("")
+
+function reset() {
+  formData.value = {
+    ...formData.value,
+    orderId: null,
+    jobType: props.type,
+    jobId: null,
+    customerId: null,
+    evaluationResult: '',
+    startTime: null,
+    endTime: null,
+  }
+  timeRange.value = null
+}
+
+const loading = ref<boolean>(false)
+const item = ref()
+
+function updateDataTableTitle(dataTableTitleType) {
+  if (dataTableTitleType === JobType.Uav) {
     item.value = {
       title: "飞手",
       key: "flyer",
@@ -133,26 +161,8 @@ onMounted(() => {
       }
     }
   }
-  columns.value.splice(8, 0 , item.value)
-})
-
-const data = ref<JobEvaluationPageVo[]>([])
-
-function reset() {
-  formData.value = {
-    ...formData.value,
-    orderId: null,
-    jobType: props.type,
-    jobId: null,
-    customerId: null,
-    evaluationResult: '',
-    startTime: null,
-    endTime: null,
-  }
-  timeRange.value = null
+  columns.value.splice(8, 0, item.value)
 }
-
-const loading = ref<boolean>(false)
 
 function getData() {
   loading.value = true
@@ -169,10 +179,36 @@ function getData() {
   } else {
     form = {...formData.value}
   }
-  filterPage(form as JobEvaluationPageFo).then(res => {
-    data.value = res.data.records
-    pages.value = res.data.pages
-  }).finally(() => loading.value = false)
+  if (!props.isCheck) {
+    filterPage(form as JobEvaluationPageFo).then(res => {
+      data.value = res.data.records
+      pages.value = res.data.pages
+    }).finally(() => loading.value = false)
+  } else {
+    getSelfFilterPage(form as JobEvaluationPageFo).then(res => {
+      data.value = res.data.records
+      pages.value = res.data.pages
+    }).finally(() => loading.value = false)
+    getUserRoles().then(res => {
+      userRole.value = res[0]
+      if (userRole.value == '飞手') {
+        updateDataTableTitle(JobType.Uav)
+      } else {
+        updateDataTableTitle(JobType.Cotton_Picker)
+      }
+    }).finally(() => loading.value = false)
+  }
+}
+
+// 查看评价详情
+const checkJobEvaluationDetail = (row) => {
+  router.push({
+    name: 'jobEvaluationMap_details',
+    params: {
+      cottonFieldId: row.cottonField.id,
+      belonger: row.info.id,
+    }
+  })
 }
 
 getData()

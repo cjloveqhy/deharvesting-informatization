@@ -1,11 +1,10 @@
 <template>
-查看评价
+  <filter-page-data :isCheck="true"/>
 </template>
 
-<script>
-export default {
-  name: "index"
-}
+<script setup lang="ts">
+import {JobType} from "@/store/api/job/evaluation";
+import FilterPageData from "@/views/jobEvaluation/details/filterPageData.vue";
 </script>
 
 <style scoped>

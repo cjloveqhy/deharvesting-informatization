@@ -2,6 +2,7 @@ package com.cby.tcs.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cby.tcs.job_evaluation.entity.fo.JobEvaluationPageFo;
+import com.cby.tcs.job_evaluation.entity.fo.JobEvaluationSelfPageFo;
 import com.cby.tcs.job_evaluation.entity.vo.JobEvaluationPageVo;
 import com.cby.tcs.job_evaluation.service.JobEvaluationService;
 import com.freedom.cloud.annotation.ParamsToEntity;
@@ -27,10 +28,20 @@ public class JobEvaluationController {
   /**
    * 获取过滤分页数据
    */
-  @GetMapping("/filterPage")
-  public ResultEntity getFilterPage(@ParamsToEntity(required = false, params = {@RequestParam("jobType")}) JobEvaluationPageFo entity) {
-    Page<JobEvaluationPageVo> page = jobEvaluationService.getFilterPage(entity);
-    return ResultEntity.success(page);
-  }
+    @GetMapping("/filterPage")
+    public ResultEntity getFilterPage(@ParamsToEntity(required = false, params = {@RequestParam("jobType")}) JobEvaluationPageFo entity) {
+      Page<JobEvaluationPageVo> page = jobEvaluationService.getFilterPage(entity);
+      return ResultEntity.success(page);
+    }
+
+  /**
+   * 获取个人的评价信息
+   */
+    @GetMapping("/getSelfFilterPage")
+    public ResultEntity getSelfFilterPage(JobEvaluationSelfPageFo entity) {
+      Page<JobEvaluationPageVo> page = jobEvaluationService.getSelfFilterPage(entity);
+      return ResultEntity.success(page);
+    }
+
 
 }

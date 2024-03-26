@@ -34,6 +34,9 @@ public class UavHarvestSchedule extends Model<UavHarvestSchedule> {
     @TableField("belonger")
     private String belonger;
 
-
-
+    /**
+     * 棉田地id编号
+     */
+    @TableField("cotton_field_id")
+    private String cottonFieldId;
 }

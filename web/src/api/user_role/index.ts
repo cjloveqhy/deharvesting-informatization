@@ -11,6 +11,7 @@ export const api = {
   add: getUri('/add'),
   update: getUri('/update'),
   del: getUri('/del'),
+  roles: getUri("/roles")
 }
 
 /**
@@ -25,3 +26,17 @@ export function getUserPermissions() {
     isTransformResponse: true
   });
 }
+
+/**
+ * @description 根据用户id获取用户角色
+ */
+export function getUserRoles() {
+  return http.request({
+    url: api.roles,
+    method: RequestEnum.GET,
+  }, {
+    isReturnNativeResponse: false,
+    isTransformResponse: true
+  });
+}
+
