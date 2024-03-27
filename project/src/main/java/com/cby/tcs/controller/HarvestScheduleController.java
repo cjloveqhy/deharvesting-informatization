@@ -72,4 +72,12 @@ public class HarvestScheduleController {
         HarvestScheduleDetailsVo details = harvestScheduleService.getDetails(dispatchId);
         return ResultEntity.success(details);
     }
+    /**
+     * 查看个人订单
+     */
+    @GetMapping("/checkOrder")
+    public ResultEntity checkOrder(FilterPageFo entity){
+        Page<HarvestScheduleVo> vos = harvestScheduleService.checkOrder(entity);
+        return ResultEntity.success(vos);
+    }
 }

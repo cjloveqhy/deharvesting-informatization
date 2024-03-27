@@ -41,5 +41,16 @@ public interface HarvestScheduleService extends IService<HarvestSchedule> {
      */
     HarvestScheduleDetailsVo getDetails(String dispatchId);
 
+    /**
+     * 生成调度单
+     * @param createHarvestScheduleFo
+     */
     void create(CreateHarvestScheduleFo createHarvestScheduleFo);
+
+    /**
+     * 查看个人订单
+     * @param entity {@link FilterPageFo} 过滤分页信息
+     * @return
+     */
+    Page<HarvestScheduleVo> checkOrder(FilterPageFo entity);
 }

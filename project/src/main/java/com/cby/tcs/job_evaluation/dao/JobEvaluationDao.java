@@ -26,7 +26,6 @@ public interface JobEvaluationDao extends BaseMapper<JobEvaluation> {
 
     /**
      * 获取个人的评价信息
-     * 管理员获取所有
      * @param page 分页实体
      * @param entity {@link JobEvaluationSelfPageFo} 分页过滤对象
      * @return {@link Page}<{@link JobEvaluation}>

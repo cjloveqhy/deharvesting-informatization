@@ -16,7 +16,8 @@ export const api = {
   addRecord: getUri("/add"),
   details: getUri('/details'),
   delCottonField: getUri("/delCottonField"),
-  createRecord: getUri("/create")
+  createRecord: getUri("/create"),
+  checkOrder: getUri("/checkOrder")
 }
 
 /**
@@ -79,6 +80,10 @@ export function delCottonField(data: DeleteHarvestScheduleRecordCottonFieldFo) {
   })
 }
 
+/**
+ * 生成调度单
+ * @param dispatchId
+ */
 export function createRecord(dispatchId: string){
   return http.request({
     url: api.createRecord,
@@ -86,5 +91,13 @@ export function createRecord(dispatchId: string){
     data: {
       dispatchId
     }
+  })
+}
+
+export function checkOrderInfo(params: FilterPageFo){
+  return http.request({
+    url: api.checkOrder,
+    method: RequestEnum.GET,
+    params
   })
 }

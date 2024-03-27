@@ -37,7 +37,7 @@ const columns = ref([
     title: '联系方式',
     key: 'phone',
     render: (row) => {
-      return h('span', row.username ?? '暂无联系方式')
+      return h('span', row.phone ?? '暂无联系方式')
     }
   },
   {

@@ -213,5 +213,24 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
     detailsVo.setId(harvestSchedule.getId());
     return detailsVo;
   }
-
+  @Override
+  public Page<HarvestScheduleVo> checkOrder(FilterPageFo entity) {
+    // 获取用户的拥有的调度单id
+    List<String> hsIdList = uavHarvestScheduleDao.selectList(new LambdaQueryWrapper<UavHarvestSchedule>()
+            .eq(UavHarvestSchedule::getBelonger, StpUtil.getLoginId())).stream().map(UavHarvestSchedule::getHsId).toList();
+    if (Objects.nonNull(entity.getGinneryName()) && entity.getGinneryName().startsWith("DD")) {
+      entity.setDispatchId(entity.getGinneryName());
+      entity.setGinneryName(null);
+    }
+    entity.setSize(harvestScheduleDao.selectList(null).size());
+    // 获取所有的调度单信息
+    Page<HarvestScheduleVo> harvestScheduleVoPage = harvestScheduleDao.filterPage(PageUtils.getPage(entity), entity);
+    List<HarvestScheduleVo> filteredList = harvestScheduleVoPage.getRecords().stream()
+            .filter(item -> hsIdList.contains(item.getDispatchId()))
+            .collect(Collectors.toList());
+    // 创建一个新的Page对象，将过滤后的数据放入其中
+    Page<HarvestScheduleVo> filterPage = new Page<>(1, filteredList.size());
+    filterPage.setRecords(filteredList);
+    return filterPage;
+  }
 }
