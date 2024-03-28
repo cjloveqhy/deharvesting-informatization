@@ -1,11 +1,12 @@
 package com.cby.tcs.harvest_schedule.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.cby.tcs.harvest_schedule.entity.fo.*;
 import com.cby.tcs.harvest_schedule.entity.po.HarvestSchedule;
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
+import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleCheckDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleDetailsVo;
+import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo;
 
 public interface HarvestScheduleService extends IService<HarvestSchedule> {
@@ -53,4 +54,6 @@ public interface HarvestScheduleService extends IService<HarvestSchedule> {
      * @return
      */
     Page<HarvestScheduleVo> checkOrder(FilterPageFo entity);
+
+    HarvestScheduleCheckDetailsVo checkOrderDetails(String dispatchId);
 }

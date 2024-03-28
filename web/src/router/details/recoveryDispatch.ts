@@ -58,7 +58,7 @@ const routes: Array<AppRouteRecordRaw> = [
     },
     children: [
       {
-        path: 'order/details',
+        path: 'order/details/:dispatchId',
         name: `${orderRouteName}_details`,
         component: () => import('@/views/recoveryDispatch/order/details/OrderDetail.vue'),
         meta: {

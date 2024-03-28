@@ -63,7 +63,7 @@ const columns = ref([
               strong: true,
               tertiary: true,
               size: 'small',
-              onClick: () => checkDispatchDetail(row)
+              onClick: () => checkOrderDetail(row)
             },
             { default: () => '查看' }),
           h(NButton,
@@ -89,9 +89,9 @@ const  exportPDF = (row) => {
 
 const router = useRouter()
 
-const checkDispatchDetail = (row) => {
+const checkOrderDetail = (row) => {
   router.push({
-    name: 'recoveryDispatchRecord_details',
+    name: 'recoveryDispatchOrder_details',
     params: {dispatchId: row.dispatchId}
   })
 }

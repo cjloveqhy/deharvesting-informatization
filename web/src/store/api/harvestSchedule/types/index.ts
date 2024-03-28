@@ -1,6 +1,7 @@
 import {PageQuery} from "@/store/common";
 import {GinneryVo} from "@/store/api/ginnery";
-
+import {CottonFieldVo} from "@/store/api/cottonField";
+import {JobEvaluationPageVo} from "@/store/api/job/evaluation";
 export interface FilterPageFo extends PageQuery {
   ginneryName?: string | null
   contacts?: string | null
@@ -43,4 +44,11 @@ export interface HarvestScheduleDetailsVo extends GinneryVo {
 export interface DeleteHarvestScheduleRecordCottonFieldFo {
   dispatchId:string,
   cottonFieldId: string
+}
+
+export interface HarvestScheduleCheckDetailsVo extends CottonFieldVo{
+  /**
+   * 评价信息
+   */
+  jobEvaluation: JobEvaluationPageVo;
 }

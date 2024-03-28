@@ -17,7 +17,8 @@ export const api = {
   details: getUri('/details'),
   delCottonField: getUri("/delCottonField"),
   createRecord: getUri("/create"),
-  checkOrder: getUri("/checkOrder")
+  checkOrder: getUri("/checkOrder"),
+  checkOrderDetails: getUri("/checkOrderDetails")
 }
 
 /**
@@ -94,10 +95,25 @@ export function createRecord(dispatchId: string){
   })
 }
 
+/**
+ * 查看订单信息
+ * @param params
+ */
 export function checkOrderInfo(params: FilterPageFo){
   return http.request({
     url: api.checkOrder,
     method: RequestEnum.GET,
     params
+  })
+}
+
+/**
+ * 查看订单详情
+ */
+export function getCheckOrderDetails(dispatchId: string){
+  return http.request({
+    url: api.checkOrderDetails,
+    method: RequestEnum.GET,
+    params: {dispatchId: dispatchId}
   })
 }

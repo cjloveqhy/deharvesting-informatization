@@ -2,6 +2,7 @@ package com.cby.tcs.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cby.tcs.harvest_schedule.entity.fo.*;
+import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleCheckDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo;
@@ -79,5 +80,14 @@ public class HarvestScheduleController {
     public ResultEntity checkOrder(FilterPageFo entity){
         Page<HarvestScheduleVo> vos = harvestScheduleService.checkOrder(entity);
         return ResultEntity.success(vos);
+    }
+
+    /**
+     * 查看订单详情
+     */
+    @GetMapping("/checkOrderDetails")
+    public ResultEntity checkOrderDetails(@RequestParam String dispatchId) {
+        HarvestScheduleCheckDetailsVo checkOrderDetails = harvestScheduleService.checkOrderDetails(dispatchId);
+        return ResultEntity.success(checkOrderDetails);
     }
 }
