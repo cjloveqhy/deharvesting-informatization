@@ -1,17 +1,16 @@
 package com.cby.tcs.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cby.tcs.job_evaluation.entity.fo.AddJobEvaluationFo;
 import com.cby.tcs.job_evaluation.entity.fo.JobEvaluationPageFo;
 import com.cby.tcs.job_evaluation.entity.fo.JobEvaluationSelfPageFo;
+import com.cby.tcs.job_evaluation.entity.vo.AddOptionJobEvaluationVo;
 import com.cby.tcs.job_evaluation.entity.vo.JobEvaluationPageVo;
 import com.cby.tcs.job_evaluation.service.JobEvaluationService;
 import com.freedom.cloud.annotation.ParamsToEntity;
 import com.freedom.cloud.result.ResultEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -43,5 +42,23 @@ public class JobEvaluationController {
       return ResultEntity.success(page);
     }
 
+  /**
+   * 添加评价信息
+   */
+  @PostMapping("/add")
+  public ResultEntity add(@RequestBody AddJobEvaluationFo entity) {
+    jobEvaluationService.add(entity);
+    return ResultEntity.success("添加成功");
+  }
 
+  /**
+   * 获取添加评价信息表单中的option
+   */
+  @GetMapping("/getAddOption")
+  public ResultEntity getAddOption() {
+    AddOptionJobEvaluationVo addOptions = jobEvaluationService.getAddOption();
+    return ResultEntity.success(addOptions);
+  }
 }
+
+

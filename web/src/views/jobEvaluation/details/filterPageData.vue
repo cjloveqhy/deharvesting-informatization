@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import {
+  AddJobEvaluationFo,
+  AddOptionJobEvaluationVo, EvaluationResult,
   EvaluationResultOptions,
   JobEvaluationPageFo,
   JobEvaluationPageVo,
   JobType,
 } from "@/store/api/job/evaluation";
 import {getLabel} from "@/utils/optionUtil";
-import {filterPage, getSelfFilterPage} from "@/api/job/evaluation";
+import {
+  addJobEvaluationInfo,
+  filterPage,
+  getAddOptions,
+  getSelfFilterPage
+} from "@/api/job/evaluation";
 import {UserInfo} from "@/store/api/user";
 import {getUserRoles} from "@/api/user_role";
 import router from "@/router";
+import {BasicOption} from "@/store/common";
+import { useMessage } from 'naive-ui'
 
 const props = defineProps<{ type: JobType, isCheck: boolean }>()
 
@@ -210,9 +219,70 @@ const checkJobEvaluationDetail = (row) => {
     }
   })
 }
+let addEvaluationShow = ref<boolean>(false);
+let addEvaluationFormData = ref<AddJobEvaluationFo>({
+  orderId: "",
+  cottonFieldId: "",
+  workTime: "",
+  evaluationResult: EvaluationResult.Pass_Qualified,
+  jobType: props.type,
+  jobId: "",
+})
+
+let submitAddEvaluationLoading = ref<boolean>(false)
+let addEvaluationOptions = ref<AddOptionJobEvaluationVo>({
+  plotNameOption:[],
+  userNameOption: [],
+  uavNameOption: [],
+  cottonFieldNameOption: []
+})
+
+function getAddEvaluationOptions(){
+  getAddOptions().then(res => {
+    addEvaluationOptions.value = res.data
+  })
+}
+
+// 添加评价
+const addEvaluation = ()=> {
+  addEvaluationShow.value = true
+  resetAddEvaluationFormData()
+}
+
+const resetAddEvaluationFormData = ()=> {
+  addEvaluationFormData = ref<AddJobEvaluationFo>({
+    orderId: "",
+    cottonFieldId: "",
+    workTime: null,
+    evaluationResult: EvaluationResult.Pass_Qualified,
+    jobType: props.type,
+    jobId: "",
+  })
+}
+const message = useMessage()
+const submitAddEvaluation = ()=> {
+  addJobEvaluationInfo(addEvaluationFormData.value).then(res => {
+    if (res.data == "添加成功"){
+      message.info(
+        "添加成功",
+        {
+          keepAliveOnHover: true
+        }
+      )
+    }
+    getData()
+  }).finally(() => {
+    addEvaluationShow.value = false
+  })
+}
+
+const cancelAddEvaluation = ()=>{
+  resetAddEvaluationFormData()
+  addEvaluationShow.value = false
+}
 
 getData()
-
+getAddEvaluationOptions()
 watch(
   () => [formData.value.page, formData.value.size],
   () => getData()
@@ -280,6 +350,79 @@ watch(
       <n-flex :wrap="false" justify="end">
         <n-button type="default" @click="reset">重置</n-button>
         <n-button type="info" @click="getData">查询</n-button>
+        <n-button type="info" v-if="!props.isCheck" @click="addEvaluation">添加</n-button>
+        <n-modal
+          preset="card"
+          class="w-800px"
+          title="添加评价"
+          v-model:show="addEvaluationShow"
+          @after-leave="resetAddEvaluationFormData"
+          content-class="flex justify-center"
+        >
+          <n-form
+            ref="formRef"
+            class="w-400px"
+            label-width="auto"
+            label-align="right"
+            label-placement="left"
+            :model="addEvaluationFormData"
+          >
+            <n-form-item label="订单编号" path="orderId">
+              <n-input
+                clearable
+                placeholder="请输入订单编号"
+                v-model:value="addEvaluationFormData.orderId"
+              />
+            </n-form-item>
+            <n-form-item label="地块地址" path="plotName">
+              <n-select
+                tag
+                clearable
+                filterable
+                v-model:value="addEvaluationFormData.cottonFieldId"
+                :options="addEvaluationOptions.plotNameOption" />
+            </n-form-item>
+            <n-form-item label="作业时间" path="workTime">
+              <n-date-picker
+                clearable
+                type="datetime"
+                class="w-300px"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                v-model:formatted-value="addEvaluationFormData.workTime"
+              />
+            </n-form-item>
+            <n-form-item label="评价结果" path="evaluationResult">
+              <n-select
+                class="w-200px"
+                placeholder="请选择评价结果"
+                :options="EvaluationResultOptions"
+                v-model:value="addEvaluationFormData.evaluationResult"
+              />
+            </n-form-item>
+            <n-form-item label="飞手" path="evaluationResult" v-if="props.type == JobType.Uav">
+              <n-select
+                class="w-200px"
+                placeholder="请选择飞手"
+                :options="addEvaluationOptions.uavNameOption"
+                v-model:value="addEvaluationFormData.jobId"
+              />
+            </n-form-item>
+            <n-form-item label="采棉机" path="evaluationResult" v-if="props.type == JobType.Cotton_Picker">
+              <n-select
+                class="w-200px"
+                placeholder="请选择采棉机"
+                :options="addEvaluationOptions.cottonFieldNameOption"
+                v-model:value="addEvaluationFormData.jobId"
+              />
+            </n-form-item>
+          </n-form>
+          <template #action>
+            <n-flex justify="end">
+              <n-button type="success" @click="submitAddEvaluation" :loading="submitAddEvaluationLoading">提交</n-button>
+              <n-button @click="cancelAddEvaluation">取消</n-button>
+            </n-flex>
+          </template>
+        </n-modal>
       </n-flex>
     </n-flex>
   </n-card>

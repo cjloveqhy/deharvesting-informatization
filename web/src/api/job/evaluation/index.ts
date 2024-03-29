@@ -1,6 +1,6 @@
 import {http} from '@/utils/http/axios';
 import {RequestEnum} from "@/enums/httpEnum";
-import {JobEvaluationPageFo} from "@/store/api/job/evaluation";
+import {AddJobEvaluationFo, JobEvaluationPageFo} from "@/store/api/job/evaluation";
 
 const getUri = (uri: string) => {
   return `/job-evaluation${uri}`
@@ -8,7 +8,9 @@ const getUri = (uri: string) => {
 
 export const api = {
   filterPage: getUri('/filterPage'),
-  getSelfFilterPage: getUri('/getSelfFilterPage')
+  getSelfFilterPage: getUri('/getSelfFilterPage'),
+  getAddOption: getUri("/getAddOption"),
+  addJobEvaluation: getUri("/add")
 }
 
 /**
@@ -34,5 +36,26 @@ export function getSelfFilterPage(params: JobEvaluationPageFo) {
     params
   },{
     joinParamsToUrl: true
+  })
+}
+
+/**
+ * @description 获取添加评价信息表单中的option
+ */
+export function getAddOptions() {
+  return http.request({
+    url: api.getAddOption,
+    method: RequestEnum.GET,
+  })
+}
+
+/**
+ * 添加评价
+ */
+export function addJobEvaluationInfo(data: AddJobEvaluationFo){
+  return http.request({
+    url: api.addJobEvaluation,
+    method: RequestEnum.POST,
+    data
   })
 }

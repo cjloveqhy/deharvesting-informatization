@@ -1,6 +1,6 @@
 import {CottonFieldVo} from "@/store/api/cottonField";
 import {UserInfo} from "@/store/api/user";
-import {PageQuery} from "@/store/common";
+import {BasicOption, PageQuery} from "@/store/common";
 
 export enum EvaluationResult {
 
@@ -59,4 +59,20 @@ export interface JobQualifiedPercentPageVo {
   cumulativeDuration: number
   percentPass: number
   info: UserInfo | string
+}
+
+export interface AddJobEvaluationFo{
+  orderId: string;
+  cottonFieldId: string;
+  workTime: Date;
+  evaluationResult: EvaluationResult;
+  jobType: JobType;
+  jobId: string;
+}
+
+export interface AddOptionJobEvaluationVo{
+  plotNameOption: BasicOption[];
+  userNameOption: BasicOption[];
+  uavNameOption: BasicOption[];
+  cottonFieldNameOption: BasicOption[];
 }
