@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import {MenuType, PermissionTree, UpdatePermissionFo, MenuOptions, CompOptions} from "@/store/api/permission";
+import {
+  CompOptions,
+  MenuOptions,
+  MenuType,
+  PermissionTree,
+  UpdatePermissionFo
+} from "@/store/api/permission";
 import {constantRouterIcon} from "@/router/icons";
 import {deepCopy} from "@/utils/copyUtil";
 import {useMessage} from "naive-ui";
@@ -56,7 +62,14 @@ watch(
     if (val === MenuType.Menu) {
       rules.value['path'] = { required: true, message: '请输入请求路径', trigger: 'blur' }
     } else if ([MenuType.Button, MenuType.Content].includes(val)) {
-      rules.value['meta']['permissions'] = { required: true, message: '请输入权限', trigger: 'blur' }
+      rules.value['meta']['permissions'] = {
+        required: true,
+        trigger: 'blur',
+        validator: (_rule, value: string[]) => {
+          if (value.length > 0) return true
+          return Error('请输入权限')
+        }
+      }
     }
   },{
     immediate: true

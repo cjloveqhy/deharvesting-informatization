@@ -6,6 +6,7 @@ import com.cby.tcs.role.entity.fo.RolePage;
 import com.cby.tcs.role.entity.fo.UpdateRole;
 import com.cby.tcs.role.entity.vo.RoleVo;
 import com.cby.tcs.role.service.RoleService;
+import com.freedom.cloud.annotation.ParamsToEntity;
 import com.freedom.cloud.result.ResultEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -41,8 +42,8 @@ public class RoleController {
   /**
    * 分页获取角色列表
    */
-  @PostMapping("/page")
-  public ResultEntity getRolePage(@RequestBody RolePage rolePage) {
+  @GetMapping("/page")
+  public ResultEntity getRolePage(@ParamsToEntity(required = false) RolePage rolePage) {
     Page<RoleVo> page = roleService.getRolePage(rolePage);
     return ResultEntity.success(page);
   }

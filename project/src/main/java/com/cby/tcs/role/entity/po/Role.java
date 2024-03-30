@@ -2,6 +2,7 @@ package com.cby.tcs.role.entity.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.freedom.cloud.enums.LogicalEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -39,6 +40,24 @@ public class Role extends Model<Role> {
      */
     @TableField(value = "remark", updateStrategy = FieldStrategy.IGNORED)
     private String remark;
+
+    /**
+     * 角色标识
+     */
+    @TableField(value = "value")
+    private String value;
+
+    /**
+     * 是否为默认角色
+     */
+    @TableField(value = "status")
+    private LogicalEnum status;
+
+    /**
+     * 是否禁用
+     */
+    @TableField(value = "disabled")
+    private LogicalEnum disabled;
 
     /**
      * 逻辑删除

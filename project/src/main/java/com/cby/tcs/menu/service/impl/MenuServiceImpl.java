@@ -38,7 +38,7 @@ public class MenuServiceImpl implements MenuService {
     @SneakyThrows
     public List<RouteRecord> getMenu(String userId) {
         UserRole maxLevelRole = userRoleService.getMaxLevelRole(userId);
-        List<String> permissionIds = new ArrayList<>();
+        Set<String> permissionIds = new HashSet<>();
         if (Objects.nonNull(maxLevelRole)) {
             RolePermissionVo rolePermission = rolePermissionService.getRolePermissionByRoleId(maxLevelRole.getRoleId());
             permissionIds.addAll(rolePermission.getPermissions());
@@ -47,6 +47,15 @@ public class MenuServiceImpl implements MenuService {
             }
         }
         List<Permission> permissions = permissionService.getList();
+        Set<String> currenUserPermissions = new HashSet<>();
+        for (Permission permission : permissions) {
+            if (permissionIds.contains(permission.getId())) {
+                RouteMeta routeMeta = objectMapper.readValue(permission.getMeta(), RouteMeta.class);
+                if (Objects.nonNull(routeMeta.getPermissions()) && !routeMeta.getPermissions().isEmpty()) {
+                    currenUserPermissions.addAll(routeMeta.getPermissions());
+                }
+            }
+        }
         Permission root = permissionService.getAndDelServiceNode(permissions);
         if (Objects.isNull(root)) {
             return Collections.emptyList();
@@ -56,18 +65,52 @@ public class MenuServiceImpl implements MenuService {
             RouteMeta routeMeta = objectMapper.readValue(permission.getMeta(), RouteMeta.class);
             List<String> list = routeMeta.getPermissions();
             if (Objects.nonNull(list) && !list.isEmpty()) {
-                boolean match = list.stream().anyMatch(permissionIds::contains);
+                boolean match = list.stream().anyMatch(currenUserPermissions::contains);
                 if (!match) {
                     permissions.remove(permission);
                     i--;
                 }
             }
         }
-        List<RouteRecord> firstNode = getFirstNode(permissions, root);
+        List<Permission> roleNode = getRoleNode(permissions, root);
+        if (roleNode.isEmpty()) return Collections.emptyList();
+        List<RouteRecord> firstNode = getFirstNode(roleNode, root);
         for (RouteRecord record : firstNode) {
-            children(permissions, record);
+            children(roleNode, record);
         }
         return firstNode;
+    }
+
+    private List<Permission> getRoleNode(List<Permission> permissions, Permission root) {
+        List<Permission> newPermissions = new ArrayList<>();
+        List<String> parentIds = permissions.stream()
+                .filter(item -> List.of(MenuType.Button, MenuType.Content).contains(item.getType()))
+                .map(Permission::getParentId)
+                .distinct()
+                .toList();
+        for (Permission permission : permissions) {
+            if (parentIds.contains(permission.getId())) {
+                if (!newPermissions.contains(permission)) newPermissions.add(permission);
+                getParentNode(permissions, permission, root, newPermissions);
+            }
+        }
+        return newPermissions;
+    }
+
+    public void getParentNode(List<Permission> permissions, Permission node, Permission root, List<Permission> newPermissions) {
+        if (!parentIsRoot(node, root)) {
+            String parentId = node.getParentId();
+            for (Permission permission : permissions) {
+                if (permission.getId().equals(parentId)) {
+                    if (!newPermissions.contains(permission)) newPermissions.add(permission);
+                    getParentNode(permissions, permission, root, newPermissions);
+                }
+            }
+        }
+    }
+
+    public boolean parentIsRoot(Permission node, Permission root) {
+        return node.getParentId().equals(root.getId());
     }
 
     @Override
@@ -95,6 +138,7 @@ public class MenuServiceImpl implements MenuService {
     public void routerFlatten(List<Permission> permissions, RouteRecord route, String parentId, Integer sort) throws JsonProcessingException {
         if (Objects.isNull(route.getMeta().getSort())) route.getMeta().setSort(sort);
         MenuType menuType = Objects.isNull(route.getMeta().getType()) ? MenuType.Menu : route.getMeta().getType();
+        if (menuType.equals(MenuType.Menu)) route.getMeta().setAlwaysShow(true);
         Permission permission = new Permission()
                 .setId(IdUtil.fastSimpleUUID())
                 .setName(route.getName())

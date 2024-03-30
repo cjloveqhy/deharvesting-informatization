@@ -1,6 +1,5 @@
 package com.cby.tcs.menu.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.freedom.cloud.enums.MenuType;
@@ -86,7 +85,6 @@ public class RouteMeta implements Serializable {
     /**
      * 更新菜单时指定类型
      */
-    @JsonIgnore
-    @JsonProperty("type")
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private MenuType type;
 }
