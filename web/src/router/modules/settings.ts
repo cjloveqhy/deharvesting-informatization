@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { Layout } from '@/router/constant';
+import {RouteRecordRaw} from 'vue-router';
+import {Layout} from '@/router/constant';
 import {constantRouterIcon} from "@/router/icons";
 
 const routeName = 'settings';
@@ -31,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_user`,
         meta: {
           title: '用户管理',
+          // permissions: ['settings::user::view']
         },
         component: () => import('@/views/settings/user/index.vue'),
       },
@@ -39,6 +40,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_role`,
         meta: {
           title: '角色管理',
+          // permissions: ['settings::role::view']
         },
         component: () => import('@/views/settings/role/index.vue'),
       },
@@ -47,6 +49,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_menu`,
         meta: {
           title: '菜单管理',
+          // permissions: ['settings::menu::view']
         },
         component: () => import('@/views/settings/menu/index.vue'),
       },

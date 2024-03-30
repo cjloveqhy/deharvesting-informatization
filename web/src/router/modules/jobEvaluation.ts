@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { Layout } from '@/router/constant';
+import {RouteRecordRaw} from 'vue-router';
+import {Layout} from '@/router/constant';
 import {constantRouterIcon} from "@/router/icons";
 
 const routeName = 'jobEvaluation';
@@ -42,6 +42,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_uav`,
         meta: {
           title: '无人机评价',
+          // permissions: ['jobEvaluation::uav::view']
         },
         component: () => import('@/views/jobEvaluation/uav/index.vue'),
       },
@@ -50,6 +51,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_cottonPicker`,
         meta: {
           title: '采棉机评价',
+          // permissions: ['jobEvaluation::cottonPicker::view']
         },
         component: () => import('@/views/jobEvaluation/cottonPicker/index.vue')
       },
@@ -65,6 +67,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${routeName}_setting_uav`,
             meta: {
               title: '无人机',
+              // permissions: ['jobEvaluation::setting::uav::view']
             },
             component: () => import('@/views/jobEvaluation/setting/uav.vue')
           },
@@ -73,6 +76,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${routeName}_setting_cottonPicker`,
             meta: {
               title: '采棉机',
+              // permissions: ['jobEvaluation::setting::cottonPicker::view']
             },
             component: () => import('@/views/jobEvaluation/setting/cottonPicker.vue')
           }

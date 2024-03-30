@@ -6,35 +6,45 @@ import {MenuType} from "@/store/api/permission";
  * 属性值为数组，标识为该菜单下有哪些page页上的权限可用
  */
 const roles: PageRole = {
-  recoveryDispatch_map: [
+  jobEvaluation_uav: [
     {
       name: 'view',
       meta: {
         title: '查看',
         type: MenuType.Content,
-        permissions: ['recoveryDispatch::map::view']
+        permissions: ['jobEvaluation::uav::view']
       }
-    }
+    },
   ],
-  recoveryDispatch_record: [
+  jobEvaluation_cottonPicker: [
     {
       name: 'view',
       meta: {
         title: '查看',
         type: MenuType.Content,
-        permissions: ['recoveryDispatch::record::view']
+        permissions: ['jobEvaluation::cottonPicker::view']
       }
-    }
+    },
   ],
-  recoveryDispatch_order: [
+  jobEvaluation_setting_uav: [
     {
       name: 'view',
       meta: {
         title: '查看',
         type: MenuType.Content,
-        permissions: ['recoveryDispatch::order::view']
+        permissions: ['jobEvaluation::setting::uav::view']
       }
-    }
+    },
+  ],
+  jobEvaluation_setting_cottonPicker: [
+    {
+      name: 'view',
+      meta: {
+        title: '查看',
+        type: MenuType.Content,
+        permissions: ['jobEvaluation::setting::cottonPicker::view']
+      }
+    },
   ]
 }
 

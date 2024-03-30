@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { Layout } from '@/router/constant';
+import {RouteRecordRaw} from 'vue-router';
+import {Layout} from '@/router/constant';
 import {constantRouterIcon} from "@/router/icons";
 
 const routeName = 'homePage';
@@ -31,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_index`,
         meta: {
           title: '平台首页',
+          // permissions: ['homePage::index::view']
         },
         component: () => import('@/views/homePage/index.vue'),
       },

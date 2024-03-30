@@ -6,35 +6,35 @@ import {MenuType} from "@/store/api/permission";
  * 属性值为数组，标识为该菜单下有哪些page页上的权限可用
  */
 const roles: PageRole = {
-  recoveryDispatch_map: [
+  settings_user: [
     {
       name: 'view',
       meta: {
         title: '查看',
         type: MenuType.Content,
-        permissions: ['recoveryDispatch::map::view']
+        permissions: ['settings::user::view']
       }
-    }
+    },
   ],
-  recoveryDispatch_record: [
+  settings_role: [
     {
       name: 'view',
       meta: {
         title: '查看',
         type: MenuType.Content,
-        permissions: ['recoveryDispatch::record::view']
+        permissions: ['settings::role::view']
       }
-    }
+    },
   ],
-  recoveryDispatch_order: [
+  settings_menu: [
     {
       name: 'view',
       meta: {
         title: '查看',
         type: MenuType.Content,
-        permissions: ['recoveryDispatch::order::view']
+        permissions: ['settings::menu::view']
       }
-    }
+    },
   ]
 }
 

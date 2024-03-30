@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { Layout } from '@/router/constant';
+import {RouteRecordRaw} from 'vue-router';
+import {Layout} from '@/router/constant';
 import {constantRouterIcon} from "@/router/icons";
 
 const routeName = 'basic';
@@ -31,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_contractTerms`,
         meta: {
           title: '合同条款',
+          // permissions: ['basic::contractTerms::view']
         },
         component: () => import('@/views/basic/contractTerms/index.vue'),
       },
@@ -46,6 +47,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${routeName}_farm_uav`,
             meta: {
               title: '无人机',
+              // permissions: ['basic::farm::uav::view']
             },
             component: () => import('@/views/basic/farm/uav.vue'),
           },
@@ -54,6 +56,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${routeName}_farm_cottonPicker`,
             meta: {
               title: '采棉机',
+              // permissions: ['basic::farm::cottonPicker::view']
             },
             component: () => import('@/views/basic/farm/cottonPicker.vue'),
           },
@@ -62,6 +65,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${routeName}_farm_dataTerminal`,
             meta: {
               title: '数据终端',
+              // permissions: ['basic::farm::dataTerminal::view']
             },
             component: () => import('@/views/basic/farm/dataTerminal.vue'),
           },
@@ -72,6 +76,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_personalSetting`,
         meta: {
           title: '个人设置',
+          // permissions: ['basic::personalSetting::view']
         },
         component: () => import('@/views/basic/personalSetting/index.vue'),
       },

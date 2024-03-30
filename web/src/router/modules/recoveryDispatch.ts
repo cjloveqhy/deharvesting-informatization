@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { Layout } from '@/router/constant';
+import {RouteRecordRaw} from 'vue-router';
+import {Layout} from '@/router/constant';
 import {constantRouterIcon} from "@/router/icons";
 
 const routeName = 'recoveryDispatch';
@@ -31,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_map`,
         meta: {
           title: '地图调度',
+          // permissions: ['recoveryDispatch::map::view']
         },
         component: () => import('@/views/recoveryDispatch/map/index.vue'),
       },
@@ -39,6 +40,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_record`,
         meta: {
           title: '调度记录',
+          // permissions: ['recoveryDispatch::record::view']
         },
         component: () => import('@/views/recoveryDispatch/record/index.vue'),
       },
@@ -47,6 +49,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_order`,
         meta: {
           title: '查看订单',
+          // permissions: ['recoveryDispatch::order::view']
         },
         component: () => import('@/views/recoveryDispatch/order/index.vue'),
       },
