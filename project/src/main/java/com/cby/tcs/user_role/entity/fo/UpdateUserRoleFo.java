@@ -1,5 +1,6 @@
 package com.cby.tcs.user_role.entity.fo;
 
+import com.cby.tcs.user.entity.enums.SexEnum;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,15 +22,39 @@ public class UpdateUserRoleFo implements Serializable {
     private String id;
 
     /**
-     * 用户id
+     * 用户名
      */
-    @NotBlank(message = "请选择用户")
-    private String userId;
+    private String username;
+
+    /**
+     * 用户头像
+     */
+    private String photo;
+
+    /**
+     * 用户性别
+     */
+    private SexEnum sex;
+
+    /**
+     * 账户名
+     */
+    @NotBlank(message = "账户名不可设置为空")
+    private String account;
+
+    /**
+     *手机号
+     */
+    private String phone;
+
+    /**
+     *电子邮箱
+     */
+    private String email;
 
     /**
      * 角色id
      */
-    @NotBlank(message = "请选择角色")
     private String roleId;
 
     /**

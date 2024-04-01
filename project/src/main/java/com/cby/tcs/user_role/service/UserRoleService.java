@@ -49,9 +49,9 @@ public interface UserRoleService extends IService<UserRole> {
 
     /**
      * 删除用户角色权限
-     * @param id id编号
+     * @param userId 用户id编号
      */
-    void delUserRole(String id);
+    void delUserRole(String userId);
 
     /**
      * 分页过滤获取用户角色列表

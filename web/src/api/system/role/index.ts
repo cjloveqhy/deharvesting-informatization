@@ -11,6 +11,7 @@ export const api = {
   add: getUri('/add'),
   update: getUri('/update'),
   del: getUri('/del'),
+  options: getUri('/options'),
 }
 
 /**
@@ -58,5 +59,15 @@ export function delRole(id: string) {
     }
   }, {
     joinParamsToUrl: true
+  })
+}
+
+/**
+ * 获取角色的可操作选项
+ */
+export function getOptions() {
+  return http.request({
+    url: api.options,
+    method: RequestEnum.GET,
   })
 }

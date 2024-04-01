@@ -7,6 +7,7 @@ import com.cby.tcs.user_role.entity.fo.UpdateUserRoleFo;
 import com.cby.tcs.user_role.entity.fo.UserRolePage;
 import com.cby.tcs.user_role.entity.vo.UserRoleVo;
 import com.cby.tcs.user_role.service.UserRoleService;
+import com.freedom.cloud.annotation.ParamsToEntity;
 import com.freedom.cloud.result.ResultEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -43,8 +44,8 @@ public class UserRoleController {
   /**
    * 分页获取用户角色权限
    */
-  @PostMapping("/page")
-  public ResultEntity getUserRolePage(@RequestBody UserRolePage entity) {
+  @GetMapping("/page")
+  public ResultEntity getUserRolePage(@ParamsToEntity(required = false) UserRolePage entity) {
     Page<UserRoleVo> page = userRoleService.getUserRolePage(entity);
     return ResultEntity.success(page);
   }

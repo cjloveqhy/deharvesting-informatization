@@ -7,6 +7,7 @@ import com.cby.tcs.role.entity.fo.RolePage;
 import com.cby.tcs.role.entity.fo.UpdateRole;
 import com.cby.tcs.role.entity.po.Role;
 import com.cby.tcs.role.entity.vo.RoleVo;
+import com.freedom.cloud.options.Option;
 
 import java.util.List;
 
@@ -50,5 +51,11 @@ public interface RoleService extends IService<Role> {
      * @return {@link List}<{@link RoleVo}>
      */
     List<RoleVo> getByRoleIds(List<String> roleIds);
+
+    /**
+     * 获取除默认角色的其他所有角色选项
+     * @return {@link List}<{@link Option}<{@link String}>>
+     */
+    List<Option<String>> getOptions();
 
 }

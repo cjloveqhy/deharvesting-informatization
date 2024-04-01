@@ -2,7 +2,7 @@
 import ShowOrEdit from "@/components/UserInfo/ShowOrEdit.vue";
 import {SexOptions, UserInfo, useUserApiStore} from "@/store/api/user";
 import {getLabel} from "@/utils/optionUtil";
-import {getLoginUserInfo, updateUserInfo} from "@/api/system/login";
+import {getLoginUserInfo, updateUserInfo} from "@/api/system/user";
 
 const userApiStore = useUserApiStore()
 

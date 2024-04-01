@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import {LoginEnum, PasswordLoginForm, useUserApiStore} from '@/store/api/user';
-import { useMessage } from 'naive-ui';
-import { ResultEnum } from '@/enums/httpEnum';
-import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
-import { PageEnum } from '@/enums/pageEnum';
-import { websiteConfig } from '@/config/website.config';
+import {useMessage} from 'naive-ui';
+import {ResultEnum} from '@/enums/httpEnum';
+import {LockClosedOutline, PersonOutline} from '@vicons/ionicons5';
+import {PageEnum} from '@/enums/pageEnum';
+import {websiteConfig} from '@/config/website.config';
 import {useGlobSetting} from "@/hooks/setting";
 import BasicForm from "@/views/login/details/basicForm.vue";
-import {api} from "@/api/system/login";
+import {api} from "@/api/system/user";
 
 const formRef = ref();
 const message = useMessage();

@@ -10,7 +10,10 @@ import {constantRouterIcon} from "@/router/icons";
 import {deepCopy} from "@/utils/copyUtil";
 import {useMessage} from "naive-ui";
 
-const props = defineProps<{show: boolean, isAdd: boolean, formData: UpdatePermissionFo, data: PermissionTree[], submit: () => Promise<void>}>()
+const props = withDefaults(defineProps<{show?: boolean, isAdd?: boolean, formData: UpdatePermissionFo, data: PermissionTree[], submit: () => Promise<void>}>(), {
+  show: false,
+  isAdd: false
+})
 
 const emits = defineEmits(['update:show', 'update:formData'])
 
@@ -162,7 +165,7 @@ function cancel() {
   }
 }
 
-const formRef = ref();
+const formRef = ref()
 
 function handleSubmit() {
   formRef.value.validate(errors => {

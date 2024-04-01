@@ -17,6 +17,8 @@ import com.cby.tcs.role.entity.vo.RoleVo;
 import com.cby.tcs.role.service.RoleService;
 import com.cby.tcs.role_permission.dao.RolePermissionDao;
 import com.cby.tcs.role_permission.entity.po.RolePermission;
+import com.freedom.cloud.enums.LogicalEnum;
+import com.freedom.cloud.options.Option;
 import com.freedom.cloud.utils.page.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -132,6 +134,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
     wrapper.in(Role::getId, roleIds);
     return BeanUtil.copyToList(list(wrapper), RoleVo.class);
+  }
+
+  @Override
+  public List<Option<String>> getOptions() {
+    LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(Role::getStatus, LogicalEnum.NO);
+    List<Role> roles = list(wrapper);
+    return roles.stream().map(item -> new Option<>(item.getName(), item.getId())).toList();
   }
 
 }

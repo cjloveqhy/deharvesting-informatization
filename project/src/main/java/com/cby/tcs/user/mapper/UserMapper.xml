@@ -3,6 +3,32 @@
 <mapper namespace="com.cby.tcs.user.dao.UserDao">
 
     <select id="getUserOptions" resultType="com.cby.tcs.user.entity.vo.UserOption">
-        SELECT id, account, username, phone FROM `user`
+        SELECT id, account, username, phone FROM `user` WHERE deleted = 0
+    </select>
+    <select id="filterPage" resultType="com.cby.tcs.user_role.entity.dto.FilterPageUserDTO">
+        SELECT
+            u.*,
+            ur.role_id,
+            ur.attached_permission
+        FROM
+            `user` u
+                LEFT JOIN user_role ur ON u.id = ur.user_id
+        WHERE
+            u.deleted = 0
+        <if test="params.username != null">
+            AND u.username LIKE '%${params.username}%'
+        </if>
+        <if test="params.sex != null">
+            AND u.sex = #{params.sex.code}
+        </if>
+        <if test="params.phone != null">
+            AND u.phone = #{params.phone}
+        </if>
+        <if test="params.email != null">
+            AND u.email = #{params.email}
+        </if>
+        <if test="params.roleId != null">
+            AND ur.role_id = #{params.roleId}
+        </if>
     </select>
 </mapper>

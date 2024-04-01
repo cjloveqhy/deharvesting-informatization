@@ -8,6 +8,7 @@ import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cby.tcs.exception.UserException;
 import com.cby.tcs.user.dao.UserDao;
@@ -19,8 +20,11 @@ import com.cby.tcs.user.entity.vo.UserInfo;
 import com.cby.tcs.user.entity.vo.UserOption;
 import com.cby.tcs.user.entity.vo.ValidAccountVo;
 import com.cby.tcs.user.service.UserService;
+import com.cby.tcs.user_role.entity.dto.FilterPageUserDTO;
+import com.cby.tcs.user_role.entity.fo.UserRolePage;
 import com.cby.tcs.utils.IPUtil;
 import com.cby.tcs.utils.RedisUtils;
+import com.freedom.cloud.utils.page.PageUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -126,6 +130,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
   @Override
   public List<UserOption> getUserOptions() {
     return userDao.getUserOptions();
+  }
+
+  @Override
+  public Page<FilterPageUserDTO> filterPage(UserRolePage entity) {
+    return userDao.filterPage(PageUtils.getPage(entity), entity);
   }
 
   /**

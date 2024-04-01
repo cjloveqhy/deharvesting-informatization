@@ -67,14 +67,12 @@ const columns = ref([
   },
   {
     title: "操作",
+    key: 'actions',
     width: 300,
     titleAlign: 'center',
     render (row) {
       return h(NFlex, {
         justify: 'center',
-        onClick: () => {
-
-        }
       }, {
         default: () => [
           h(
