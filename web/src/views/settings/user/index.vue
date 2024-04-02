@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {add, filterPage, update} from "@/api/user_role";
+import {add, del, filterPage, update} from "@/api/user_role";
 import {AddUserRoleFo, UpdateUserRoleFo, UserRolePage} from "@/store/api/userRole";
-import {NButton, NImage, NPopconfirm, NTag, useMessage} from "naive-ui";
+import {NButton, NDropdown, NImage, NPopconfirm, NTag, useDialog, useMessage} from "naive-ui";
 import {getLabel} from "@/utils/optionUtil";
 import {SexEnum, SexOptions} from "@/store/api/user";
 import {Ref} from "vue";
@@ -9,6 +9,12 @@ import {getTreeAll} from "@/utils";
 import {getTree} from "@/api/permission";
 import {deepCopy} from "@/utils/copyUtil";
 import AddAndEditUserDrawer from "@/views/settings/user/details/AddAndEditUserDrawer.vue";
+import {getOptions} from "@/api/system/role";
+import {BasicOption, LogicalOptions} from "@/store/common";
+import {LogicalEnum} from "@/enums/LogicalEnum";
+import {forbiddenOrLiftBanAccount} from "@/api/system/user";
+
+const dialog = useDialog()
 
 const loading = ref<boolean>(false)
 
@@ -88,29 +94,29 @@ const columns = ref([
     }
   },
   {
+    title: "是否禁用",
+    key: "userInfo.status",
+    align: 'center',
+    titleAlign: 'center',
+    render: (row) => {
+      return h(NTag, {
+        type: row.userInfo.status === LogicalEnum.YES ? 'error' : 'success'
+      }, {
+        default: () => getLabel(LogicalOptions, row.userInfo.status)
+      })
+    }
+  },
+  {
     title: "操作",
     key: "actions",
     align: 'center',
-    width: 350,
+    width: 250,
     titleAlign: 'center',
     render: (row) => {
       return h(NFlex, {
         justify: 'center',
       }, {
         default: () => [
-          h(NButton, {
-            type: 'default',
-            onClick: () => {
-              showRoleModal.value = true
-              userFormData.value = {
-                ...deepCopy(row.userInfo, {createTime: false}),
-                roleId: row.role?.id,
-                attachedPermission: row.attachedPermission
-              }
-            }
-          }, {
-            default: () => '附加权限'
-          }),
           h(NButton, {
             type: 'info',
             onClick: () => {
@@ -124,15 +130,13 @@ const columns = ref([
           }, {
             default: () => '修改'
           }),
-          h(NButton, {
-            type: 'warning'
-          }, {
-            default: () => '禁用'
-          }),
           h(NPopconfirm, {
             class: 'w-300px',
             onPositiveClick: () => {
-
+              del(row.id).then(res => {
+                message.success(res.data)
+                init()
+              })
             }
           }, {
             default: () => `您确定要删除账户名为【${row.userInfo.account}】的用户记录吗？`,
@@ -142,7 +146,64 @@ const columns = ref([
               },
               {default: () => '删除'}
             )
-          })
+          }),
+          h(NDropdown, {
+            trigger: 'click',
+            options: [
+              {
+                label: '附加权限',
+                key: 'role',
+                props: {
+                  onClick: () => {
+                    showRoleModal.value = true
+                    userFormData.value = {
+                      ...deepCopy(row.userInfo, {createTime: false}),
+                      roleId: row.role?.id,
+                      attachedPermission: row.attachedPermission
+                    }
+                  }
+                }
+              },
+              {
+                label: row.userInfo.status === LogicalEnum.YES ? '解禁' : '禁用',
+                key: 'forbiddenOrLiftBan',
+                props: {
+                  onClick: () => {
+                    const forbiddenOrLiftBanDialog = dialog.warning({
+                      title: '警告',
+                      content: `你确定要将账号【${row.userInfo.account}】${row.userInfo.status === LogicalEnum.YES ? '解禁' : '禁用'}吗？`,
+                      positiveText: '确定',
+                      negativeText: '取消',
+                      onPositiveClick: () => {
+                        forbiddenOrLiftBanAccount(row.userInfo.id).then(res => {
+                          message.success(res.data)
+                          forbiddenOrLiftBanDialog.destroy()
+                          init()
+                        })
+                      },
+                    })
+                  }
+                }
+              },
+              /*{
+                label: '封禁',
+                key: 'banned',
+                disabled: false,
+                props: {
+                  onClick: () => {
+
+                  }
+                }
+              },*/
+            ],
+          }, {
+            default: () => h(NButton, {
+              type: 'info',
+              ghost: true
+            }, {
+              default: () => '更多'
+            })
+          }),
         ]
       })
     }
@@ -155,8 +216,28 @@ const pages = ref<number>(0)
 
 const formData = ref<UserRolePage>({
   page: 1,
-  size: 10
+  size: 10,
+  account: null,
+  username: null,
+  sex: null,
+  phone: null,
+  email: null,
+  roleId: null,
+  status: null,
 })
+
+function resetFormData() {
+  formData.value = {
+    ...formData.value,
+    account: null,
+    username: null,
+    sex: null,
+    phone: null,
+    email: null,
+    roleId: null,
+    status: null,
+  }
+}
 
 function init() {
   loading.value = true
@@ -168,6 +249,12 @@ function init() {
 
 init()
 
+const roleOptions = ref<BasicOption[]>([])
+
+getOptions().then(res => {
+  roleOptions.value = res.data
+})
+
 watch(
   () => [formData.value.page, formData.value.size],
   () => init()
@@ -175,7 +262,7 @@ watch(
 
 const showRoleModal = ref<boolean>(false)
 
-const roleOptions = ref<any[]>([])
+const menuOptions = ref<any[]>([])
 
 function setLeaf(data) {
   if (data.length > 0) {
@@ -191,8 +278,8 @@ function setLeaf(data) {
 
 function initOptions() {
   getTree().then(res => {
-    roleOptions.value = deepCopy(res.data[0].children)
-    setLeaf(roleOptions.value)
+    menuOptions.value = deepCopy(res.data[0].children)
+    setLeaf(menuOptions.value)
   })
 }
 
@@ -207,8 +294,24 @@ const userFormData = ref<AddUserRoleFo | UpdateUserRoleFo>({
   phone: null,
   email: null,
   roleId: null,
+  status: LogicalEnum.NO,
   attachedPermission: []
 })
+
+function resetUserFormData() {
+  userFormData.value = {
+    id: null,
+    username: null,
+    photo: null,
+    sex: SexEnum.Unknown,
+    account: null,
+    phone: null,
+    email: null,
+    roleId: null,
+    status: LogicalEnum.NO,
+    attachedPermission: []
+  }
+}
 
 const checkedAll = ref<boolean>(false)
 
@@ -232,13 +335,13 @@ function packHandle() {
   if (expandedKeys.value.length) {
     expandedKeys.value = []
   } else {
-    childIds(roleOptions.value, expandedKeys)
+    childIds(menuOptions.value, expandedKeys)
   }
 }
 
 function checkedAllHandle() {
   if (!checkedAll.value) {
-    userFormData.value.attachedPermission = getTreeAll(roleOptions.value, 'id')
+    userFormData.value.attachedPermission = getTreeAll(menuOptions.value, 'id')
     checkedAll.value = true
   } else {
     userFormData.value.attachedPermission = []
@@ -247,6 +350,10 @@ function checkedAllHandle() {
 }
 
 const message = useMessage()
+
+const showUpdateDrawer = ref<boolean>(false)
+
+const showAddDrawer = ref<boolean>(false)
 
 function updateData(): Promise<void> {
   return new Promise<void>((resolve, reject) => {
@@ -259,7 +366,7 @@ function updateData(): Promise<void> {
   })
 }
 
-function addData() {
+function addData(): Promise<void> {
   return new Promise<void>((resolve, reject) => {
     add(userFormData.value).then(res => {
       message.success(res.data)
@@ -269,18 +376,67 @@ function addData() {
   })
 }
 
-const showUpdateDrawer = ref<boolean>(false)
+function addDrawerInit() {
+  resetUserFormData()
+  showAddDrawer.value = true
+}
 
 </script>
 
 <template>
   <n-flex vertical>
     <n-card>
-
+      <n-flex :wrap="false" justify="space-between">
+        <n-flex :size="[20, 30]">
+          <n-form-item label-placement="left" :show-feedback="false" label="账户名:">
+            <n-input clearable v-model:value="formData.account" placeholder="请输入账户名" />
+          </n-form-item>
+          <n-form-item label-placement="left" :show-feedback="false" label="用户名:">
+            <n-input clearable v-model:value="formData.username" placeholder="请输入用户名" />
+          </n-form-item>
+          <n-form-item label-placement="left" :show-feedback="false" label="角色:">
+            <n-select
+              clearable
+              class="w-200px"
+              :options="roleOptions"
+              placeholder="请选择角色"
+              v-model:value="formData.roleId"
+            />
+          </n-form-item>
+          <n-form-item label-placement="left" :show-feedback="false" label="手机号:">
+            <n-input clearable v-model:value="formData.phone" placeholder="请输入手机号" />
+          </n-form-item>
+          <n-form-item label-placement="left" :show-feedback="false" label="邮箱:">
+            <n-input clearable v-model:value="formData.email" placeholder="请输入邮箱" />
+          </n-form-item>
+          <n-form-item label-placement="left" :show-feedback="false" label="性别:">
+            <n-select
+              clearable
+              class="w-200px"
+              :options="SexOptions"
+              placeholder="请选择性别"
+              v-model:value="formData.sex"
+            />
+          </n-form-item>
+          <n-form-item label-placement="left" :show-feedback="false" label="是否禁用:">
+            <n-select
+              clearable
+              class="w-200px"
+              placeholder="请选择"
+              :options="LogicalOptions"
+              v-model:value="formData.status"
+            />
+          </n-form-item>
+        </n-flex>
+        <n-flex :wrap="false" justify="end">
+          <n-button type="default" @click="resetFormData">重置</n-button>
+          <n-button type="info" @click="init">查询</n-button>
+        </n-flex>
+      </n-flex>
     </n-card>
-    <n-card title="角色管理">
+    <n-card title="用户管理">
       <template #header-extra>
-        <n-button type="success">
+        <n-button type="success" @click="addDrawerInit">
           添加
         </n-button>
       </template>
@@ -317,7 +473,7 @@ const showUpdateDrawer = ref<boolean>(false)
           key-field="id"
           check-strategy="child"
           :selectable="false"
-          :data="roleOptions"
+          :data="menuOptions"
           v-model:expanded-keys="expandedKeys"
           :render-label="({option}) => option.meta.title"
           v-model:checked-keys="userFormData.attachedPermission"
@@ -336,9 +492,15 @@ const showUpdateDrawer = ref<boolean>(false)
         </template>
       </n-modal>
       <add-and-edit-user-drawer
-        v-model:show="showUpdateDrawer"
-        :form-data="userFormData"
         :submit="updateData"
+        :form-data="userFormData"
+        v-model:show="showUpdateDrawer"
+      />
+      <add-and-edit-user-drawer
+        is-add
+        :submit="addData"
+        :form-data="userFormData"
+        v-model:show="showAddDrawer"
       />
     </n-card>
   </n-flex>

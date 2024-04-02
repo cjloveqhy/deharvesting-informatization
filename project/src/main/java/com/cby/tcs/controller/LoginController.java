@@ -85,9 +85,22 @@ public class LoginController {
     userService.getLoginVerifyImg(response);
   }
 
+  /**
+   * 用户可选项
+   */
   @GetMapping("/userOptions")
   public ResultEntity getUserOptions() {
     List<UserOption> options = userService.getUserOptions();
     return ResultEntity.success(options);
   }
+
+  /**
+   * 禁止或解除禁止帐户
+   */
+  @GetMapping("/forbiddenOrLiftBan")
+  public ResultEntity forbiddenOrLiftBanAccount(@RequestParam String userId) {
+    String msg = userService.forbiddenOrLiftBanAccount(userId);
+    return ResultEntity.success(msg);
+  }
+
 }

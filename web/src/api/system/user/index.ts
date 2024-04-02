@@ -15,6 +15,7 @@ export const api = {
   updateUserInfo: getUri('/updateUserInfo'),
   getLoginVerifyImg: getUri('/getLoginVerifyImg'),
   userOptions: getUri('/userOptions'),
+  forbiddenOrLiftBan: getUri('/forbiddenOrLiftBan'),
 }
 
 /**
@@ -98,5 +99,16 @@ export function getUserOptions() {
   }, {
     isReturnNativeResponse: false,
     isTransformResponse: true
+  })
+}
+
+/**
+ * @description: 禁止或解除禁止帐户
+ */
+export function forbiddenOrLiftBanAccount(userId: string) {
+  return http.request({
+    url: api.forbiddenOrLiftBan,
+    method: RequestEnum.GET,
+    params: {userId: userId}
   })
 }

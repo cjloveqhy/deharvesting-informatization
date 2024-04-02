@@ -85,4 +85,12 @@ public interface UserService extends IService<User> {
      * @return {@link Page}<{@link FilterPageUserDTO}>
      */
     Page<FilterPageUserDTO> filterPage(UserRolePage entity);
+
+    /**
+     * 禁止或解除禁止帐户
+     * @param userId 用户id编号
+     * @return msg
+     */
+    String forbiddenOrLiftBanAccount(String userId);
+
 }

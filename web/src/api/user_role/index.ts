@@ -62,6 +62,19 @@ export function add(data: AddUserRoleFo) {
 }
 
 /**
+ * 添加用户角色权限
+ */
+export function del(id: string) {
+  return http.request({
+    url: api.del,
+    method: RequestEnum.DELETE,
+    params: {id: id}
+  }, {
+    joinParamsToUrl: true
+  })
+}
+
+/**
  * @description 根据用户id获取用户角色
  */
 export function getUserRoles() {

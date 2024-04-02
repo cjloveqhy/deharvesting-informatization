@@ -1,6 +1,7 @@
 package com.cby.tcs.user_role.entity.dto;
 
 import com.cby.tcs.user.entity.enums.SexEnum;
+import com.freedom.cloud.enums.LogicalEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -39,6 +40,11 @@ public class FilterPageUserDTO {
      * 用户性别
      */
     private SexEnum sex;
+
+    /**
+     * 是否禁用
+     */
+    private LogicalEnum status;
 
     /**
      * 角色id

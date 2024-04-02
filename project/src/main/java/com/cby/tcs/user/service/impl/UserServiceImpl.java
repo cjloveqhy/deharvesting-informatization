@@ -24,6 +24,7 @@ import com.cby.tcs.user_role.entity.dto.FilterPageUserDTO;
 import com.cby.tcs.user_role.entity.fo.UserRolePage;
 import com.cby.tcs.utils.IPUtil;
 import com.cby.tcs.utils.RedisUtils;
+import com.freedom.cloud.enums.LogicalEnum;
 import com.freedom.cloud.utils.page.PageUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
   public UserAutoInfo login(LoginFo entity) {
     User user = getUserByAccount(entity.getAccount());
     if (Objects.isNull(user) || !DigestUtil.md5Hex(entity.getPassword()).equals(user.getPassword())) throw new UserException("账户名或密码输入错误");
+    if (user.getStatus().equals(LogicalEnum.YES)) throw new UserException("【%s】账号已被禁用，无法登录，请联系管理员", user.getAccount());
+    if (StpUtil.isDisable(user.getId())) {
+
+    }
     if (!StpUtil.isLogin()) {
       if (StrUtil.hasBlank(entity.getCode())) throw new UserException("请输入验证码");
       if (!getLoginVerifyCode().equals(entity.getCode())) throw new UserException("验证码输入错误");
@@ -135,6 +140,23 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
   @Override
   public Page<FilterPageUserDTO> filterPage(UserRolePage entity) {
     return userDao.filterPage(PageUtils.getPage(entity), entity);
+  }
+
+  @Override
+  @Transactional(rollbackFor = Exception.class)
+  public String forbiddenOrLiftBanAccount(String userId) {
+    User user = getById(userId);
+    if (Objects.isNull(user)) throw new UserException("操作失败，该账号不存在");
+    String msg;
+    if (user.getStatus().equals(LogicalEnum.NO)) {
+      user.setStatus(LogicalEnum.YES);
+      msg = String.format("【%s】账号已成功禁用", user.getAccount());
+    } else {
+      user.setStatus(LogicalEnum.NO);
+      msg = String.format("【%s】账号已成功解禁", user.getAccount());
+    }
+    updateById(user);
+    return msg;
   }
 
   /**

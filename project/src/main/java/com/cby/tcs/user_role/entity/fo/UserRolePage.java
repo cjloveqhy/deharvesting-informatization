@@ -1,11 +1,17 @@
 package com.cby.tcs.user_role.entity.fo;
 
 import com.cby.tcs.user.entity.enums.SexEnum;
+import com.freedom.cloud.enums.LogicalEnum;
 import com.freedom.cloud.utils.page.PageQuery;
 import lombok.Data;
 
 @Data
 public class UserRolePage extends PageQuery<UserRolePage> {
+
+    /**
+     * 用户名
+     */
+    private String account;
 
     /**
      * 用户名
@@ -31,4 +37,10 @@ public class UserRolePage extends PageQuery<UserRolePage> {
      * 角色id
      */
     private String roleId;
+
+    /**
+     * 是否禁用
+     */
+    private LogicalEnum status;
+
 }

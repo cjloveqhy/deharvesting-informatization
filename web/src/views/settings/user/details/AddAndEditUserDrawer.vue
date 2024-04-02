@@ -8,6 +8,7 @@ import {Ref} from "vue";
 import {getTreeAll} from "@/utils";
 import {getOptions} from "@/api/system/role";
 import {BasicOption, emailSuffix} from "@/store/common";
+import {LogicalEnum} from "@/enums/LogicalEnum";
 
 const props = withDefaults(defineProps<{show?: boolean, isAdd?: boolean, formData: UpdateUserRoleFo, submit: () => Promise<void>}>(), {
   show: false,
@@ -25,6 +26,7 @@ const currentFormData = ref<AddUserRoleFo | UpdateUserRoleFo>({
   phone: null,
   email: null,
   roleId: null,
+  status: LogicalEnum.NO,
   attachedPermission: []
 })
 
@@ -56,6 +58,7 @@ function cancel() {
       phone: null,
       email: null,
       roleId: null,
+      status: LogicalEnum.NO,
       attachedPermission: []
     }
   }
@@ -227,7 +230,7 @@ function handleSubmit() {
         </n-form-item>
       </n-form>
       <template #footer>
-        <n-flex justify="end">
+        <n-flex class="w-full">
           <n-button type="info" ghost icon-placement="left" @click="packHandle">
             全部{{ expandedKeys.length ? '收起' : '展开' }}
           </n-button>

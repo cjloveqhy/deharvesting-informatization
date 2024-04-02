@@ -16,6 +16,7 @@ import {
 } from '@/api/system/user'
 import {ResultEnum} from "@/enums/httpEnum";
 import {getUserPermissions as obtainUserPermissions} from "@/api/user_role";
+import {LogicalEnum} from "@/enums/LogicalEnum";
 
 export const useUserApiStore = defineStore(
   'user-api',
@@ -55,6 +56,7 @@ export const useUserApiStore = defineStore(
         account: null,
         phone: null,
         email: null,
+        status: LogicalEnum.NO,
         createTime: null,
       }
     }

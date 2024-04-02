@@ -3,4 +3,9 @@ export const LogicalOptions = [
   {label: '否', value: 'N'},
 ]
 
-export const emailSuffix = ['@gmail.com', '@163.com', '@qq.com']
+export const emailSuffix = [
+  '@gmail.com',
+  '@163.com',
+  '@qq.com',
+  '@139.com'
+]

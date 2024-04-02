@@ -3,6 +3,7 @@ package com.cby.tcs.user_role.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -17,6 +18,7 @@ import com.cby.tcs.role_permission.entity.vo.RolePermissionVo;
 import com.cby.tcs.role_permission.service.RolePermissionService;
 import com.cby.tcs.user.entity.po.User;
 import com.cby.tcs.user.entity.vo.UserInfo;
+import com.cby.tcs.user.entity.vo.ValidAccountVo;
 import com.cby.tcs.user.service.UserService;
 import com.cby.tcs.user_role.dao.UserRoleDao;
 import com.cby.tcs.user_role.entity.dto.FilterPageUserDTO;
@@ -26,6 +28,7 @@ import com.cby.tcs.user_role.entity.fo.UserRolePage;
 import com.cby.tcs.user_role.entity.po.UserRole;
 import com.cby.tcs.user_role.entity.vo.UserRoleVo;
 import com.cby.tcs.user_role.service.UserRoleService;
+import com.freedom.cloud.config.AppConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +50,8 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
   private final UserService userService;
 
   private final PermissionService permissionService;
+
+  private final AppConfigProperties appConfigProperties;
 
   @Override
   public List<String> getRolePermissions(String userId) {
@@ -96,9 +101,13 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
   public void updateUserRole(UpdateUserRoleFo entity) {
     User user = userService.getById(entity.getId());
     if (Objects.isNull(user)) throw new UserRoleException("该用户不存在");
+    if (!user.getAccount().equals(entity.getAccount())) {
+      ValidAccountVo validAccount = userService.validAccount(entity.getAccount());
+      if (!validAccount.isUsable()) throw new UserException(validAccount.getMessage());
+    }
     user = BeanUtil.copyProperties(entity, User.class);
     if (StrUtil.isNotBlank(entity.getRoleId())) {
-      LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<UserRole>();
+      LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
       wrapper.eq(UserRole::getUserId, entity.getId())
               .eq(UserRole::getRoleId, entity.getRoleId());
       UserRole userRole = getOne(wrapper);
@@ -134,8 +143,9 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
       if (Objects.nonNull(user)) throw new UserException("该邮箱已被注册");
     }
     user = BeanUtil.copyProperties(entity, User.class);
+    user.setPassword(DigestUtil.md5Hex(appConfigProperties.getUser().getPassword()));
     userService.save(user);
-    if (StrUtil.isBlank(entity.getRoleId()) && Objects.isNull(entity.getAttachedPermission())) return;
+    if (StrUtil.isBlank(entity.getRoleId()) && entity.getAttachedPermission().isEmpty()) return;
     UserRole userRole = new UserRole().setUserId(user.getId());
     if (StrUtil.isNotBlank(entity.getRoleId())) userRole.setRoleId(entity.getRoleId());
     if (Objects.nonNull(entity.getAttachedPermission()) && !entity.getAttachedPermission().isEmpty()) {
@@ -166,6 +176,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
             .filter(StrUtil::isNotBlank)
             .distinct()
             .toList();
+    if (roleIds.isEmpty()) return userRoleVoPage;
     Map<String, RoleVo> roleVoMap = roleService.getByRoleIds(roleIds)
             .stream()
             .collect(Collectors.toMap(RoleVo::getId, Function.identity()));

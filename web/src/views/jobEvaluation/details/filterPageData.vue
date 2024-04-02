@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {
   AddJobEvaluationFo,
-  AddOptionJobEvaluationVo, EvaluationResult,
+  AddOptionJobEvaluationVo,
+  EvaluationResult,
   EvaluationResultOptions,
   JobEvaluationPageFo,
   JobEvaluationPageVo,
@@ -14,11 +15,9 @@ import {
   getAddOptions,
   getSelfFilterPage
 } from "@/api/job/evaluation";
-import {UserInfo} from "@/store/api/user";
 import {getUserRoles} from "@/api/user_role";
 import router from "@/router";
-import {BasicOption} from "@/store/common";
-import { useMessage } from 'naive-ui'
+import {useMessage} from 'naive-ui'
 
 const props = defineProps<{ type: JobType, isCheck: boolean }>()
 

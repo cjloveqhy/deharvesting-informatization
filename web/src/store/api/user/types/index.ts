@@ -1,3 +1,5 @@
+import {LogicalEnum} from "@/enums/LogicalEnum";
+
 export enum SexEnum {
 
   /**
@@ -24,6 +26,7 @@ export interface UserInfo {
   account: string | null
   phone: string | null
   email: string | null
+  status: LogicalEnum
   createTime: Date | null
 }
 

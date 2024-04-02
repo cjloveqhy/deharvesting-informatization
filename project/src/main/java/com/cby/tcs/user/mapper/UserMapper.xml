@@ -15,6 +15,9 @@
                 LEFT JOIN user_role ur ON u.id = ur.user_id
         WHERE
             u.deleted = 0
+        <if test="params.account != null">
+            AND u.account LIKE '%${params.account}%'
+        </if>
         <if test="params.username != null">
             AND u.username LIKE '%${params.username}%'
         </if>
@@ -29,6 +32,9 @@
         </if>
         <if test="params.roleId != null">
             AND ur.role_id = #{params.roleId}
+        </if>
+        <if test="params.status != null">
+            AND u.status = #{params.status.code}
         </if>
     </select>
 </mapper>

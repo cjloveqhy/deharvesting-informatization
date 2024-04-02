@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -57,6 +58,6 @@ public class AddUserRoleFo implements Serializable {
     /**
      * 额外权限，当角色权限不可满足时，可通过此属性进行添加
      */
-    private List<String> attachedPermission;
+    private List<String> attachedPermission = Collections.emptyList();
 
 }
