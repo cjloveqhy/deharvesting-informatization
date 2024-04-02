@@ -8,7 +8,7 @@
             jqp.percent_pass `value`
         FROM
             `user` u
-                JOIN job_qualified_percent jqp ON u.id = jqp.job_id
+                LEFT JOIN job_qualified_percent jqp ON u.id = jqp.job_id
         WHERE
             jqp.job_type = "U"
         ORDER BY

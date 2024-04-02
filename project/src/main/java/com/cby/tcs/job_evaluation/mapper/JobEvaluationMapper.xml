@@ -7,21 +7,21 @@
         je.*
         FROM
         job_evaluation je
-        <if test="params.customerId != null">
+        <if test="params.customerId != null and params.customerId != ''">
             LEFT JOIN cotton_field cf ON je.cotton_field_id = cf.id
         </if>
         WHERE
         je.job_type = #{params.jobType.code}
-        <if test="params.orderId != null">
+        <if test="params.orderId != null and params.orderId != ''">
             AND je.order_id = #{params.orderId}
         </if>
-        <if test="params.jobId != null">
+        <if test="params.jobId != null and params.jobId != ''">
             AND je.job_id = #{params.jobId}
         </if>
-        <if test="params.customerId != null">
+        <if test="params.customerId != null and params.customerId != ''">
             AND cf.contacts = #{params.customerId}
         </if>
-        <if test="params.evaluationResult != null">
+        <if test="params.evaluationResult != null and params.evaluationResult != ''">
             AND je.evaluation_result = #{params.evaluationResult}
         </if>
         <if test="params.startTime != null and params.endTime != null">
@@ -34,7 +34,7 @@
         je.*
         FROM
         job_evaluation je
-        <if test="params.customerId != null">
+        <if test="params.customerId != null and params.customerId != ''">
             LEFT JOIN cotton_field cf ON je.cotton_field_id = cf.id
         </if>
         WHERE
@@ -45,17 +45,17 @@
         <if test="params.jobType != null">
             AND je.job_type = #{params.jobType.code}
         </if>
-        <if test="params.orderId != null">
+        <if test="params.orderId != null and params.orderId != ''">
             AND je.order_id = #{params.orderId}
         </if>
 
-        <if test="params.jobId != null">
+        <if test="params.jobId != null and params.jobId != ''">
             AND je.job_id = #{params.jobId}
         </if>
-        <if test="params.customerId != null">
+        <if test="params.customerId != null and params.customerId != ''">
             AND cf.contacts = #{params.customerId}
         </if>
-        <if test="params.evaluationResult != null">
+        <if test="params.evaluationResult != null and params.evaluationResult != ''">
             AND je.evaluation_result = #{params.evaluationResult}
         </if>
         <if test="params.startTime != null and params.endTime != null">

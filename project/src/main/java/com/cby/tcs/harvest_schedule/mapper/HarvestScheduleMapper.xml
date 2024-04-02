@@ -24,13 +24,13 @@
                 LEFT JOIN `user` u ON g.contacts = u.id
         WHERE
             hs.`status` = 'Y' AND hs.deleted = 0
-        <if test="params.dispatchId != null">
+        <if test="params.dispatchId != null and params.dispatchId != ''">
             AND hs.dispatch_id = #{params.dispatchId}
         </if>
-        <if test="params.ginneryName != null">
+        <if test="params.ginneryName != null and params.ginneryName != ''">
             AND g.factory_name LIKE '%${params.ginneryName}%'
         </if>
-        <if test="params.contacts != null">
+        <if test="params.contacts != null and params.contacts != ''">
             AND g.contacts = #{params.contacts}
         </if>
         <if test="params.startTime != null and params.endTime != null">
