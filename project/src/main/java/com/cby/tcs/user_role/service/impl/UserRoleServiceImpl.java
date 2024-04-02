@@ -55,17 +55,21 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
 
   @Override
   public List<String> getRolePermissions(String userId) {
+    List<String> defaultPermissions = roleService.getDefaultPermissions();
     UserRole maxLevelRole = getMaxLevelRole(userId);
-    if (Objects.isNull(maxLevelRole)) return Collections.emptyList();
-    RolePermissionVo rolePermissionVo = rolePermissionService.getRolePermissionByRoleId(maxLevelRole.getRoleId());
-    ArrayList<String> permissionIds = new ArrayList<>();
-    if (!rolePermissionVo.getPermissions().isEmpty()) {
-      permissionIds.addAll(rolePermissionVo.getPermissions());
+    Set<String> permissionIds = new HashSet<>();
+    if (!defaultPermissions.isEmpty())
+      permissionIds.addAll(defaultPermissions);
+    if (Objects.nonNull(maxLevelRole)) {
+      RolePermissionVo rolePermissionVo = rolePermissionService.getRolePermissionByRoleId(maxLevelRole.getRoleId());
+      if (!rolePermissionVo.getPermissions().isEmpty()) {
+        permissionIds.addAll(rolePermissionVo.getPermissions());
+      }
+      if (!StrUtil.hasBlank(maxLevelRole.getAttachedPermission())) {
+        permissionIds.addAll(Arrays.stream(maxLevelRole.getAttachedPermission().split(",")).toList());
+      }
     }
-    if (!StrUtil.hasBlank(maxLevelRole.getAttachedPermission())) {
-      permissionIds.addAll(Arrays.stream(maxLevelRole.getAttachedPermission().split(",")).toList());
-    }
-    return permissionService.getPermissions(permissionIds);
+    return permissionService.getPermissions(permissionIds.stream().toList());
   }
 
   @Override

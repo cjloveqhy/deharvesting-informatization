@@ -58,4 +58,11 @@ public interface RoleService extends IService<Role> {
      */
     List<Option<String>> getOptions();
 
+    /**
+     * 获取所有默认权限
+     *
+     * @return {@link List}<{@link String}>
+     */
+    List<String> getDefaultPermissions();
+
 }

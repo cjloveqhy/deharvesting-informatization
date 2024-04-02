@@ -59,9 +59,9 @@ const columns = ref([
     titleAlign: 'center',
     render: (row) => {
       return h(NTag, {
-        type: row.status === LogicalEnum.NO ? 'success' : 'error'
+        type: row.disabled === LogicalEnum.NO ? 'success' : 'error'
       }, {
-        default: () => getLabel(LogicalOptions, row.status)
+        default: () => getLabel(LogicalOptions, row.disabled)
       })
     }
   },

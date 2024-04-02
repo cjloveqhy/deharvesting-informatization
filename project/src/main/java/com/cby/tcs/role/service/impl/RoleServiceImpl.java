@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +49,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     save(role);
     RolePermission rolePermission = new RolePermission().setRoleId(role.getId());
     if (!entity.getPermissions().isEmpty())
-      rolePermission.setPermissions(ArrayUtil.join(entity.getPermissions(), ","));
+      rolePermission.setPermissions(ArrayUtil.join(entity.getPermissions().toArray(String[]::new), ","));
     rolePermissionDao.insert(rolePermission);
   }
 
@@ -139,9 +140,28 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
   @Override
   public List<Option<String>> getOptions() {
     LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
-    wrapper.eq(Role::getStatus, LogicalEnum.NO);
+    wrapper.eq(Role::getStatus, LogicalEnum.NO)
+            .eq(Role::getDisabled, LogicalEnum.NO);
     List<Role> roles = list(wrapper);
     return roles.stream().map(item -> new Option<>(item.getName(), item.getId())).toList();
+  }
+
+  @Override
+  public List<String> getDefaultPermissions() {
+    LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(Role::getStatus, LogicalEnum.YES)
+            .eq(Role::getDisabled, LogicalEnum.NO);
+    List<Role> roles = list(wrapper);
+    if (roles.isEmpty()) return Collections.emptyList();
+    List<String> roleIds = roles.stream().map(Role::getId).toList();
+    LambdaQueryWrapper<RolePermission> rolePermissionWrapper = new LambdaQueryWrapper<>();
+    rolePermissionWrapper.in(RolePermission::getRoleId, roleIds);
+    List<RolePermission> rolePermissions = rolePermissionDao.selectList(rolePermissionWrapper);
+    return rolePermissions.stream()
+            .filter(item -> StrUtil.isNotBlank(item.getPermissions()))
+            .flatMap(item -> Stream.of(item.getPermissions().split(",")))
+            .distinct()
+            .toList();
   }
 
 }
