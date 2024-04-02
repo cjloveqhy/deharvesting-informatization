@@ -180,10 +180,12 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
             .filter(StrUtil::isNotBlank)
             .distinct()
             .toList();
-    if (roleIds.isEmpty()) return userRoleVoPage;
-    Map<String, RoleVo> roleVoMap = roleService.getByRoleIds(roleIds)
-            .stream()
-            .collect(Collectors.toMap(RoleVo::getId, Function.identity()));
+    Map<String, RoleVo> roleVoMap = new HashMap<>();
+    if (!roleIds.isEmpty()) {
+      roleVoMap.putAll(roleService.getByRoleIds(roleIds)
+              .stream()
+              .collect(Collectors.toMap(RoleVo::getId, Function.identity())));
+    }
     for (FilterPageUserDTO record : filterPage.getRecords()) {
       List<String> permissions = StrUtil.hasBlank(record.getAttachedPermission()) ? Collections.emptyList() : Arrays.stream(record.getAttachedPermission().split(",")).toList();
       userRoleVoPage.getRecords().add(new UserRoleVo(record.getId(), BeanUtil.copyProperties(record, UserInfo.class), roleVoMap.get(record.getRoleId()), permissions));
