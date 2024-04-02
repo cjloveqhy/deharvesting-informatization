@@ -56,9 +56,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     User user = getUserByAccount(entity.getAccount());
     if (Objects.isNull(user) || !DigestUtil.md5Hex(entity.getPassword()).equals(user.getPassword())) throw new UserException("账户名或密码输入错误");
     if (user.getStatus().equals(LogicalEnum.YES)) throw new UserException("【%s】账号已被禁用，无法登录，请联系管理员", user.getAccount());
-    if (StpUtil.isDisable(user.getId())) {
-
-    }
     if (!StpUtil.isLogin()) {
       if (StrUtil.hasBlank(entity.getCode())) throw new UserException("请输入验证码");
       if (!getLoginVerifyCode().equals(entity.getCode())) throw new UserException("验证码输入错误");
