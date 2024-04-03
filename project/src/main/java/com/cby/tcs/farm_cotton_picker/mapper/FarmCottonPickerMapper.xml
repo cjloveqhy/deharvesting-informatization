@@ -18,10 +18,10 @@
                 LEFT JOIN `user` u ON u.id = fcp.belonger
         WHERE
             fcp.deleted = 0
-        <if test="params.brand != null">
+        <if test="params.brand != null and params.brand != ''">
             AND fcp.brand = #{params.brand}
         </if>
-        <if test="params.belonger != null">
+        <if test="params.belonger != null and params.belonger != ''">
             AND fcp.belonger LIKE '%${params.belonger}%'
         </if>
         <if test="params.holdingAttr != null">
