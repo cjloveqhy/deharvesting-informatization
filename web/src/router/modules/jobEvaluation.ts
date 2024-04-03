@@ -14,16 +14,6 @@ const routeName = 'jobEvaluation';
  * @param meta.keepAlive 缓存该路由
  * @param meta.sort 排序越小越排前
  * */
-let isShowRouters  = ref<Array<RouteRecordRaw>>([
-  {
-    path: 'check',
-    name: `${routeName}_check`,
-    meta: {
-      title: '查看评价',
-    },
-    component: () => import('@/views/jobEvaluation/check/index.vue')
-  },
-])
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -82,15 +72,16 @@ const routes: Array<RouteRecordRaw> = [
           }
         ]
       },
+      {
+        path: 'check',
+        name: `${routeName}_check`,
+        meta: {
+          title: '查看评价',
+        },
+        component: () => import('@/views/jobEvaluation/check/index.vue')
+      },
     ],
   },
 ];
-
-if (JSON.parse(<string>localStorage.getItem("CURRENT-USER")).value.id != '9f2eb890e42791569fedb3c7b38f6123'){
-  isShowRouters.value.forEach(item => {
-    // @ts-ignore
-    routes[0].children.push(item);
-  })
-}
 
 export default routes;
