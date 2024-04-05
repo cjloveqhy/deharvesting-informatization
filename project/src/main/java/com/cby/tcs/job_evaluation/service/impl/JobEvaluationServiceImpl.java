@@ -87,6 +87,7 @@ public class JobEvaluationServiceImpl extends ServiceImpl<JobEvaluationDao, JobE
 
     @Override
     public Page<JobEvaluationPageVo> getSelfFilterPage(JobEvaluationSelfPageFo entity) {
+        Page<JobEvaluationPageVo> voPage = new Page<>();
         if (!StpUtil.getLoginId().equals("9f2eb890e42791569fedb3c7b38f6123")) {
             if (jobEvaluationDao.selectCount(new LambdaQueryWrapper<JobEvaluation>()
                     .eq(JobEvaluation::getJobId, StpUtil.getLoginId())) > 0){
@@ -103,8 +104,8 @@ public class JobEvaluationServiceImpl extends ServiceImpl<JobEvaluationDao, JobE
                 entity.setJobIds(rackNumberList);
             }
         }
+        if (entity.getJobIds().isEmpty()) return voPage;
         Page<JobEvaluation> evaluationPage = jobEvaluationDao.getSelfFilterPage(PageUtils.getPage(entity), entity);
-        Page<JobEvaluationPageVo> voPage = new Page<>();
         if (evaluationPage.getRecords().isEmpty()) return voPage;
         BeanUtil.copyProperties(evaluationPage, voPage, "records");
         voPage.setRecords(new LinkedList<>());
