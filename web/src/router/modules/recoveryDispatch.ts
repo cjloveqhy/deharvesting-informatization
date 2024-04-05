@@ -21,7 +21,7 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/recoveryDispatch/map',
     component: Layout,
     meta: {
-      title: '采收调度',
+      title: '棉花脱采收',
       icon: constantRouterIcon.DashboardOutlined,
       sort: 2,
     },
@@ -30,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'map',
         name: `${routeName}_map`,
         meta: {
-          title: '地图调度',
+          title: '新建脱采收',
           // permissions: ['recoveryDispatch::map::view']
         },
         component: () => import('@/views/recoveryDispatch/map/index.vue'),
@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'record',
         name: `${routeName}_record`,
         meta: {
-          title: '调度记录',
+          title: '脱采收记录',
           // permissions: ['recoveryDispatch::record::view']
         },
         component: () => import('@/views/recoveryDispatch/record/index.vue'),

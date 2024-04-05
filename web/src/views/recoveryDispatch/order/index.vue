@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { NButton, useMessage, NFlex } from 'naive-ui'
+import {NButton, NFlex, useMessage} from 'naive-ui'
 import {FilterPageFo, HarvestScheduleVo} from "@/store/api/harvestSchedule";
-import {checkOrderInfo, filterPage} from "@/api/harvestSchedule";
+import {checkOrderInfo} from "@/api/harvestSchedule";
 
 const columns = ref([
   {
@@ -171,6 +171,7 @@ watch(
       <n-data-table
         :columns="columns"
         :data="data"
+        :loading="loading"
         :bordered="false"
       />
       <n-flex justify="end" class="pt-20px">

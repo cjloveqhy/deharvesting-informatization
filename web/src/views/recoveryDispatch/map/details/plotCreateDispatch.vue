@@ -5,14 +5,14 @@ import {addRecord, createRecord, delCottonField, getRecord} from "@/api/harvestS
 import {NButton, NFlex, NFormItem} from "naive-ui";
 import {CottonFieldVo} from "@/store/api/cottonField";
 import {
-  AddHarvestScheduleFo, DeleteHarvestScheduleRecordCottonFieldFo,
+  AddHarvestScheduleFo,
+  DeleteHarvestScheduleRecordCottonFieldFo,
   HarvestScheduleRecordPageFo,
   HarvestScheduleRecordPageVo
 } from "@/store/api/harvestSchedule";
 import {GinneryVo} from "@/store/api/ginnery";
-import {string} from "vue-types";
 import CaretGroup from '@/components/icons/CaretGroup.vue'
-import { DocumentTextOutline, BriefcaseOutline } from '@vicons/ionicons5'
+import {BriefcaseOutline, DocumentTextOutline} from '@vicons/ionicons5'
 
 const route = useRoute()
 
@@ -39,7 +39,7 @@ const columns = ref([
                 type: 'info',
                 onClick: () => showRecordModal(row)
               }, {
-                default: () => '调度'
+                default: () => '选择此地'
               })
             ]
           }),
@@ -375,8 +375,8 @@ const showCreate = ref<boolean>(false)
     </n-flex>
     <template #action>
       <n-flex :size="50" justify="center">
-        <n-button type="info" @click="createRecords">生成调度单</n-button>
-        <n-button type="info" ghost @click="showCreate = false">隐藏调度单</n-button>
+        <n-button type="info" @click="createRecords">确定提交</n-button>
+        <n-button type="info" ghost @click="showCreate = false">取消提交</n-button>
       </n-flex>
     </template>
   </n-modal>
