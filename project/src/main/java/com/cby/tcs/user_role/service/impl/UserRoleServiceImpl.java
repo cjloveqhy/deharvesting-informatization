@@ -55,6 +55,12 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
 
   @Override
   public List<String> getRolePermissions(String userId) {
+    List<String> permissionIds = getRolePermissionIds(userId);
+    return permissionService.getPermissions(permissionIds);
+  }
+
+  @Override
+  public List<String> getRolePermissionIds(String userId) {
     List<String> defaultPermissions = roleService.getDefaultPermissions();
     UserRole maxLevelRole = getMaxLevelRole(userId);
     Set<String> permissionIds = new HashSet<>();
@@ -69,7 +75,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
         permissionIds.addAll(Arrays.stream(maxLevelRole.getAttachedPermission().split(",")).toList());
       }
     }
-    return permissionService.getPermissions(permissionIds.stream().toList());
+    return permissionIds.stream().toList();
   }
 
   @Override
@@ -116,7 +122,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
               .eq(UserRole::getRoleId, entity.getRoleId());
       UserRole userRole = getOne(wrapper);
       if (Objects.isNull(userRole)) {
-        userRole = new UserRole().setRoleId(entity.getRoleId());
+        userRole = new UserRole().setRoleId(entity.getRoleId()).setUserId(user.getId());
       }
       if (Objects.nonNull(entity.getAttachedPermission())) {
         String attachedPermission = ArrayUtil.join(entity.getAttachedPermission().toArray(String[]::new), ",");

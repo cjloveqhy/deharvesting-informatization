@@ -2,7 +2,6 @@ import {useUserApiStore} from "@/store/api/user";
 import {TABS_ROUTES} from "@/store/mutation-types";
 import {FuncButtonItem, UserMenuItem} from "/#/config";
 import {FullscreenExitOutlined, FullscreenOutlined, LockOutlined} from "@vicons/antd";
-import {NotificationsOutline} from "@vicons/ionicons5";
 import {useScreenLockStore} from "@/store/modules/screenLock";
 import UserInfo from '@/components/UserInfo/UserInfo.vue'
 
@@ -105,7 +104,7 @@ export const funcButtons: FuncButtonItem[] = [
       },
     ]
   },
-  {
+  /*{
     beforeIcon: {
       tips: '通知',
       size: '18',
@@ -119,5 +118,5 @@ export const funcButtons: FuncButtonItem[] = [
 
       },
     }
-  },
+  },*/
 ]

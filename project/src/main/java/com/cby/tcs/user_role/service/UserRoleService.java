@@ -21,6 +21,13 @@ public interface UserRoleService extends IService<UserRole> {
     List<String> getRolePermissions(String userId);
 
     /**
+     * 获取用户角色的所有权限id编号
+     * @param userId 用户id编号
+     * @return {@link List}<{@link String}> 权限id集合
+     */
+    List<String> getRolePermissionIds(String userId);
+
+    /**
      * 获取用户所有角色中最大的角色
      * @param userId 用户id编号
      * @return {@link UserRole}

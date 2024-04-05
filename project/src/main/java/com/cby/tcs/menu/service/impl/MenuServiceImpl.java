@@ -1,16 +1,13 @@
 package com.cby.tcs.menu.service.impl;
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.cby.tcs.menu.entity.RouteMeta;
 import com.cby.tcs.menu.entity.RouteRecord;
 import com.cby.tcs.menu.service.MenuService;
 import com.cby.tcs.permission.entity.po.Permission;
 import com.cby.tcs.permission.service.PermissionService;
-import com.cby.tcs.role_permission.entity.vo.RolePermissionVo;
 import com.cby.tcs.role_permission.service.RolePermissionService;
-import com.cby.tcs.user_role.entity.po.UserRole;
 import com.cby.tcs.user_role.service.UserRoleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,15 +34,7 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @SneakyThrows
     public List<RouteRecord> getMenu(String userId) {
-        UserRole maxLevelRole = userRoleService.getMaxLevelRole(userId);
-        Set<String> permissionIds = new HashSet<>();
-        if (Objects.nonNull(maxLevelRole)) {
-            RolePermissionVo rolePermission = rolePermissionService.getRolePermissionByRoleId(maxLevelRole.getRoleId());
-            permissionIds.addAll(rolePermission.getPermissions());
-            if (!StrUtil.hasBlank(maxLevelRole.getAttachedPermission())) {
-                permissionIds.addAll(Arrays.stream(maxLevelRole.getAttachedPermission().split(",")).toList());
-            }
-        }
+        List<String> permissionIds = userRoleService.getRolePermissionIds(userId);
         List<Permission> permissions = permissionService.getList();
         Set<String> currenUserPermissions = new HashSet<>();
         for (Permission permission : permissions) {

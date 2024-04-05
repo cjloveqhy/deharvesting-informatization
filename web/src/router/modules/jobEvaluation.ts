@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '作业评价',
-      icon: constantRouterIcon.DashboardOutlined,
+      icon: constantRouterIcon.ReceiptOutline,
       sort: 3,
     },
     children: [
@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_uav`,
         meta: {
           title: '无人机评价',
-          // permissions: ['jobEvaluation::uav::view']
+          permissions: ['jobEvaluation::uav::view']
         },
         component: () => import('@/views/jobEvaluation/uav/index.vue'),
       },
@@ -41,7 +41,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_cottonPicker`,
         meta: {
           title: '采棉机评价',
-          // permissions: ['jobEvaluation::cottonPicker::view']
+          permissions: ['jobEvaluation::cottonPicker::view']
         },
         component: () => import('@/views/jobEvaluation/cottonPicker/index.vue')
       },
@@ -57,7 +57,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${routeName}_setting_uav`,
             meta: {
               title: '无人机',
-              // permissions: ['jobEvaluation::setting::uav::view']
+              permissions: ['jobEvaluation::setting::uav::view']
             },
             component: () => import('@/views/jobEvaluation/setting/uav.vue')
           },
@@ -66,7 +66,7 @@ const routes: Array<RouteRecordRaw> = [
             name: `${routeName}_setting_cottonPicker`,
             meta: {
               title: '采棉机',
-              // permissions: ['jobEvaluation::setting::cottonPicker::view']
+              permissions: ['jobEvaluation::setting::cottonPicker::view']
             },
             component: () => import('@/views/jobEvaluation/setting/cottonPicker.vue')
           }
@@ -77,6 +77,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_check`,
         meta: {
           title: '查看评价',
+          permissions: ['jobEvaluation::check::view'],
         },
         component: () => import('@/views/jobEvaluation/check/index.vue')
       },

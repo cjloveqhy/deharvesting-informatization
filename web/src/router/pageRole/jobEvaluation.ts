@@ -45,6 +45,16 @@ const roles: PageRole = {
         permissions: ['jobEvaluation::setting::cottonPicker::view']
       }
     },
+  ],
+  jobEvaluation_check: [
+    {
+      name: 'view',
+      meta: {
+        title: '查看',
+        type: MenuType.Content,
+        permissions: ['jobEvaluation::check::view']
+      }
+    },
   ]
 }
 

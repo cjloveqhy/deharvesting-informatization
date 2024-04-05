@@ -282,7 +282,7 @@ function iconBlur() {
             </n-input>
             <n-collapse-transition :show="showIcons">
               <n-scrollbar class="max-h-200px">
-                <n-radio-group v-model:value="currentFormData.meta.icon" class="pt-5px">
+                <n-radio-group v-model:value="currentFormData.meta.icon" class="pl-5px pt-5px">
                   <n-flex size="large">
                     <template v-for="item in constantRouterIcon">
                       <n-radio-button

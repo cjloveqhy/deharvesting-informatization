@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '系统管理',
-      icon: constantRouterIcon.DashboardOutlined,
+      icon: constantRouterIcon.Settings,
       sort: 5,
     },
     children: [
@@ -31,7 +31,8 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_user`,
         meta: {
           title: '用户管理',
-          // permissions: ['settings::user::view']
+          icon: constantRouterIcon.UserOutlined,
+          permissions: ['settings::user::view']
         },
         component: () => import('@/views/settings/user/index.vue'),
       },
@@ -40,7 +41,8 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_role`,
         meta: {
           title: '角色管理',
-          // permissions: ['settings::role::view']
+          icon: constantRouterIcon.UserRole,
+          permissions: ['settings::role::view']
         },
         component: () => import('@/views/settings/role/index.vue'),
       },
@@ -49,7 +51,8 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_menu`,
         meta: {
           title: '菜单管理',
-          // permissions: ['settings::menu::view']
+          icon: constantRouterIcon.Menu,
+          permissions: ['settings::menu::view']
         },
         component: () => import('@/views/settings/menu/index.vue'),
       },

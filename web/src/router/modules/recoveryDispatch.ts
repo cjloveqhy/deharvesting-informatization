@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '棉花脱采收',
-      icon: constantRouterIcon.DashboardOutlined,
+      icon: constantRouterIcon.StatsChartOutline,
       sort: 2,
     },
     children: [
@@ -31,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_map`,
         meta: {
           title: '新建脱采收',
-          // permissions: ['recoveryDispatch::map::view']
+          permissions: ['recoveryDispatch::map::view']
         },
         component: () => import('@/views/recoveryDispatch/map/index.vue'),
       },
@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_record`,
         meta: {
           title: '脱采收记录',
-          // permissions: ['recoveryDispatch::record::view']
+          permissions: ['recoveryDispatch::record::view']
         },
         component: () => import('@/views/recoveryDispatch/record/index.vue'),
       },
@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_order`,
         meta: {
           title: '查看订单',
-          // permissions: ['recoveryDispatch::order::view']
+          permissions: ['recoveryDispatch::order::view']
         },
         component: () => import('@/views/recoveryDispatch/order/index.vue'),
       },

@@ -28,6 +28,7 @@
     "@unocss/preset-uno": "^0.48.0",
     "@unocss/reset": "^0.48.0",
     "@vicons/antd": "^0.12.0",
+    "@vicons/carbon": "^0.12.0",
     "@vicons/ionicons5": "^0.12.0",
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^9.13.0",
