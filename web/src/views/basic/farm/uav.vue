@@ -2,6 +2,7 @@
 import LineType from "@/components/LineType/LineType.vue";
 import {FarmUavPageFo, FarmUavVo, HoldingAttrOptions} from "@/store/api/farmUav";
 import {getFilterPage} from "@/api/farmUav";
+import {getLabel} from "@/utils/optionUtil";
 
 const farmUavColumns = ref([
   {
@@ -48,6 +49,9 @@ const farmUavColumns = ref([
     key: "holdingAttr",
     align: 'center',
     titleAlign: 'center',
+    render: (row) => {
+      return h('span', getLabel(HoldingAttrOptions, row.holdingAttr))
+    }
   },
   {
     title: "作业面积(亩)",

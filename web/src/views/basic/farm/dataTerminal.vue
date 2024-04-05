@@ -11,6 +11,7 @@ import {
   updateFarmDataTerminal
 } from "@/api/farmDataTerminal";
 import {LogicalEnum} from "@/enums/LogicalEnum";
+import {getLabel} from "@/utils/optionUtil";
 
 // 表格的表头信息
 const farmUavColumns = ref([
@@ -52,6 +53,9 @@ const farmUavColumns = ref([
     key: "status",
     align: 'center',
     titleAlign: 'center',
+    render: (row) => {
+      return h('span', getLabel(LogicalOptions, row.status))
+    }
   },
   {
     title: "农机编号",
