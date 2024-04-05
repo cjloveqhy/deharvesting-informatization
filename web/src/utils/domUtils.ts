@@ -1,4 +1,4 @@
-import { upperFirst } from 'lodash-es';
+import {upperFirst} from 'lodash-es';
 
 export interface ViewportOffsetResult {
   left: number;
@@ -162,4 +162,42 @@ export function once(el: HTMLElement, event: string, fn: EventListener): void {
     off(el, event, listener);
   };
   on(el, event, listener);
+}
+
+/**
+ * 分时函数封装，对dom节点进行批量添加，且顺滑，无卡顿感
+ * @param data 数据
+ * @param consumer 执行过程
+ * @param chunkSplitor 分时执行时机
+ */
+export function performChunk(data, consumer: Function, chunkSplitor: Function = (time) => time < 16) {
+  if (typeof data === 'number') {
+    data = new Array(data)
+  } else if (typeof data === 'object') {
+    data = Object.keys(data).map(key => ({
+      label: key,
+      value: data[key]
+    }))
+  }
+  if (data.length === 0) {
+    return;
+  }
+  let i = 0
+
+  function _run() {
+    if (i === data.length) {
+      return;
+    }
+    chunkSplitor((hasTime) => {
+      const now = Date.now()
+      while (hasTime(Date.now() - now) && i < data.length) {
+        const item = data[i]
+        consumer(item, i)
+        i++;
+      }
+      _run()
+    })
+  }
+
+  _run()
 }
