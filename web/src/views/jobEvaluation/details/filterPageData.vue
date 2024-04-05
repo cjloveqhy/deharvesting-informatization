@@ -302,20 +302,26 @@ watch(
           />
         </n-form-item>
         <n-form-item label-placement="left" :show-feedback="false" label="客户名称:">
-          <n-input
+          <n-select
+            tag
             clearable
+            filterable
             class="w-200px"
             placeholder="请选择客户名称"
             v-model:value="formData.customerId"
+            :options="addEvaluationOptions.userNameOption"
           />
         </n-form-item>
         <template v-if="props.type === JobType.Uav">
           <n-form-item label-placement="left" :show-feedback="false" label="飞手:">
-            <n-input
+            <n-select
+              tag
               clearable
+              filterable
               class="w-200px"
               placeholder="请选择飞手"
               v-model:value="formData.jobId"
+              :options="addEvaluationOptions.uavNameOption"
             />
           </n-form-item>
         </template>
