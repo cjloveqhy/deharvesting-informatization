@@ -1,5 +1,6 @@
 package com.cby.tcs.user.service.impl;
 
+import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
@@ -11,6 +12,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cby.tcs.exception.UserException;
+import com.cby.tcs.role.entity.po.Role;
+import com.cby.tcs.role.service.RoleService;
 import com.cby.tcs.user.dao.UserDao;
 import com.cby.tcs.user.entity.fo.LoginFo;
 import com.cby.tcs.user.entity.fo.RegisterUserFo;
@@ -20,8 +23,10 @@ import com.cby.tcs.user.entity.vo.UserInfo;
 import com.cby.tcs.user.entity.vo.UserOption;
 import com.cby.tcs.user.entity.vo.ValidAccountVo;
 import com.cby.tcs.user.service.UserService;
+import com.cby.tcs.user_role.dao.UserRoleDao;
 import com.cby.tcs.user_role.entity.dto.FilterPageUserDTO;
 import com.cby.tcs.user_role.entity.fo.UserRolePage;
+import com.cby.tcs.user_role.entity.po.UserRole;
 import com.cby.tcs.utils.IPUtil;
 import com.cby.tcs.utils.RedisUtils;
 import com.freedom.cloud.enums.LogicalEnum;
@@ -32,6 +37,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +47,10 @@ import java.util.Objects;
 public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserService {
 
   private final UserDao userDao;
+
+  private final UserRoleDao userRoleDao;
+
+  private final RoleService roleService;
 
   private final RedisUtils redisUtils;
 
@@ -59,7 +69,18 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     if (!StpUtil.isLogin()) {
       if (StrUtil.hasBlank(entity.getCode())) throw new UserException("请输入验证码");
       if (!getLoginVerifyCode().equals(entity.getCode())) throw new UserException("验证码输入错误");
-      StpUtil.login(user.getId());
+      LambdaQueryWrapper<UserRole> userRoleWrapper = new LambdaQueryWrapper<>();
+      userRoleWrapper.eq(UserRole::getUserId, user.getId());
+      List<UserRole> list = userRoleDao.selectList(userRoleWrapper);
+      List<String> roleIds = list.stream().map(UserRole::getRoleId).toList();
+      List<String> roleValues = new ArrayList<>();
+      if (!roleIds.isEmpty()) {
+        List<Role> roles = roleService.listByIds(roleIds);
+        roleValues.addAll(roles.stream().map(Role::getValue).distinct().toList());
+      }
+      SaLoginModel loginModel = new SaLoginModel();
+      loginModel.setExtra("roles", roleValues);
+      StpUtil.login(user.getId(), loginModel);
     }
     UserAutoInfo info = new UserAutoInfo();
     info.setInfo(BeanUtil.copyProperties(user, UserInfo.class))

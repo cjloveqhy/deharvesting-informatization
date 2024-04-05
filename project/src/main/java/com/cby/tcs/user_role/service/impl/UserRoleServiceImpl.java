@@ -207,7 +207,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
     if (list.isEmpty()) return Collections.emptyList();
     List<String> roleIds = list.stream().map(UserRole::getRoleId).toList();
     List<Role> roles = roleService.listByIds(roleIds);
-    return roles.stream().map(Role::getName).distinct().toList();
+    return roles.stream().map(Role::getValue).distinct().toList();
   }
 
 }
