@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { websiteConfig } from '@/config/website.config';
-
-</script>
+import {websiteConfig} from '@/config/website.config';</script>
 
 <template>
   <div class="view-account">
@@ -9,7 +7,7 @@ import { websiteConfig } from '@/config/website.config';
     <div class="view-account-container">
       <div class="view-account-top">
         <div class="view-account-top-logo">
-          <img :src="websiteConfig.loginImage" class="h-100px w-100px" alt="" />
+          <img :src="websiteConfig.loginImage" alt="" />
         </div>
         <div class="view-account-top-desc">{{ websiteConfig.loginDesc }}</div>
       </div>
@@ -44,7 +42,7 @@ import { websiteConfig } from '@/config/website.config';
       justify-content: center;
 
       img {
-        width: 100px;
+        width: auto;
         height: 100px;
       }
 
@@ -52,7 +50,7 @@ import { websiteConfig } from '@/config/website.config';
 
     &-desc {
       padding-top: 20px;
-      font-size: 14px;
+      font-size: 20px;
       color: #808695;
     }
   }
