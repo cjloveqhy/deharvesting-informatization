@@ -1,5 +1,5 @@
-import logoImage from '@/assets/images/logo.png';
-import { LogoGithub, LogoFacebook } from '@vicons/ionicons5';
+// import logoImage from '@/assets/images/logo.png';
+import logoImage from '@/assets/images/homePage/u569.png'
 
 export const websiteConfig = Object.freeze({
   title: '脱采收信息化管理系统',

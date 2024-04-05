@@ -16,7 +16,7 @@
       :inverted="inverted"
       class="layout-sider"
     >
-      <Logo :collapsed="collapsed" />
+      <Logo :collapsed="collapsed" class="pt-20px" />
       <AsideMenu v-model:collapsed="collapsed" v-model:location="getMenuLocation" />
     </n-layout-sider>
 
@@ -34,7 +34,7 @@
         :inverted="inverted"
         class="layout-sider"
       >
-        <Logo :collapsed="collapsed" />
+        <Logo :collapsed="collapsed" class="pt-20px pb-10px" />
         <AsideMenu v-model:location="getMenuLocation" />
       </n-layout-sider>
     </n-drawer>
@@ -78,18 +78,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, unref, computed, onMounted } from 'vue';
-  import { Logo } from './components/Logo';
-  import { TabsView } from './components/TagsView';
-  import { MainView } from './components/Main';
-  import { AsideMenu } from './components/Menu';
-  import { PageHeader } from './components/Header';
-  import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
-  import { useDesignSetting } from '@/hooks/setting/useDesignSetting';
-  import { useRoute } from 'vue-router';
-  import { useProjectSettingStore } from '@/store/modules/projectSetting';
+import {computed, onMounted, ref, unref} from 'vue';
+import {Logo} from './components/Logo';
+import {TabsView} from './components/TagsView';
+import {MainView} from './components/Main';
+import {AsideMenu} from './components/Menu';
+import {PageHeader} from './components/Header';
+import {useProjectSetting} from '@/hooks/setting/useProjectSetting';
+import {useDesignSetting} from '@/hooks/setting/useDesignSetting';
+import {useRoute} from 'vue-router';
+import {useProjectSettingStore} from '@/store/modules/projectSetting';
 
-  const { getDarkTheme } = useDesignSetting();
+const { getDarkTheme } = useDesignSetting();
   const {
     // showFooter,
     navMode,

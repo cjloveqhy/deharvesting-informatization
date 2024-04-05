@@ -6,7 +6,7 @@
       v-if="navMode === 'horizontal' || (navMode === 'horizontal-mix' && mixMenu)"
     >
       <template v-if="navMode === 'horizontal'">
-        <Logo :collapsed="collapsed" class="ml-10px" />
+        <Logo :collapsed="true" class="ml-10px" />
       </template>
       <AsideMenu
         v-model:collapsed="collapsed"
