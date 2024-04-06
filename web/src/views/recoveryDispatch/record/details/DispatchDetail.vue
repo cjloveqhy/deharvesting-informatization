@@ -27,6 +27,27 @@ const dispatchDetails = ref<HarvestScheduleDetailsVo>({
   dispatchId: null,
   dispatchArea: null,
   createTime: null,
+  farmUavBelongerInfo: {
+    belonger: null,
+    holdingAttr: null,
+    id: null,
+    info: {
+      account: null,
+      createTime: null,
+      email: null,
+      id: null,
+      phone: null,
+      photo: null,
+      sex: null,
+      status: null,
+      username: null,
+    },
+    rackNumber: null,
+    serviceProvider: null,
+    sprayFlowRate: null,
+    workArea: null,
+    workTime: null
+  }
 })
 
 const columns = ref([
@@ -128,19 +149,19 @@ const back = () => router.push({name: 'recoveryDispatch_record'})
       <template v-if="loading">
         <n-flex vertical size="large">
           <n-flex :wrap="false" :size="150">
-            <n-skeleton class="w-1/3" height="30px" />
-            <n-skeleton class="w-1/3" height="30px" />
-            <n-skeleton class="w-1/3" height="30px" />
+            <n-skeleton class="w-1/3" height="30px"/>
+            <n-skeleton class="w-1/3" height="30px"/>
+            <n-skeleton class="w-1/3" height="30px"/>
           </n-flex>
           <n-flex :wrap="false" :size="150">
-            <n-skeleton class="w-1/3" height="30px" />
-            <n-skeleton class="w-1/3" height="30px" />
-            <n-skeleton class="w-1/3" height="30px" />
+            <n-skeleton class="w-1/3" height="30px"/>
+            <n-skeleton class="w-1/3" height="30px"/>
+            <n-skeleton class="w-1/3" height="30px"/>
           </n-flex>
           <n-flex :wrap="false" :size="150">
-            <n-skeleton class="w-1/3" height="30px" />
-            <n-skeleton class="w-1/3" height="30px" />
-            <div class="w-1/3" />
+            <n-skeleton class="w-1/3" height="30px"/>
+            <n-skeleton class="w-1/3" height="30px"/>
+            <div class="w-1/3"/>
           </n-flex>
         </n-flex>
       </template>
@@ -186,6 +207,52 @@ const back = () => router.push({name: 'recoveryDispatch_record'})
           </n-flex>
         </n-form>
       </template>
+    </n-card>
+    <n-card
+      :bordered="false"
+      :segmented="{content: true}"
+    >
+      <template #header>
+        <n-flex :wrap="false">
+          <img src="@/assets/images/homePage/u516.png" style="width: 30px">
+          <span>飞手信息</span>
+        </n-flex>
+      </template>
+      <n-form
+        label-placement="left"
+        :show-feedback="false"
+        :label-width="160"
+      >
+        <n-flex vertical size="large">
+          <n-flex :wrap="false">
+            <n-form-item class="w-1/3" label="姓名：">
+              {{ dispatchDetails.farmUavBelongerInfo.info.username }}
+            </n-form-item>
+            <n-form-item class="w-1/3" label="联系方式：">
+              {{ dispatchDetails.farmUavBelongerInfo.info.phone }}
+            </n-form-item>
+            <n-form-item class="w-1/3" label="所属服务商：">
+              {{ dispatchDetails.farmUavBelongerInfo.serviceProvider }}
+            </n-form-item>
+          </n-flex>
+          <n-flex :wrap="false">
+            <n-form-item class="w-1/3" label="机架号：">
+              {{ dispatchDetails.farmUavBelongerInfo.rackNumber }}
+            </n-form-item>
+            <n-form-item class="w-1/3" label="作业面积(亩)：">
+              {{ dispatchDetails.farmUavBelongerInfo.workArea }}
+            </n-form-item>
+            <n-form-item class="w-1/3" label="作业时间(小时)：">
+              {{ dispatchDetails.farmUavBelongerInfo.workTime }}
+            </n-form-item>
+          </n-flex>
+          <n-flex :wrap="false">
+            <n-form-item class="w-1/3" label="喷洒流量(升/亩)：">
+              {{ dispatchDetails.farmUavBelongerInfo.sprayFlowRate }}
+            </n-form-item>
+          </n-flex>
+        </n-flex>
+      </n-form>
     </n-card>
     <n-card
       :bordered="false"
