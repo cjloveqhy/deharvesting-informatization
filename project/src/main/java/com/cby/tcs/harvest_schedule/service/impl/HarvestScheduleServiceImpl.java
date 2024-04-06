@@ -13,6 +13,8 @@ import com.cby.tcs.cotton_field.entity.vo.CottonFieldVo;
 import com.cby.tcs.cotton_field.service.CottonFieldService;
 import com.cby.tcs.exception.HarvestScheduleException;
 import com.cby.tcs.farm_uav.dao.FarmUavDao;
+import com.cby.tcs.farm_uav.entity.po.FarmUav;
+import com.cby.tcs.farm_uav.entity.vo.FarmUavBelongerVo;
 import com.cby.tcs.ginnery.dao.GinneryDao;
 import com.cby.tcs.ginnery.entity.fo.GinneryPageFo;
 import com.cby.tcs.ginnery.entity.po.Ginnery;
@@ -27,7 +29,9 @@ import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo;
 import com.cby.tcs.harvest_schedule.service.HarvestScheduleService;
+import com.cby.tcs.job_data.JobDataService;
 import com.cby.tcs.job_evaluation.dao.JobEvaluationDao;
+import com.cby.tcs.job_evaluation.entity.enums.JobType;
 import com.cby.tcs.job_evaluation.entity.po.JobEvaluation;
 import com.cby.tcs.job_evaluation.entity.vo.JobEvaluationPageVo;
 import com.cby.tcs.uav_harvest_schedule.dao.UavHarvestScheduleDao;
@@ -68,6 +72,8 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
   private final CottonFieldService cottonFieldService;
 
   private final UserService userService;
+
+  private final JobDataService jobDataService;
 
   private static volatile String dispatchIdKey = "dispatch:key";
 
@@ -218,6 +224,16 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
       detailsVo.setDispatchArea(detailsVo.getDispatchArea() + cottonField.getCultivatedArea());
     }
     detailsVo.setId(harvestSchedule.getId());
+
+    String belonger = uavHarvestScheduleDao.selectOne(new LambdaQueryWrapper<UavHarvestSchedule>()
+            .eq(UavHarvestSchedule::getHsId, dispatchId)).getBelonger();
+    // 如果一个飞手有多个无人机的话，只取第一个无人机
+    FarmUav farmUav = farmUavDao.selectList(new LambdaQueryWrapper<FarmUav>().eq(FarmUav::getBelonger, belonger)).get(0);
+    Map<String, Object> infoMap = jobDataService.getInfo(JobType.Uav, Collections.singleton(belonger));
+    FarmUavBelongerVo farmUavBelongerVo = new FarmUavBelongerVo();
+    farmUavBelongerVo.setInfo(infoMap.get(belonger));
+    BeanUtils.copyProperties(farmUav, farmUavBelongerVo);
+    detailsVo.setFarmUavBelongerInfo(farmUavBelongerVo);
     return detailsVo;
   }
   @Override

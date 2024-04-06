@@ -1,5 +1,6 @@
 package com.cby.tcs.harvest_schedule.entity.vo;
 
+import com.cby.tcs.farm_uav.entity.vo.FarmUavBelongerVo;
 import com.cby.tcs.ginnery.entity.vo.GinneryVo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,11 @@ public class HarvestScheduleDetailsVo extends GinneryVo implements Serializable 
      * 调度编号
      */
     private String dispatchId;
+
+    /**
+     * 飞手信息
+     */
+    private FarmUavBelongerVo farmUavBelongerInfo;
 
     /**
      * 调度单时间

@@ -199,7 +199,7 @@ function getData() {
     }).finally(() => loading.value = false)
     getUserRoles().then(res => {
       userRole.value = res[0]
-      if (userRole.value == '飞手') {
+      if (userRole.value == 'user::uav') {
         updateDataTableTitle(JobType.Uav)
       } else {
         updateDataTableTitle(JobType.Cotton_Picker)
