@@ -5,6 +5,8 @@ const mapRouteName = 'recoveryDispatchMap';
 
 const recordRouteName = 'recoveryDispatchRecord';
 
+const orderRouteName = 'recoveryDispatchOrder'
+
 const routes: Array<AppRouteRecordRaw> = [
   {
     path: '/recoveryDispatch',
@@ -42,6 +44,26 @@ const routes: Array<AppRouteRecordRaw> = [
         meta: {
           title: '调度详情',
           activeMenu: 'recoveryDispatch_record'
+        },
+      },
+    ],
+  },
+  {
+    path: '/recoveryDispatch',
+    name: orderRouteName,
+    redirect: '/recoveryDispatch/order',
+    component: Layout,
+    meta: {
+      title: '查看订单',
+    },
+    children: [
+      {
+        path: 'order/details/:dispatchId',
+        name: `${orderRouteName}_details`,
+        component: () => import('@/views/recoveryDispatch/order/details/OrderDetail.vue'),
+        meta: {
+          title: '订单详情',
+          activeMenu: 'recoveryDispatch_order'
         },
       },
     ],

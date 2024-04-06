@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NButton, useMessage, NFlex } from 'naive-ui'
+import {NButton, NFlex, useMessage} from 'naive-ui'
 import {FilterPageFo, HarvestScheduleVo} from "@/store/api/harvestSchedule";
 import {filterPage} from "@/api/harvestSchedule";
 
@@ -37,7 +37,7 @@ const columns = ref([
     title: '联系方式',
     key: 'phone',
     render: (row) => {
-      return h('span', row.username ?? '暂无联系方式')
+      return h('span', row.phone ?? '暂无联系方式')
     }
   },
   {
@@ -172,6 +172,7 @@ watch(
       <n-data-table
         :columns="columns"
         :data="data"
+        :loading="loading"
         :bordered="false"
       />
       <n-flex justify="end" class="pt-20px">

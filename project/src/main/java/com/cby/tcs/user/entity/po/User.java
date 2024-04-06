@@ -3,6 +3,7 @@ package com.cby.tcs.user.entity.po;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.cby.tcs.user.entity.enums.SexEnum;
+import com.freedom.cloud.enums.LogicalEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -63,6 +64,12 @@ public class User extends Model<User> {
      */
     @TableField("sex")
     private SexEnum sex;
+
+    /**
+     * 是否禁用
+     */
+    @TableField("status")
+    private LogicalEnum status;
 
     /**
      * 逻辑删除

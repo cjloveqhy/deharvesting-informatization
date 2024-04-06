@@ -23,12 +23,12 @@ public class UserRoleVo implements Serializable {
     /**
      * 用户id
      */
-    private UserInfo userId;
+    private UserInfo userInfo;
 
     /**
      * 角色id
      */
-    private RoleVo roleId;
+    private RoleVo role;
 
     /**
      * 额外权限，当角色权限不可满足时，可通过此属性进行添加

@@ -4,6 +4,7 @@ import com.cby.tcs.ignore.DeserializerIgnore;
 import com.cby.tcs.user.entity.enums.SexEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.freedom.cloud.enums.LogicalEnum;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,6 +54,11 @@ public class UserInfo implements Serializable {
      *电子邮箱
      */
     private String email;
+
+    /**
+     * 是否禁用
+     */
+    private LogicalEnum status;
 
     /**
      * 创建时间

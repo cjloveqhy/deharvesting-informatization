@@ -1,5 +1,6 @@
 package com.cby.tcs.role.entity.vo;
 
+import com.freedom.cloud.enums.LogicalEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -31,4 +33,25 @@ public class RoleVo implements Serializable {
      * 备注
      */
     private String remark;
+
+    /**
+     * 角色标识
+     */
+    private String value;
+
+    /**
+     * 是否为默认角色
+     */
+    private LogicalEnum status;
+
+    /**
+     * 是否禁用
+     */
+    private LogicalEnum disabled;
+
+    /**
+     * 权限列表
+     */
+    private List<String> permissions;
+
 }

@@ -1,6 +1,7 @@
 package com.cby.tcs.role.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -14,13 +15,17 @@ import com.cby.tcs.role.entity.fo.UpdateRole;
 import com.cby.tcs.role.entity.po.Role;
 import com.cby.tcs.role.entity.vo.RoleVo;
 import com.cby.tcs.role.service.RoleService;
+import com.cby.tcs.role_permission.dao.RolePermissionDao;
+import com.cby.tcs.role_permission.entity.po.RolePermission;
+import com.freedom.cloud.enums.LogicalEnum;
+import com.freedom.cloud.options.Option;
+import com.freedom.cloud.utils.page.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +33,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
 
   private final RoleDao roleDao;
 
+  private final RolePermissionDao rolePermissionDao;
 
   @Override
   @Transactional(rollbackFor = Exception.class)
@@ -38,9 +44,13 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     if (Objects.nonNull(role)) {
       throw new RoleException("角色【%s】已存在", role.getName());
     }
-    role = new Role().setName(entity.getName()).setLevel(entity.getLevel());
+    role = BeanUtil.copyProperties(entity, Role.class);
     if (!StrUtil.hasBlank(entity.getRemark())) role.setRemark(entity.getRemark());
     save(role);
+    RolePermission rolePermission = new RolePermission().setRoleId(role.getId());
+    if (!entity.getPermissions().isEmpty())
+      rolePermission.setPermissions(ArrayUtil.join(entity.getPermissions().toArray(String[]::new), ","));
+    rolePermissionDao.insert(rolePermission);
   }
 
   @Override
@@ -53,12 +63,37 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
   public Page<RoleVo> getRolePage(RolePage rolePage) {
     LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
     if (!StrUtil.hasBlank(rolePage.getName())) {
-      wrapper.eq(Role::getName, rolePage.getName());
+      wrapper.like(Role::getName, rolePage.getName());
     }
-    Page<Role> page = page(rolePage.getPageObj(Role.class), wrapper);
+    if (!StrUtil.hasBlank(rolePage.getValue())) {
+      wrapper.like(Role::getValue, rolePage.getValue());
+    }
+    if (Objects.nonNull(rolePage.getStatus())) {
+      wrapper.eq(Role::getStatus, rolePage.getStatus());
+    }
+    if (Objects.nonNull(rolePage.getDisabled())) {
+      wrapper.eq(Role::getDisabled, rolePage.getDisabled());
+    }
+    Page<Role> page = page(PageUtils.getPage(rolePage), wrapper);
     Page<RoleVo> roleVoPage = new Page<>();
     BeanUtil.copyProperties(page, roleVoPage, "records");
     roleVoPage.setRecords(BeanUtil.copyToList(page.getRecords(), RoleVo.class));
+    List<String> roleIds = roleVoPage.getRecords().stream().map(RoleVo::getId).toList();
+    if (roleIds.isEmpty()) return roleVoPage;
+    LambdaQueryWrapper<RolePermission> rpWrapper = new LambdaQueryWrapper<>();
+    rpWrapper.in(RolePermission::getRoleId, roleIds);
+    List<RolePermission> list = rolePermissionDao.selectList(rpWrapper);
+    Map<String, List<String>> map = new HashMap<>();
+    for (RolePermission rolePermission : list) {
+      List<String> permissions = new ArrayList<>();
+      if (!StrUtil.hasBlank(rolePermission.getPermissions())) {
+        permissions.addAll(Arrays.stream(rolePermission.getPermissions().split(",")).toList());
+      }
+      map.put(rolePermission.getRoleId(), permissions);
+    }
+    for (RoleVo vo : roleVoPage.getRecords()) {
+      vo.setPermissions(map.getOrDefault(vo.getId(), Collections.emptyList()));
+    }
     return roleVoPage;
   }
 
@@ -69,10 +104,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     if (Objects.isNull(role)) {
       throw new RoleException("该权限不存在");
     }
-    role = new Role()
-            .setName(entity.getName())
-            .setLevel(entity.getLevel())
-            .setRemark(entity.getRemark());
+    BeanUtil.copyProperties(entity, role);
+    if (!entity.getPermissions().isEmpty()) {
+      LambdaQueryWrapper<RolePermission> wrapper = new LambdaQueryWrapper<>();
+      wrapper.eq(RolePermission::getRoleId, role.getId());
+      RolePermission rolePermission = rolePermissionDao.selectOne(wrapper);
+      String permissions = ArrayUtil.join(entity.getPermissions().toArray(String[]::new), ",");
+      if (Objects.nonNull(rolePermission)) {
+        rolePermission.setPermissions(permissions);
+        rolePermissionDao.updateById(rolePermission);
+      } else {
+        rolePermission = new RolePermission().setPermissions(permissions);
+        rolePermissionDao.insert(rolePermission);
+      }
+    }
     updateById(role);
   }
 
@@ -82,6 +127,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     LambdaUpdateWrapper<Role> wrapper = new LambdaUpdateWrapper<>();
     wrapper.eq(Role::getId, id);
     remove(wrapper);
+    rolePermissionDao.delete(new LambdaUpdateWrapper<RolePermission>().eq(RolePermission::getRoleId, id));
   }
 
   @Override
@@ -89,6 +135,33 @@ public class RoleServiceImpl extends ServiceImpl<RoleDao, Role> implements RoleS
     LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
     wrapper.in(Role::getId, roleIds);
     return BeanUtil.copyToList(list(wrapper), RoleVo.class);
+  }
+
+  @Override
+  public List<Option<String>> getOptions() {
+    LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(Role::getStatus, LogicalEnum.NO)
+            .eq(Role::getDisabled, LogicalEnum.NO);
+    List<Role> roles = list(wrapper);
+    return roles.stream().map(item -> new Option<>(item.getName(), item.getId())).toList();
+  }
+
+  @Override
+  public List<String> getDefaultPermissions() {
+    LambdaQueryWrapper<Role> wrapper = new LambdaQueryWrapper<>();
+    wrapper.eq(Role::getStatus, LogicalEnum.YES)
+            .eq(Role::getDisabled, LogicalEnum.NO);
+    List<Role> roles = list(wrapper);
+    if (roles.isEmpty()) return Collections.emptyList();
+    List<String> roleIds = roles.stream().map(Role::getId).toList();
+    LambdaQueryWrapper<RolePermission> rolePermissionWrapper = new LambdaQueryWrapper<>();
+    rolePermissionWrapper.in(RolePermission::getRoleId, roleIds);
+    List<RolePermission> rolePermissions = rolePermissionDao.selectList(rolePermissionWrapper);
+    return rolePermissions.stream()
+            .filter(item -> StrUtil.isNotBlank(item.getPermissions()))
+            .flatMap(item -> Stream.of(item.getPermissions().split(",")))
+            .distinct()
+            .toList();
   }
 
 }

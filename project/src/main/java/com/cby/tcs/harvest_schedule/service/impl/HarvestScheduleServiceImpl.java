@@ -12,6 +12,7 @@ import com.cby.tcs.cotton_field.entity.po.CottonField;
 import com.cby.tcs.cotton_field.entity.vo.CottonFieldVo;
 import com.cby.tcs.cotton_field.service.CottonFieldService;
 import com.cby.tcs.exception.HarvestScheduleException;
+import com.cby.tcs.farm_uav.dao.FarmUavDao;
 import com.cby.tcs.ginnery.dao.GinneryDao;
 import com.cby.tcs.ginnery.entity.fo.GinneryPageFo;
 import com.cby.tcs.ginnery.entity.po.Ginnery;
@@ -21,16 +22,23 @@ import com.cby.tcs.ginnery.service.GinneryService;
 import com.cby.tcs.harvest_schedule.dao.HarvestScheduleDao;
 import com.cby.tcs.harvest_schedule.entity.fo.*;
 import com.cby.tcs.harvest_schedule.entity.po.HarvestSchedule;
+import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleCheckDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleDetailsVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleRecordVo;
 import com.cby.tcs.harvest_schedule.entity.vo.HarvestScheduleVo;
 import com.cby.tcs.harvest_schedule.service.HarvestScheduleService;
+import com.cby.tcs.job_evaluation.dao.JobEvaluationDao;
+import com.cby.tcs.job_evaluation.entity.po.JobEvaluation;
+import com.cby.tcs.job_evaluation.entity.vo.JobEvaluationPageVo;
+import com.cby.tcs.uav_harvest_schedule.dao.UavHarvestScheduleDao;
+import com.cby.tcs.uav_harvest_schedule.entity.po.UavHarvestSchedule;
 import com.cby.tcs.user.entity.vo.UserInfo;
 import com.cby.tcs.user.service.UserService;
 import com.cby.tcs.utils.RedisUtils;
 import com.freedom.cloud.enums.LogicalEnum;
 import com.freedom.cloud.utils.page.PageUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,6 +54,12 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
   private final CottonFieldDao cottonFieldDao;
 
   private final GinneryDao ginneryDao;
+
+  private final FarmUavDao farmUavDao;
+
+  private final UavHarvestScheduleDao uavHarvestScheduleDao;
+
+  private final JobEvaluationDao jobEvaluationDao;
 
   private final GinneryService ginneryService;
 
@@ -155,10 +169,18 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
 
   @Override
   public void create(CreateHarvestScheduleFo createHarvestScheduleFo) {
-    System.out.println("-------" + createHarvestScheduleFo.getDispatchId());
     HarvestSchedule harvestSchedule = harvestScheduleDao
-            .selectOne(new LambdaQueryWrapper<HarvestSchedule>().eq(HarvestSchedule::getDispatchId, createHarvestScheduleFo.getDispatchId()));
+            .selectOne(new LambdaQueryWrapper<HarvestSchedule>()
+                    .eq(HarvestSchedule::getDispatchId, createHarvestScheduleFo.getDispatchId()));
     harvestSchedule.setStatus(LogicalEnum.YES).setCreator(String.valueOf(StpUtil.getLoginId()));
+    List<String> uavBelongerIds = farmUavDao.uavBelongerIds();
+    UavHarvestSchedule uavHarvestSchedule = new UavHarvestSchedule();
+    Random random = new Random();
+    uavHarvestSchedule.setHsId(createHarvestScheduleFo.getDispatchId())
+            .setBelonger(uavBelongerIds.get(random.nextInt(uavBelongerIds.size())));
+    List<String> cottonFieldIdList = Arrays.asList(harvestSchedule.getCottonFieldId().split(","));
+    uavHarvestSchedule.setCottonFieldId(String.valueOf(cottonFieldIdList.get(random.nextInt(cottonFieldIdList.size()))));
+    uavHarvestScheduleDao.insert(uavHarvestSchedule);
     harvestScheduleDao.updateById(harvestSchedule);
   }
 
@@ -198,5 +220,58 @@ public class HarvestScheduleServiceImpl extends ServiceImpl<HarvestScheduleDao, 
     detailsVo.setId(harvestSchedule.getId());
     return detailsVo;
   }
+  @Override
+  public Page<HarvestScheduleVo> checkOrder(FilterPageFo entity) {
+    // 获取用户的拥有的调度单id
+    List<String> hsIdList = uavHarvestScheduleDao.selectList(new LambdaQueryWrapper<UavHarvestSchedule>()
+            .eq(UavHarvestSchedule::getBelonger, StpUtil.getLoginId())).stream().map(UavHarvestSchedule::getHsId).toList();
+    if (Objects.nonNull(entity.getGinneryName()) && entity.getGinneryName().startsWith("DD")) {
+      entity.setDispatchId(entity.getGinneryName());
+      entity.setGinneryName(null);
+    }
+    entity.setSize(harvestScheduleDao.selectList(null).size());
+    // 获取所有的调度单信息
+    Page<HarvestScheduleVo> harvestScheduleVoPage = harvestScheduleDao.filterPage(PageUtils.getPage(entity), entity);
+    List<HarvestScheduleVo> filteredList = harvestScheduleVoPage.getRecords().stream()
+            .filter(item -> hsIdList.contains(item.getDispatchId()))
+            .collect(Collectors.toList());
+    // 创建一个新的Page对象，将过滤后的数据放入其中
+    Page<HarvestScheduleVo> filterPage = new Page<>(1, filteredList.size());
+    filterPage.setRecords(filteredList);
+    return filterPage;
+  }
 
+  @Override
+  public HarvestScheduleCheckDetailsVo checkOrderDetails(String dispatchId) {
+    // 调度的棉地信息
+    String cottonFiledId = uavHarvestScheduleDao.selectOne(new LambdaQueryWrapper<UavHarvestSchedule>()
+            .eq(UavHarvestSchedule::getHsId, dispatchId)).getCottonFieldId();
+    CottonFieldVo cottonFieldVo = new CottonFieldVo();
+    CottonField cottonFieldInfo = cottonFieldDao.selectOne(new LambdaQueryWrapper<CottonField>().eq(CottonField::getId, cottonFiledId));
+    BeanUtils.copyProperties(cottonFieldInfo, cottonFieldVo);
+
+    // 调度的评价信息
+    JobEvaluationPageVo jobEvaluationPageVo = new JobEvaluationPageVo();
+    String belongerId = uavHarvestScheduleDao.selectOne(new LambdaQueryWrapper<UavHarvestSchedule>()
+            .eq(UavHarvestSchedule::getHsId, dispatchId)).getBelonger();
+    JobEvaluation jobEvaluationInfo = jobEvaluationDao.selectOne(new LambdaQueryWrapper<JobEvaluation>()
+            .eq(JobEvaluation::getJobId, belongerId).eq(JobEvaluation::getCottonFieldId, cottonFiledId));
+    List<String> userIds = new ArrayList<>();
+    userIds.add(cottonFieldInfo.getContacts());
+    userIds.add(jobEvaluationInfo.getJobId());
+
+    // 统一获取用户信息
+    Map<String, UserInfo> userInfoMap = userService.getUserInfoList(userIds)
+            .stream()
+            .collect(Collectors.toMap(UserInfo::getId, Function.identity()));
+
+    // 设置返回体
+    BeanUtils.copyProperties(jobEvaluationInfo, jobEvaluationPageVo);
+    jobEvaluationPageVo.setInfo(userInfoMap.get(jobEvaluationInfo.getJobId()));
+    HarvestScheduleCheckDetailsVo harvestScheduleCheckDetailsVo = new HarvestScheduleCheckDetailsVo();
+    BeanUtils.copyProperties(cottonFieldInfo, harvestScheduleCheckDetailsVo);
+    harvestScheduleCheckDetailsVo.setJobEvaluation(jobEvaluationPageVo)
+            .setContacts(userInfoMap.get(cottonFieldInfo.getContacts()));
+    return harvestScheduleCheckDetailsVo;
+  }
 }

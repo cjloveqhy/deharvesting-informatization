@@ -15,16 +15,16 @@
                 LEFT JOIN farm_terminal_picker ftp ON fdt.terminal_id = ftp.data_terminal_rack_id
         WHERE
             fdt.deleted = 0
-        <if test="params.terminalId != null">
+        <if test="params.terminalId != null and params.terminalId != ''">
             AND fdt.terminal_id = #{params.terminalId}
         </if>
-        <if test="params.brand != null">
+        <if test="params.brand != null and params.brand != ''">
             AND fdt.brand = #{params.brand}
         </if>
         <if test="params.status != null">
             AND ftp.status = #{params.status.code}
         </if>
-        <if test="params.cottonPickerRackId != null">
+        <if test="params.cottonPickerRackId != null and params.cottonPickerRackId != ''">
             AND fdt.cotton_picker_rack_id = #{params.cottonPickerRackId}
         </if>
         <if test="params.startTime != null and params.endTime != null">

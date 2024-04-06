@@ -8,19 +8,31 @@ import {MenuType} from "@/store/api/permission";
 const roles: PageRole = {
   recoveryDispatch_map: [
     {
-      name: 'add',
+      name: 'view',
       meta: {
-        title: '新增调度',
-        type: MenuType.Button,
-        permissions: ['recoveryDispatch::map::add']
+        title: '查看',
+        type: MenuType.Content,
+        permissions: ['recoveryDispatch::map::view']
       }
-    },
+    }
+  ],
+  recoveryDispatch_record: [
     {
-      name: 'del',
+      name: 'view',
       meta: {
-        title: '删除调度',
-        type: MenuType.Button,
-        permissions: ['recoveryDispatch::map::del']
+        title: '查看',
+        type: MenuType.Content,
+        permissions: ['recoveryDispatch::record::view']
+      }
+    }
+  ],
+  recoveryDispatch_order: [
+    {
+      name: 'view',
+      meta: {
+        title: '查看',
+        type: MenuType.Content,
+        permissions: ['recoveryDispatch::order::view']
       }
     }
   ]

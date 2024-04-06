@@ -1,5 +1,6 @@
 package com.cby.tcs.user.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.cby.tcs.user.entity.fo.LoginFo;
 import com.cby.tcs.user.entity.fo.RegisterUserFo;
@@ -8,6 +9,8 @@ import com.cby.tcs.user.entity.vo.UserAutoInfo;
 import com.cby.tcs.user.entity.vo.UserInfo;
 import com.cby.tcs.user.entity.vo.UserOption;
 import com.cby.tcs.user.entity.vo.ValidAccountVo;
+import com.cby.tcs.user_role.entity.dto.FilterPageUserDTO;
+import com.cby.tcs.user_role.entity.fo.UserRolePage;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
@@ -74,5 +77,20 @@ public interface UserService extends IService<User> {
      * @return {@link List}<{@link UserOption}>
      */
     List<UserOption> getUserOptions();
+
+    /**
+     * 过滤分页获取数据
+     *
+     * @param entity 过滤数据
+     * @return {@link Page}<{@link FilterPageUserDTO}>
+     */
+    Page<FilterPageUserDTO> filterPage(UserRolePage entity);
+
+    /**
+     * 禁止或解除禁止帐户
+     * @param userId 用户id编号
+     * @return msg
+     */
+    String forbiddenOrLiftBanAccount(String userId);
 
 }

@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import {MenuType, PermissionTree, UpdatePermissionFo, MenuOptions, CompOptions} from "@/store/api/permission";
+import {
+  CompOptions,
+  MenuOptions,
+  MenuType,
+  PermissionTree,
+  UpdatePermissionFo
+} from "@/store/api/permission";
 import {constantRouterIcon} from "@/router/icons";
 import {deepCopy} from "@/utils/copyUtil";
 import {useMessage} from "naive-ui";
 
-const props = defineProps<{show: boolean, isAdd: boolean, formData: UpdatePermissionFo, data: PermissionTree[], submit: () => Promise<void>}>()
+const props = withDefaults(defineProps<{show?: boolean, isAdd?: boolean, formData: UpdatePermissionFo, data: PermissionTree[], submit: () => Promise<void>}>(), {
+  show: false,
+  isAdd: false
+})
 
 const emits = defineEmits(['update:show', 'update:formData'])
 
@@ -56,7 +65,14 @@ watch(
     if (val === MenuType.Menu) {
       rules.value['path'] = { required: true, message: '请输入请求路径', trigger: 'blur' }
     } else if ([MenuType.Button, MenuType.Content].includes(val)) {
-      rules.value['meta']['permissions'] = { required: true, message: '请输入权限', trigger: 'blur' }
+      rules.value['meta']['permissions'] = {
+        required: true,
+        trigger: 'blur',
+        validator: (_rule, value: string[]) => {
+          if (value.length > 0) return true
+          return Error('请输入权限')
+        }
+      }
     }
   },{
     immediate: true
@@ -149,7 +165,7 @@ function cancel() {
   }
 }
 
-const formRef = ref();
+const formRef = ref()
 
 function handleSubmit() {
   formRef.value.validate(errors => {
@@ -163,6 +179,12 @@ function handleSubmit() {
       })
     }
   })
+}
+
+function iconBlur() {
+  setTimeout(() => {
+    showIcons.value = false
+  }, 100)
 }
 
 </script>
@@ -252,7 +274,7 @@ function handleSubmit() {
               placeholder="请选择图标"
               v-model:value="currentFormData.meta.icon"
               @focus="() => showIcons = true"
-              @blur="() => showIcons = false"
+              @blur="iconBlur"
             >
               <template v-if="currentFormData.meta.icon" #prefix>
                 <component :is="constantRouterIcon[currentFormData.meta.icon].icon" />
@@ -260,7 +282,7 @@ function handleSubmit() {
             </n-input>
             <n-collapse-transition :show="showIcons">
               <n-scrollbar class="max-h-200px">
-                <n-radio-group v-model:value="currentFormData.meta.icon">
+                <n-radio-group v-model:value="currentFormData.meta.icon" class="pl-5px pt-5px">
                   <n-flex size="large">
                     <template v-for="item in constantRouterIcon">
                       <n-radio-button

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {addMenuNode, delMenuNode, getTree, updateMenuNode} from "@/api/permission";
-import {PermissionTree, UpdatePermissionFo, MenuOptions} from "@/store/api/permission";
-import {NFlex, NTag, NPopconfirm} from "naive-ui";
+import {MenuOptions, PermissionTree, UpdatePermissionFo} from "@/store/api/permission";
+import {NFlex, NPopconfirm, NTag} from "naive-ui";
 import {getFieldValue, getLabel} from "@/utils/optionUtil";
 import {LogicalEnum} from "@/enums/LogicalEnum";
 import {deepCopy} from "@/utils/copyUtil";
@@ -212,7 +212,6 @@ function menuAdd(): Promise<void> {
   </n-card>
   <add-and-edit-menu-drawer
     :data="data"
-    :is-add="false"
     :submit="menuUpdate"
     v-model:form-data="formData"
     v-model:show="showUpdateDrawer"

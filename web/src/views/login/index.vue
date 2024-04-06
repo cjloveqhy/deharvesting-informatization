@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import {LoginEnum, PasswordLoginForm, useUserApiStore} from '@/store/api/user';
-import { useMessage } from 'naive-ui';
-import { ResultEnum } from '@/enums/httpEnum';
-import { PersonOutline, LockClosedOutline } from '@vicons/ionicons5';
-import { PageEnum } from '@/enums/pageEnum';
-import { websiteConfig } from '@/config/website.config';
+import {useMessage} from 'naive-ui';
+import {ResultEnum} from '@/enums/httpEnum';
+import {LockClosedOutline, PersonOutline} from '@vicons/ionicons5';
+import {PageEnum} from '@/enums/pageEnum';
+import {websiteConfig} from '@/config/website.config';
 import {useGlobSetting} from "@/hooks/setting";
 import BasicForm from "@/views/login/details/basicForm.vue";
-import {api} from "@/api/system/login";
+import {api} from "@/api/system/user";
 
 const formRef = ref();
 const message = useMessage();
@@ -125,7 +125,7 @@ const handleSubmit = (e) => {
       <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
         登录
       </n-button>
-      <div class="flex w-full" style="margin-top: 20px">
+      <div class="flex w-full mt-20px">
         <template v-if="websiteConfig.oauth2 && websiteConfig.oauth2.length > 0">
           <div class="flex-initial">
             <span>其它登录方式</span>
@@ -138,11 +138,11 @@ const handleSubmit = (e) => {
             </div>
           </template>
         </template>
-        <n-flex justify="end" style="margin-left: auto">
-          <n-button text tag="a" @click="toPath(PageEnum.REGISTER)">
+        <n-flex justify="end" class="ml-auto">
+          <n-button text tag="a" @click="toPath(PageEnum.FORGET_PASSWORD)">
             忘记密码
           </n-button>
-          <n-button text tag="a" @click="toPath(PageEnum.FORGET_PASSWORD)">
+          <n-button text tag="a" @click="toPath(PageEnum.REGISTER)">
             注册账号
           </n-button>
         </n-flex>

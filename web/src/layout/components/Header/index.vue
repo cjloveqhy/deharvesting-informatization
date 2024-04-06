@@ -5,9 +5,9 @@
       class="layout-header-left"
       v-if="navMode === 'horizontal' || (navMode === 'horizontal-mix' && mixMenu)"
     >
-      <div class="logo" v-if="navMode === 'horizontal'">
-        <Logo :collapsed="collapsed" />
-      </div>
+      <template v-if="navMode === 'horizontal'">
+        <Logo :collapsed="true" class="ml-10px" />
+      </template>
       <AsideMenu
         v-model:collapsed="collapsed"
         v-model:location="getMenuLocation"
@@ -136,15 +136,15 @@ import components from './components';
 import {NDialogProvider} from 'naive-ui';
 import {useUserApiStore} from '@/store/api/user';
 import ProjectSetting from './ProjectSetting.vue';
-import {Logo} from '@/layout/components/Logo';
 import {AsideMenu} from '@/layout/components/Menu';
 import {useProjectSetting} from '@/hooks/setting/useProjectSetting';
 import {websiteConfig} from '@/config/website.config';
 import {useDesignSetting} from '@/store/modules/designSetting';
+import {Logo} from '@/layout/components/Logo';
 
 export default defineComponent({
   name: 'PageHeader',
-  components: { ...components, NDialogProvider, ProjectSetting, Logo, AsideMenu },
+  components: { ...components, NDialogProvider, ProjectSetting, AsideMenu, Logo },
   props: {
     collapsed: {
       type: Boolean,
@@ -306,24 +306,6 @@ export default defineComponent({
     &-left {
       display: flex;
       align-items: center;
-
-      .logo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 64px;
-        line-height: 64px;
-        overflow: hidden;
-        white-space: nowrap;
-        padding-left: 10px;
-
-        img {
-          width: auto;
-          height: 32px;
-          margin-right: 10px;
-        }
-
-      }
 
       ::v-deep(.ant-breadcrumb span:last-child .link-text) {
         color: #515a6e;

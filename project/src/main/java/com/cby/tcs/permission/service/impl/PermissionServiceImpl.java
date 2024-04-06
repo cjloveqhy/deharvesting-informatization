@@ -200,7 +200,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
     List<Permission> list = list(wrapper);
     for (Permission permission : list) {
       RouteMeta meta = stringToMeta(permission.getMeta());
-      if (!meta.getPermissions().isEmpty()) {
+      if (Objects.nonNull(meta.getPermissions()) && !meta.getPermissions().isEmpty()) {
         permissions.addAll(meta.getPermissions());
       }
     }

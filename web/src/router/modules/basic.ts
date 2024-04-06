@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { Layout } from '@/router/constant';
+import {RouteRecordRaw} from 'vue-router';
+import {Layout} from '@/router/constant';
 import {constantRouterIcon} from "@/router/icons";
 
 const routeName = 'basic';
@@ -18,54 +18,23 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/basic',
     name: routeName,
-    redirect: '/basic/workplace',
+    redirect: '/basic/personalSetting',
     component: Layout,
     meta: {
       title: '基础管理',
-      icon: constantRouterIcon.DashboardOutlined,
-      sort: 4,
+      icon: constantRouterIcon.LogoBuffer,
+      sort: 6,
+      alwaysShow: true
     },
     children: [
       {
-        path: 'contractTerms',
-        name: `${routeName}_contractTerms`,
+        path: 'personalSetting',
+        name: `${routeName}_personalSetting`,
         meta: {
-          title: '合同条款',
+          title: '个人设置',
+          permissions: ['basic::personalSetting::view']
         },
-        component: () => import('@/views/basic/contractTerms/index.vue'),
-      },
-      {
-        path: 'farm',
-        name: `${ routeName }_farm`,
-        meta: {
-          title: '农机管理',
-        },
-        children: [
-          {
-            path: 'uav',
-            name: `${routeName}_farm_uav`,
-            meta: {
-              title: '无人机',
-            },
-            component: () => import('@/views/basic/farm/uav.vue'),
-          },
-          {
-            path: 'cottonPicker',
-            name: `${routeName}_farm_cottonPicker`,
-            meta: {
-              title: '采棉机',
-            },
-            component: () => import('@/views/basic/farm/cottonPicker.vue'),
-          },
-          {
-            path: 'dataTerminal',
-            name: `${routeName}_farm_dataTerminal`,
-            meta: {
-              title: '数据终端',
-            },
-            component: () => import('@/views/basic/farm/dataTerminal.vue'),
-          },
-        ]
+        component: () => import('@/views/basic/personalSetting/index.vue'),
       },
     ],
   },

@@ -1,9 +1,10 @@
-import { h, unref } from 'vue';
-import type { App, Plugin, Component } from 'vue';
-import { NIcon, NTag } from 'naive-ui';
-import { PageEnum } from '@/enums/pageEnum';
-import { isObject } from './is/index';
-import { cloneDeep } from 'lodash-es';
+import type {App, Component, Plugin} from 'vue';
+import {h, unref} from 'vue';
+import {NIcon, NTag} from 'naive-ui';
+import {PageEnum} from '@/enums/pageEnum';
+import {isObject} from './is/index';
+import {cloneDeep} from 'lodash-es';
+
 /**
  * render 图标
  * */
@@ -176,11 +177,11 @@ export function getTreeItem(data: any[], key?: string | number): any {
  *  找到所有节点
  * */
 const treeAll: any[] = [];
-export function getTreeAll(data: any[]): any[] {
+export function getTreeAll(data: any[], keyField: string = 'key'): any[] {
   data.map((item) => {
-    treeAll.push(item.key);
+    treeAll.push(item[keyField]);
     if (item.children && item.children.length) {
-      getTreeAll(item.children);
+      getTreeAll(item.children, keyField);
     }
   });
   return treeAll;
