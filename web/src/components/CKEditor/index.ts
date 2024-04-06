@@ -23,16 +23,7 @@ import {GeneralHtmlSupport, HtmlComment} from '@ckeditor/ckeditor5-html-support/
 import {PasteFromMarkdownExperimental} from '@ckeditor/ckeditor5-markdown-gfm/src/index'
 import {Highlight} from '@ckeditor/ckeditor5-highlight/src/index'
 import {HorizontalLine} from '@ckeditor/ckeditor5-horizontal-line/src/index'
-import {
-  Image,
-  ImageCaption,
-  ImageInsert,
-  ImageResize,
-  ImageStyle,
-  ImageToolbar
-} from '@ckeditor/ckeditor5-image/src/index'
-import {AutoLink, Link, LinkImage} from '@ckeditor/ckeditor5-link/src/index'
-import {SimpleUploadAdapter} from '@ckeditor/ckeditor5-upload/src/index'
+import {AutoLink, Link} from '@ckeditor/ckeditor5-link/src/index'
 import {FindAndReplace} from '@ckeditor/ckeditor5-find-and-replace/src/index'
 import {ListProperties, TodoList} from '@ckeditor/ckeditor5-list/src/index'
 import {PasteFromOffice} from '@ckeditor/ckeditor5-paste-from-office/src/index'
@@ -125,16 +116,16 @@ export const CKEditorConfig: EditorConfig = {
     HeadingButtonsUI, // 标题按钮
     Highlight, // 强调
     HorizontalLine, // 水平线
-    Image, // 图片
-    ImageInsert, // 插入图片
-    ImageCaption, // 图片标题
-    ImageResize, // 图片大小
-    ImageStyle, // 图片样式
-    ImageToolbar, // 图片工具支持
-    LinkImage,  // 图片链接
+    // Image, // 图片
+    // ImageInsert, // 插入图片
+    // ImageCaption, // 图片标题
+    // ImageResize, // 图片大小
+    // ImageStyle, // 图片样式
+    // ImageToolbar, // 图片工具支持
+    // LinkImage,  // 图片链接
     Link, // 超链接
     AutoLink, // 自动链接
-    SimpleUploadAdapter, // 简单上传文件适配器
+    // SimpleUploadAdapter, // 简单上传文件适配器
     FindAndReplace, // 查找替换
     ListProperties, // 有序无序列表
     TodoList, // 代办列表
@@ -174,7 +165,7 @@ export const CKEditorConfig: EditorConfig = {
       'fontBackgroundColor', //字体背景颜色
       '|',
       'link', // 超链接
-      'insertImage', // 插入图片
+      // 'insertImage', // 插入图片
       'insertTable', // 插入表格
       '|',
       'bold', // 加粗
@@ -211,7 +202,7 @@ export const CKEditorConfig: EditorConfig = {
     '|',
     'numberedList', 'bulletedList', 'todolist',
     '|',
-    'blockQuote', 'uploadImage'
+    'blockQuote', /*'uploadImage'*/
   ],
   balloonToolbar: {
     items: [
@@ -223,14 +214,14 @@ export const CKEditorConfig: EditorConfig = {
     ],
   },
   // @ts-ignore
-  autosave: {
-    save: (_) => {
-      return new Promise((_, reject) => {
-        reject('callback method is not implemented, please implement it')
-      })
-    },
-    waitingTime: 5000
-  },
+  // autosave: {
+  //   save: (_) => {
+  //     return new Promise((_, reject) => {
+  //       reject('callback method is not implemented, please implement it')
+  //     })
+  //   },
+  //   waitingTime: 5000
+  // },
   htmlSupport: {
     allow: [
       {
@@ -251,55 +242,55 @@ export const CKEditorConfig: EditorConfig = {
     ],
     supportAllValues: false
   },
-  image: {
-    upload: {
-      types: ['jpeg', 'bmp', 'gif', 'png', 'tiff', 'webp']
-    },
-    toolbar: [
-      'toggleImageCaption',
-      'imageTextAlternative',
-      '|',
-      'imageStyle:inline',
-      'imageStyle:alignCenter',
-      'imageStyle:wrapText',
-      '|',
-      'resizeImage',
-    ],
-    resizeOptions: [
-      {
-        name: 'resizeImage:default',
-        value: null,
-        label: '默认'
-      },
-      {
-        name: 'resizeImage:25',
-        value: '25',
-        label: '25%'
-      },
-      {
-        name: 'resizeImage:50',
-        value: '50',
-        label: '50%'
-      },
-      {
-        name: 'resizeImage:75',
-        value: '75',
-        label: '75%'
-      },
-      {
-        name: 'resizeImage:100',
-        value: '100',
-        label: '100%'
-      }
-    ],
-  },
-  simpleUpload: {
-    uploadUrl: '',
-    withCredentials: false,
-    headers: {
-      [tokenName as string]: token
-    }
-  },
+  // image: {
+  //   upload: {
+  //     types: ['jpeg', 'bmp', 'gif', 'png', 'tiff', 'webp']
+  //   },
+  //   toolbar: [
+  //     'toggleImageCaption',
+  //     'imageTextAlternative',
+  //     '|',
+  //     'imageStyle:inline',
+  //     'imageStyle:alignCenter',
+  //     'imageStyle:wrapText',
+  //     '|',
+  //     'resizeImage',
+  //   ],
+  //   resizeOptions: [
+  //     {
+  //       name: 'resizeImage:default',
+  //       value: null,
+  //       label: '默认'
+  //     },
+  //     {
+  //       name: 'resizeImage:25',
+  //       value: '25',
+  //       label: '25%'
+  //     },
+  //     {
+  //       name: 'resizeImage:50',
+  //       value: '50',
+  //       label: '50%'
+  //     },
+  //     {
+  //       name: 'resizeImage:75',
+  //       value: '75',
+  //       label: '75%'
+  //     },
+  //     {
+  //       name: 'resizeImage:100',
+  //       value: '100',
+  //       label: '100%'
+  //     }
+  //   ],
+  // },
+  // simpleUpload: {
+  //   uploadUrl: '',
+  //   withCredentials: false,
+  //   headers: {
+  //     [tokenName as string]: token
+  //   }
+  // },
   heading: {
     options: [
       { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
