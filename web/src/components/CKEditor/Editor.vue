@@ -4,7 +4,15 @@ import {CKEditorConfig} from "@/components/CKEditor/index";
 import {EditorConfig} from "ckeditor5/src/core";
 import {deepMerge} from "@/utils";
 
-const props = defineProps<{value?: string, config?: EditorConfig}>()
+interface Props {
+  value?: string,
+  loading?: boolean,
+  config?: EditorConfig
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loading: false
+})
 
 const emits = defineEmits(['update:value', 'ready'])
 
@@ -16,12 +24,25 @@ const getConfig = computed(() => {
   return deepMerge(CKEditorConfig, props.config ? {...props.config} : {})
 })
 
+const instance = shallowRef()
+
+watch(
+  () => props.loading,
+  (val) => {
+    if (!val && props.value) {
+      instance.value.setData(props.value)
+    }
+  }, {
+    immediate: true
+  }
+)
+
 onMounted(() => {
   nextTick(() => {
     // @ts-ignore
     ClassicEditor.create(document.querySelector(`#${randomId}`), getConfig.value)
       .then(editor => {
-        if (props.value) editor.setData(props.value)
+        instance.value = editor
         // 监听编辑器内容的变化
         editor.model.document.on('change', () => {
           content.value = editor.getData()
@@ -29,7 +50,7 @@ onMounted(() => {
           emits('ready', content.value)
         })
         console.log('editor initialization succeeded')
-    })
+      })
   }).catch(() => {
     console.log("editor initialization failed")
   })
@@ -40,15 +61,16 @@ function getData() {
 }
 
 defineExpose({
+  instance,
   getData
 })
 
 </script>
 
 <template>
-  <div>
+  <n-spin :show="props.loading">
     <div :id="randomId"></div>
-  </div>
+  </n-spin>
 </template>
 
 <style scoped>
