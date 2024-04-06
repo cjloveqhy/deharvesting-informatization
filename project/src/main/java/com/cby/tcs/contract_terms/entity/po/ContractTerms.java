@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.cby.tcs.contract_terms.entity.enums.ContractTermsType;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -26,14 +27,12 @@ public class ContractTerms extends Model<ContractTerms> {
      * 条款类型
      */
     @TableField("type")
-    private String type;
+    private ContractTermsType type;
 
     /**
      * 富文本正文内容
      */
-    @TableField("conent")
-    private String conent;
-
-
+    @TableField("content")
+    private String content;
 
 }
