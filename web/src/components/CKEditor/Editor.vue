@@ -29,7 +29,7 @@ const instance = shallowRef()
 watch(
   () => props.loading,
   (val) => {
-    if (!val && props.value) {
+    if (!val && props.value && instance.value) {
       instance.value.setData(props.value)
     }
   }, {
