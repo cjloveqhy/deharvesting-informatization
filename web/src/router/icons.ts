@@ -1,6 +1,6 @@
 import {renderIcon} from '@/utils';
 import {RouterIcon} from "@/router/types";
-import {UserRole} from '@vicons/carbon';
+import {UserRole, VirtualMachine} from '@vicons/carbon';
 import {
   AccountBookFilled,
   AccountBookOutlined,
@@ -1369,6 +1369,7 @@ import {
 //前端路由图标映射表
 export const constantRouterIcon:RouterIcon = {
   UserRole: {icon: renderIcon(UserRole), name:'UserRole'},
+  VirtualMachine: {icon: renderIcon(VirtualMachine), name:'VirtualMachine'},
   DashboardOutlined: {icon: renderIcon(DashboardOutlined), name:'DashboardOutlined'},
   NotificationOutlined: {icon: renderIcon(NotificationOutlined), name:'NotificationOutlined'},
   NotificationTwotone: {icon: renderIcon(NotificationTwotone), name:'NotificationTwotone'},

@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
-import { Layout } from '@/router/constant';
+import {RouteRecordRaw} from 'vue-router';
+import {Layout} from '@/router/constant';
 import {constantRouterIcon} from "@/router/icons";
 
 const routeName = 'frame';
@@ -24,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
       title: '外部页面',
       hidden: true,
       icon: constantRouterIcon.DashboardOutlined,
-      sort: 6,
+      sort: 8,
     },
     children: [],
   },

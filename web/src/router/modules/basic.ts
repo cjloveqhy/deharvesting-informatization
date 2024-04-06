@@ -18,59 +18,15 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/basic',
     name: routeName,
-    redirect: '/basic/workplace',
+    redirect: '/basic/personalSetting',
     component: Layout,
     meta: {
       title: '基础管理',
       icon: constantRouterIcon.LogoBuffer,
-      sort: 4,
+      sort: 6,
+      alwaysShow: true
     },
     children: [
-      {
-        path: 'contractTerms',
-        name: `${routeName}_contractTerms`,
-        meta: {
-          title: '合同条款',
-          permissions: ['basic::contractTerms::view']
-        },
-        component: () => import('@/views/basic/contractTerms/index.vue'),
-      },
-      {
-        path: 'farm',
-        name: `${ routeName }_farm`,
-        meta: {
-          title: '农机管理',
-        },
-        children: [
-          {
-            path: 'uav',
-            name: `${routeName}_farm_uav`,
-            meta: {
-              title: '无人机',
-              permissions: ['basic::farm::uav::view']
-            },
-            component: () => import('@/views/basic/farm/uav.vue'),
-          },
-          {
-            path: 'cottonPicker',
-            name: `${routeName}_farm_cottonPicker`,
-            meta: {
-              title: '采棉机',
-              permissions: ['basic::farm::cottonPicker::view']
-            },
-            component: () => import('@/views/basic/farm/cottonPicker.vue'),
-          },
-          {
-            path: 'dataTerminal',
-            name: `${routeName}_farm_dataTerminal`,
-            meta: {
-              title: '数据终端',
-              permissions: ['basic::farm::dataTerminal::view']
-            },
-            component: () => import('@/views/basic/farm/dataTerminal.vue'),
-          },
-        ]
-      },
       {
         path: 'personalSetting',
         name: `${routeName}_personalSetting`,

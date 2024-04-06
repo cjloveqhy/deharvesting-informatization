@@ -6,16 +6,36 @@ import {MenuType} from "@/store/api/permission";
  * 属性值为数组，标识为该菜单下有哪些page页上的权限可用
  */
 const roles: PageRole = {
-  basic_personalSetting: [
+  farm_uav: [
     {
       name: 'view',
       meta: {
         title: '查看',
         type: MenuType.Content,
-        permissions: ['basic::personalSetting::view']
+        permissions: ['farm::uav::view']
       }
     },
-  ]
+  ],
+  farm_cottonPicker: [
+    {
+      name: 'view',
+      meta: {
+        title: '查看',
+        type: MenuType.Content,
+        permissions: ['farm::cottonPicker::view']
+      }
+    },
+  ],
+  farm_dataTerminal: [
+    {
+      name: 'view',
+      meta: {
+        title: '查看',
+        type: MenuType.Content,
+        permissions: ['farm::dataTerminal::view']
+      }
+    },
+  ],
 }
 
 export default roles
