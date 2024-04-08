@@ -82,7 +82,7 @@ onMounted(() => {
       align: 'center',
       titleAlign: 'center',
       render: (row) => {
-        return h('span', row.info.username)
+        return h('span', row.info?.username || '无')
       }
     }
   } else {

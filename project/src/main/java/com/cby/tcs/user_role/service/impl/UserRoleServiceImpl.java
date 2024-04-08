@@ -118,8 +118,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
     user = BeanUtil.copyProperties(entity, User.class);
     if (StrUtil.isNotBlank(entity.getRoleId())) {
       LambdaQueryWrapper<UserRole> wrapper = new LambdaQueryWrapper<>();
-      wrapper.eq(UserRole::getUserId, entity.getId())
-              .eq(UserRole::getRoleId, entity.getRoleId());
+      wrapper.eq(UserRole::getUserId, entity.getId());
       UserRole userRole = getOne(wrapper);
       if (Objects.isNull(userRole)) {
         userRole = new UserRole().setRoleId(entity.getRoleId()).setUserId(user.getId());
