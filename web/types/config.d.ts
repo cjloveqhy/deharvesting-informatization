@@ -57,7 +57,7 @@ export interface FuncIconListener {
   ev: (state: Ref<boolean>, e: Event) => any
 }
 
-type excludeBadgeKeys = 'dot' | 'max' | 'processing' | 'showZero' | 'value'
+type excludeBadgeKeys = 'dot' | 'max' | 'showZero' | 'value'
 export interface FuncBadge extends Omit<BadgeProps, excludeBadgeKeys> {
 }
 
@@ -66,7 +66,7 @@ export interface FuncButtonItem {
   afterIcon?: FuncIcon
   eventObject?: object
   badge?: FuncBadge
-  listener?: FuncIconListener[]
+  listener?: (FuncIconListener | ((meta: FuncButtonItem) => void))[]
 }
 
 export interface UserMenuItem {

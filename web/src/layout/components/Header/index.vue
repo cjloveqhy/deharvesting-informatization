@@ -180,13 +180,17 @@ export default defineComponent({
           funcButtonState.value[index] = ref(true)
           if (item.listener && item.listener.length > 0) {
             item.listener.forEach(e => {
-              // @ts-ignore
-              document.addEventListener(e.type, (_, event) => {
-                e.ev(funcButtonState.value[index], event)
-              });
+              if (typeof e === 'object') {
+                // @ts-ignore
+                document.addEventListener(e.type, (_, event) => {
+                  e.ev(funcButtonState.value[index], event)
+                })
+              } else {
+                e(item)
+              }
             })
           }
-        });
+        })
       }
     }
 

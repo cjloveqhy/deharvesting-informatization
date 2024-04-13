@@ -4,6 +4,8 @@ import {FuncButtonItem, UserMenuItem} from "/#/config";
 import {FullscreenExitOutlined, FullscreenOutlined, LockOutlined} from "@vicons/antd";
 import {useScreenLockStore} from "@/store/modules/screenLock";
 import UserInfo from '@/components/UserInfo/UserInfo.vue'
+import {NotificationsOutline} from "@vicons/ionicons5";
+import {sse} from "@/utils/sse";
 
 // 用户菜单
 export const userMenu:UserMenuItem[] = [
@@ -104,19 +106,34 @@ export const funcButtons: FuncButtonItem[] = [
       },
     ]
   },
-  /*{
+  {
     beforeIcon: {
       tips: '通知',
       size: '18',
       component: shallowRef(NotificationsOutline),
     },
     badge: {
-      show: true,
+      show: false,
+      processing: true
     },
     eventObject: {
       click: () => {
 
       },
-    }
-  },*/
+    },
+    listener: [
+      (meta) => {
+        sse.pull({
+          url: '/sse/connect',
+          eventName: 'notification',
+          listener: (message: MessageEvent) => {
+            const data = message.data
+            if (data) {
+              meta.badge!!.show = true
+            }
+          }
+        })
+      }
+    ]
+  },
 ]
