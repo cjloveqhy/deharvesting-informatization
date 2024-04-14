@@ -66,6 +66,4 @@ function createSSE(opt?: Partial<CreateSSEOptions>) {
   )
 }
 
-
-
 export const sse = createSSE()

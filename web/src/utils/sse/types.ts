@@ -8,7 +8,7 @@ export interface SSEConfig {
   // 请求携带参数
   params?: any
   // 监听
-  listener?: ((message: MessageEvent, source: EventSource) => any) | EventListenerOrEventListenerObject
+  listener?: (message: MessageEvent, source: EventSource) => void
   // event 监听配置
   eventOptions?: boolean | AddEventListenerOptions
 }

@@ -2,6 +2,7 @@ import {CreateSSEOptions, SSEConfig, SSEOptions} from "@/utils/sse/types";
 import { cloneDeep } from 'lodash-es';
 import {SSETransform} from "@/utils/sse/SSETransform";
 import {isFunction} from "@/utils/is";
+import {deepCopy} from "@/utils/copyUtil";
 
 /**
  * SSE 服务端推送 模块
@@ -36,9 +37,20 @@ export class VSSE {
 
     const source = this.getSourceEvent(conf)
 
-    // @ts-ignore
-    source.addEventListener(conf.eventName || 'message', conf.listener, conf.eventOptions)
-
+    source.addEventListener(conf.eventName || 'message', (event: MessageEvent) => {
+      let messageEvent:MessageEvent = event;
+      if (opt.isParseToJson) {
+        // @ts-ignore
+        let eventInitDict: MessageEventInit = deepCopy(event, {data: false})
+        try {
+          eventInitDict.data = JSON.parse(event.data)
+        } catch (e) {
+          eventInitDict.data = event.data
+        }
+        messageEvent = new MessageEvent(event.type, eventInitDict)
+      }
+      conf.listener && conf.listener(messageEvent, source)
+    }, conf.eventOptions)
   }
 
   private getSourceEvent(conf: SSEConfig) {
