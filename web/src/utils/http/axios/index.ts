@@ -39,6 +39,16 @@ const transform: AxiosTransform = {
       return res.data;
     }
 
+    const { status, data } = res;
+
+    // 请求成功
+    const hasSuccess = status === ResultEnum.SUCCESS;
+
+    // 接口请求成功，直接返回结果
+    if (hasSuccess) {
+      return data;
+    }
+
   },
 
   // 请求之前处理config
