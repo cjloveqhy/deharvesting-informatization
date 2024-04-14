@@ -5,15 +5,12 @@ import axios, {AxiosResponse} from 'axios';
 import {checkStatus} from './checkStatus';
 import {formatRequestDate, joinTimestamp} from './helper';
 import {ContentTypeEnum, RequestEnum, ResultEnum} from '@/enums/httpEnum';
-import {PageEnum} from '@/enums/pageEnum';
 import {useGlobSetting} from '@/hooks/setting';
 import {isString} from '@/utils/is/';
 import {deepMerge, isUrl} from '@/utils';
 import {setObjToUrlParams} from '@/utils/urlUtils';
 import {CreateAxiosOptions, RequestOptions, Result} from './types';
 import {useUserApiStore} from '@/store/api/user'
-import router from '@/router';
-import {storage} from '@/utils/Storage';
 import {useProjectSettingStore} from "@/store/modules/projectSetting";
 
 const globSetting = useGlobSetting();
@@ -28,11 +25,6 @@ const transform: AxiosTransform = {
    */
   transformRequestData: (res: AxiosResponse<Result>, options: RequestOptions) => {
     const {
-      isShowMessage = true,
-      isShowErrorMessage,
-      isShowSuccessMessage,
-      successMessageText,
-      errorMessageText,
       isTransformResponse,
       isReturnNativeResponse,
     } = options;
@@ -47,75 +39,6 @@ const transform: AxiosTransform = {
       return res.data;
     }
 
-    const { status, data } = res;
-
-    const $dialog = window['$dialog'];
-    const $message = window['$message'];
-
-    if (!data) {
-      // return '[HTTP] Request has no return value';
-      throw new Error('请求出错，请稍候重试');
-    }
-    //  这里 code，result，message为 后台统一的字段，需要修改为项目自己的接口返回格式
-    // const { code, result, message } = data;
-    // 请求成功
-    const hasSuccess = status === ResultEnum.SUCCESS;
-    // 是否显示提示信息
-    if (isShowMessage) {
-      if (hasSuccess && (successMessageText || isShowSuccessMessage)) {
-        // 是否显示自定义信息提示
-        $dialog.success({
-          type: 'success',
-          content: successMessageText || '操作成功！',
-        });
-      } else if (!hasSuccess && (errorMessageText || isShowErrorMessage)) {
-        // 是否显示自定义信息提示
-        $message.error(errorMessageText || '操作失败！');
-      } else if (!hasSuccess && options.errorMessageMode === 'modal') {
-        // errorMessageMode=‘custom-modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
-        $dialog.info({
-          title: '提示',
-          content: data,
-          positiveText: '确定',
-          onPositiveClick: () => {},
-        });
-      }
-    }
-
-    // 接口请求成功，直接返回结果
-    if (hasSuccess) {
-      return data;
-    }
-    // 接口请求错误，统一提示错误信息 这里逻辑可以根据项目进行修改
-    let errorMsg = data;
-    switch (status) {
-      // 请求失败
-      case ResultEnum.ERROR:
-        $message.error(errorMsg);
-        break;
-      // 登录超时
-      case ResultEnum.TIMEOUT:
-        const LoginName = PageEnum.BASE_LOGIN_NAME;
-        const LoginPath = PageEnum.BASE_LOGIN;
-        if (router.currentRoute.value?.name === LoginName) return;
-        // 到登录页
-        errorMsg = '登录超时，请重新登录!';
-        $dialog.warning({
-          title: '提示',
-          content: '登录身份已失效，请重新登录!',
-          positiveText: '确定',
-          //negativeText: '取消',
-          closable: false,
-          maskClosable: false,
-          onPositiveClick: () => {
-            storage.clear();
-            window.location.href = LoginPath;
-          },
-          onNegativeClick: () => {},
-        });
-        break;
-    }
-    throw new Error(data as string);
   },
 
   // 请求之前处理config

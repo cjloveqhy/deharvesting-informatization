@@ -1,5 +1,6 @@
 package com.cby.tcs.handler;
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.freedom.cloud.exception.BasicFormatException;
 import com.freedom.cloud.result.ResultEntity;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,11 @@ public class ErrorExceptionHandler {
   @ExceptionHandler(SQLException.class)
   public ResultEntity SQLException(SQLException exception){
     return new ResultEntity("数据库产生了异常", HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  @ExceptionHandler(NotLoginException.class)
+  public ResultEntity SQLException(NotLoginException exception){
+    return new ResultEntity(exception.getMessage(), HttpStatus.UNAUTHORIZED);
   }
 
   @ExceptionHandler(BindException.class)
