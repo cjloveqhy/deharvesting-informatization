@@ -1,8 +1,11 @@
-import { ObjectDirective } from 'vue';
+import { Directive, DirectiveBinding } from 'vue';
 import { usePermission } from '@/hooks/web/usePermission';
 
-export const permission: ObjectDirective = {
-  mounted(el: HTMLButtonElement, binding) {
+/**
+ * 权限指令，用于控制不满足权限的组件不可用
+ */
+const permission: Directive = {
+  mounted(el: HTMLButtonElement, binding: DirectiveBinding) {
     if (binding.value == undefined) return;
     const { action, effect } = binding.value;
     const { hasPermission } = usePermission();
@@ -17,3 +20,5 @@ export const permission: ObjectDirective = {
     }
   },
 };
+
+export default permission;
