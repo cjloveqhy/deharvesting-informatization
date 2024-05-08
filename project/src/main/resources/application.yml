@@ -54,3 +54,11 @@ sa-token:
   is-log: true
   # jwt秘钥
   jwt-secret-key: deharvesting_informatization
+app:
+  config:
+    exclude-path:
+      - /user/login
+      - /user/register
+      - /user/validAccount
+      - /user/getLoginVerifyImg
+      - /message/pull
