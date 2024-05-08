@@ -21,6 +21,7 @@ function isBelowViewPort(el: Element): boolean {
 
 interface SlideInDirectiveBinding extends DirectiveBinding {
   keyframes?: Keyframe[]
+  firstScreenAnimation?: boolean
 }
 
 /**
@@ -28,9 +29,10 @@ interface SlideInDirectiveBinding extends DirectiveBinding {
  */
 const slideIn: Directive = {
   mounted(el: Element, binding: DirectiveBinding<SlideInDirectiveBinding>) {
-    /*if (!isBelowViewPort(el)) {
+    const { firstScreenAnimation = true } = binding.value || {}
+    if (firstScreenAnimation && !isBelowViewPort(el)) {
       return;
-    }*/
+    }
     const animation = el.animate(binding.value?.keyframes || [
       {
         transform: 'translateY(100px)',
