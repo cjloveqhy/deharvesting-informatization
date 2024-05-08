@@ -60,5 +60,4 @@ auto-imports.d.ts
 *.sw?
 git-stats
 *.hprof
-!/**/pnpm-lock.yaml
-!/**/pnpm-lock.yml
+!/web/pnpm-lock.yaml
