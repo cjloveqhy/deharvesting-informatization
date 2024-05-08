@@ -1,7 +1,7 @@
 <template>
   <RouterView>
     <template #default="{ Component, route }">
-      <template v-if="mode === 'production'">
+      <template v-if="isProdMode()">
         <transition :name="getTransitionName" mode="out-in" appear>
           <keep-alive v-if="keepAliveComponents.length" :include="keepAliveComponents">
             <component :is="Component" :key="route.fullPath" />
@@ -10,10 +10,9 @@
         </transition>
       </template>
       <template v-else>
-        <keep-alive v-if="keepAliveComponents.length" :include="keepAliveComponents">
+        <transition :name="getTransitionName" mode="out-in" appear>
           <component :is="Component" :key="route.fullPath" />
-        </keep-alive>
-        <component v-else :is="Component" :key="route.fullPath" />
+        </transition>
       </template>
     </template>
   </RouterView>
@@ -23,6 +22,7 @@
   import { defineComponent, computed, unref } from 'vue';
   import { useAsyncRouteStore } from '@/store/modules/asyncRoute';
   import { useProjectSetting } from '@/hooks/setting/useProjectSetting';
+  import { isProdMode } from '@/utils/env'
 
   export default defineComponent({
     name: 'MainView',
@@ -47,11 +47,10 @@
         return unref(isPageAnimate) ? unref(pageAnimateType) : '';
       });
 
-      const mode = import.meta.env.MODE;
       return {
         keepAliveComponents,
         getTransitionName,
-        mode,
+        isProdMode
       };
     },
   });

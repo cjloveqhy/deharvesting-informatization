@@ -123,8 +123,9 @@ export const funcButtons: FuncButtonItem[] = [
     },
     listener: [
       (meta) => {
+        const userId = useUserApiStore().getUserInfo().id
         sse.pull({
-          url: '/sse/connect',
+          url: `/message/pull/${userId}`,
           eventName: 'notification',
           listener: (message: MessageEvent) => {
             const data = message.data

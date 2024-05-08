@@ -200,27 +200,29 @@ function menuAdd(): Promise<void> {
 </script>
 
 <template>
-  <n-card title="菜单管理">
-    <n-data-table
-      striped
-      :scroll-x="1800"
-      :loading="loading"
-      :columns="columns"
-      :data="tableData"
-      :row-key="(row) => row.id"
+  <div>
+    <n-card title="菜单管理">
+      <n-data-table
+        striped
+        :scroll-x="1800"
+        :loading="loading"
+        :columns="columns"
+        :data="tableData"
+        :row-key="(row) => row.id"
+      />
+    </n-card>
+    <add-and-edit-menu-drawer
+      :data="data"
+      :submit="menuUpdate"
+      v-model:form-data="formData"
+      v-model:show="showUpdateDrawer"
     />
-  </n-card>
-  <add-and-edit-menu-drawer
-    :data="data"
-    :submit="menuUpdate"
-    v-model:form-data="formData"
-    v-model:show="showUpdateDrawer"
-  />
-  <add-and-edit-menu-drawer
-    is-add
-    :data="data"
-    :submit="menuAdd"
-    v-model:form-data="formData"
-    v-model:show="showAddDrawer"
-  />
+    <add-and-edit-menu-drawer
+      is-add
+      :data="data"
+      :submit="menuAdd"
+      v-model:form-data="formData"
+      v-model:show="showAddDrawer"
+    />
+  </div>
 </template>
