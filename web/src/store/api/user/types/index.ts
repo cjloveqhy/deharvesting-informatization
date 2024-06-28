@@ -38,7 +38,7 @@ export interface UserAutoInfo {
   info: UserInfo
 }
 
-export  enum LoginEnum {
+export enum LoginEnum {
 
   /**
    * 账号密码登录

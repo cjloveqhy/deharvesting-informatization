@@ -101,7 +101,7 @@ const { getDarkTheme } = useDesignSetting();
 
   const settingStore = useProjectSettingStore();
 
-  const collapsed = ref<boolean>(false);
+  const collapsed = ref<boolean>(unref(menuSetting).collapsed);
 
   const { mobileWidth, menuWidth } = unref(menuSetting);
 

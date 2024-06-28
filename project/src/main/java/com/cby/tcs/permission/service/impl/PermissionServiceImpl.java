@@ -48,10 +48,10 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionDao, Permission
 
   @Override
   public Permission getAndDelServiceNode(List<Permission> permissions) {
-    Permission permission = new Permission();
+    Permission permission = null;
     for (Permission item : permissions) {
       if (item.getType().equals(MenuType.Service)) {
-        BeanUtil.copyProperties(item, permission);
+        permission = BeanUtil.copyProperties(item, Permission.class);
         permissions.remove(item);
         break;
       }

@@ -48,7 +48,7 @@ const setting:ProjectSettingState = {
     //触发移动端侧边栏的宽度
     mobileWidth: 800,
     // 折叠菜单
-    collapsed: false,
+    collapsed: true,
   },
   //面包屑
   crumbsSetting: {

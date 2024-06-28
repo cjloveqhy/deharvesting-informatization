@@ -111,7 +111,7 @@
         </n-dropdown>
       </div>
       <!--设置-->
-      <template v-if="headerSetting.isProjectSetting">
+      <template v-if="headerSetting.isProjectSetting && isDevMode()">
         <n-flex class="cursor-pointer" align="center" @click="openSetting">
           <n-tooltip placement="bottom-end">
             <template #trigger>
@@ -126,7 +126,7 @@
     </n-flex>
   </div>
   <!--项目配置-->
-  <ProjectSetting v-if="headerSetting.isProjectSetting" ref="drawerSetting" />
+  <ProjectSetting v-if="headerSetting.isProjectSetting && isDevMode()" ref="drawerSetting" />
 </template>
 
 <script lang="ts">
@@ -141,6 +141,7 @@ import {useProjectSetting} from '@/hooks/setting/useProjectSetting';
 import {websiteConfig} from '@/config/website.config';
 import {useDesignSetting} from '@/store/modules/designSetting';
 import {Logo} from '@/layout/components/Logo';
+import { isDevMode } from '@/utils/env'
 
 export default defineComponent({
   name: 'PageHeader',
@@ -290,6 +291,7 @@ export default defineComponent({
       mixMenu,
       getDarkTheme,
       websiteConfig,
+      isDevMode
     };
   },
 });

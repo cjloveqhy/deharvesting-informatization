@@ -56,6 +56,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleDao, UserRole> impl
   @Override
   public List<String> getRolePermissions(String userId) {
     List<String> permissionIds = getRolePermissionIds(userId);
+    if (permissionIds.isEmpty()) return Collections.emptyList();
     return permissionService.getPermissions(permissionIds);
   }
 
